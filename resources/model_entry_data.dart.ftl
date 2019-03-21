@@ -72,9 +72,9 @@ class ${ModelEntryName} {
             CREATE TABLE IF NOT EXISTS ${(ModelEntryName)?lower_case} (
               <#list Fields as item>
               <#if item.name == "id">
-              ${item.jsonName} INTEGER PRIMARY KEY,
+              ${item.jsonName} INTEGER PRIMARY KEY<#if item_has_next>,<#else> </#if>
               <#elseif item.originalValue != "Object">
-              ${item.jsonName} <#if item.type == "int">INTEGER<#elseif item.type == "String">TEXT<#elseif item.type == "Float">REAL</#if>,
+              ${item.jsonName} <#if item.type == "int">INTEGER<#elseif item.type == "String">TEXT<#elseif item.type == "Float">REAL<#elseif item.type == "bool">INTEGER<#elseif item.type == "DateTime">TEXT</#if><#if item_has_next>,<#else> </#if>
               </#if>
               </#list>
             )""");}
