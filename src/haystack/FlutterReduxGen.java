@@ -27,11 +27,13 @@ import haystack.ui.JSONEditDialog;
 import haystack.ui.ModelTableDialog;
 import haystack.ui.TextResources;
 import haystack.util.FileUtil;
+import org.kohsuke.rngom.util.Uri;
 
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.*;
+import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -126,6 +128,8 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
             byte[] tempbytes = new byte[100];
             int byteread = 0;
             in = this.getClass().getResourceAsStream(fileName);
+            URL p =this.getClass().getResource(fileName);
+            System.out.println("url: "+p.getPath());
             out = new FileOutputStream(resources + fileName);
             while ((byteread = in.read(tempbytes)) != -1) {
                 out.write(tempbytes, 0, byteread);

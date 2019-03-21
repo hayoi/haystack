@@ -8,7 +8,7 @@ class ${ModelEntryName}Repository {
   const ${ModelEntryName}Repository();
 
   Future<Map> get${ModelEntryName}sList(String sorting, int page, int limit) {
-    return new Injector().dio.get("${(ModelEntryName)?lower_case}/", data: {
+    return new Injector().dio.get("${(ModelEntryName)?lower_case}/", queryParameters: {
       "sorting": sorting,
       "page": page,
       "limit": limit
@@ -23,9 +23,10 @@ class ${ModelEntryName}Repository {
 
   Future<${ModelEntryName}> create${ModelEntryName}(${ModelEntryName} ${(ModelEntryName)?lower_case}) {
     var dio = new Injector().dio;
-    Options options = dio.options;
-    options.data = ${(ModelEntryName)?lower_case};
-    return dio.post("${(ModelEntryName)?lower_case}/", options: options).then((d) {
+    dio.options.headers.putIfAbsent("Accept", () {
+      return "application/json";
+    });
+    return dio.post("${(ModelEntryName)?lower_case}/", data: ${(ModelEntryName)?lower_case}).then((d) {
       var results = new NetworkUtils().decodeResp(d);
 
       return new ${ModelEntryName}.fromJson(results);
@@ -34,9 +35,10 @@ class ${ModelEntryName}Repository {
 
   Future<${ModelEntryName}> update${ModelEntryName}(${ModelEntryName} ${(ModelEntryName)?lower_case}) {
     var dio = new Injector().dio;
-    Options options = dio.options;
-    options.data = ${(ModelEntryName)?lower_case};
-    return dio.put("${(ModelEntryName)?lower_case}/", options: options).then((d) {
+    dio.options.headers.putIfAbsent("Accept", () {
+      return "application/json";
+    });
+    return dio.put("${(ModelEntryName)?lower_case}/", data: ${(ModelEntryName)?lower_case}).then((d) {
       var results = new NetworkUtils().decodeResp(d);
 
       return new ${ModelEntryName}.fromJson(results);
@@ -44,7 +46,7 @@ class ${ModelEntryName}Repository {
   }
 
   Future<int> delete${ModelEntryName}(int id) {
-    return new Injector().dio.delete("${(ModelEntryName)?lower_case}/", data: {"id": id}).then((d) {
+    return new Injector().dio.delete("${(ModelEntryName)?lower_case}/", queryParameters: {"id": id}).then((d) {
       var results = new NetworkUtils().decodeResp(d);
 
       return id;
@@ -52,7 +54,7 @@ class ${ModelEntryName}Repository {
   }
 
   Future<${ModelEntryName}> get${ModelEntryName}(int id) {
-    return new Injector().dio.get("${(ModelEntryName)?lower_case}/", data: {"id": id}).then((d) {
+    return new Injector().dio.get("${(ModelEntryName)?lower_case}/", queryParameters: {"id": id}).then((d) {
       var results = new NetworkUtils().decodeResp(d);
 
       return new ${ModelEntryName}.fromJson(results);
@@ -62,9 +64,10 @@ class ${ModelEntryName}Repository {
   <#if ModelEntryName == "User">
   Future<${ModelEntryName}> login(Login login) {
     var dio = new Injector().dio;
-    Options options = dio.options;
-    options.data = login.toJson();
-    return dio.post("login/", options: options).then((d) {
+    dio.options.headers.putIfAbsent("Accept", () {
+      return "application/json";
+    });
+    return dio.post("login/", data: login.toJson()).then((d) {
       var results = new NetworkUtils().decodeResp(d);
 
       return new ${ModelEntryName}.fromJson(results["user"]);

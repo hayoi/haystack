@@ -23,21 +23,23 @@ class Injector {
     dio.options.baseUrl = 'http://192.168.1.186:5000/';
     dio.options.connectTimeout = 5000; //5s
     dio.options.receiveTimeout = 3000;
-    dio.interceptor.request.onSend = (Options options)async {
+    dio.interceptors
+        .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       // Do something before request is sent
 
       // set the token
 
       // set the token
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      options.headers["Authorization"] = "Bearer ${r"${prefs.getString('token')}"}";
+      options.headers["Authorization"] =
+          "Bearer ${r"${prefs.getString('token')}"}";
 
-      print("Pre request: ${r"${options.method}"} ${r"${options.baseUrl}"}${r"${options.path}"}");
+      print(
+          "Pre request: ${r"${options.method}"} ${r"${options.baseUrl}"}${r"${options.path}"}");
       print("Pre request ${r"${options.headers.toString()}"}");
 
       return options; //continue
-    };
-    dio.interceptor.response.onSuccess = (Response response) async {
+    }, onResponse: (Response response) async {
       // Do something with response data
 
       if (response.request.path == "login/") {
@@ -58,14 +60,14 @@ class Injector {
         }
       }
 
-      print("Response From: ${r"${response.request.method}"} ${r"${response.request.baseUrl}"}${r"${response.request.path}"}");
+      print(
+          "Response From: ${r"${response.request.method}"} ${r"${response.request.baseUrl}"}${r"${response.request.path}"}");
       print("Response From: ${r"${response.toString()}"}");
       return response; // continue
-    };
-    dio.interceptor.response.onError = (DioError e){
+    }, onError: (DioError e) {
       // Do something with response error
-      return DioError;//continue
-    };
+      return DioError; //continue
+    }));
     return dio;
   }
 }
