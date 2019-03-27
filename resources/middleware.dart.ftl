@@ -1,25 +1,29 @@
-import 'package:${ProjectName}/data/db/${(ModelEntryName)?lower_case}_repository_db.dart';
 import 'package:redux/redux.dart';
 import 'package:${ProjectName}/redux/app/app_state.dart';
 import 'package:${ProjectName}/redux/loading_status.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:${ProjectName}/data/model/${(ModelEntryName)?lower_case}_data.dart';
 import 'package:${ProjectName}/data/remote/${(ModelEntryName)?lower_case}_repository.dart';
+<#if genDatabase>
+import 'package:${ProjectName}/data/db/${(ModelEntryName)?lower_case}_repository_db.dart';
+</#if>
 import 'package:${ProjectName}/redux/${(ModelEntryName)?lower_case}/${(ModelEntryName)?lower_case}_actions.dart';
 import 'package:${ProjectName}/data/model/page_data.dart';
 
 List<Middleware<AppState>> create${ModelEntryName}Middleware([
   ${ModelEntryName}Repository _repository = const ${ModelEntryName}Repository(),
+  <#if genDatabase>
   ${ModelEntryName}RepositoryDB _repositoryDB = const ${ModelEntryName}RepositoryDB(),
+  </#if>
 ]) {
   <#if ModelEntryName=="User">
-  final login = _createLogin(_repository, _repositoryDB);
+  final login = _createLogin(_repository<#if genDatabase>, _repositoryDB</#if>);
   </#if>
-  final get${ModelEntryName} = _createGet${ModelEntryName}(_repository, _repositoryDB);
-  final get${ModelEntryName}s = _createGet${ModelEntryName}s(_repository, _repositoryDB);
-  final create${ModelEntryName} = _createCreate${ModelEntryName}(_repository, _repositoryDB);
-  final update${ModelEntryName} = _createUpdate${ModelEntryName}(_repository, _repositoryDB);
-  final delete${ModelEntryName} = _createDelete${ModelEntryName}(_repository, _repositoryDB);
+  final get${ModelEntryName} = _createGet${ModelEntryName}(_repository<#if genDatabase>, _repositoryDB</#if>);
+  final get${ModelEntryName}s = _createGet${ModelEntryName}s(_repository, _repositoryDB</#if>);
+  final create${ModelEntryName} = _createCreate${ModelEntryName}(_repository<#if genDatabase>, _repositoryDB</#if>);
+  final update${ModelEntryName} = _createUpdate${ModelEntryName}(_repository<#if genDatabase>, _repositoryDB</#if>);
+  final delete${ModelEntryName} = _createDelete${ModelEntryName}(_repository<#if genDatabase>, _repositoryDB</#if>);
 
   return [
     <#if ModelEntryName=="User">
@@ -35,7 +39,7 @@ List<Middleware<AppState>> create${ModelEntryName}Middleware([
 
 <#if ModelEntryName=="User">
 Middleware<AppState> _createLogin(
-    UserRepository repository, UserRepositoryDB repositoryDB) {
+    UserRepository repository<#if genDatabase>, UserRepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
     next(UserStatusAction(status: LoadingStatus.loading));
     repository.login(action.l).then((item) {
@@ -54,7 +58,7 @@ Middleware<AppState> _createLogin(
 </#if>
 
 Middleware<AppState> _createGet${ModelEntryName}(
-    ${ModelEntryName}Repository repository, ${ModelEntryName}RepositoryDB repositoryDB) {
+    ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
     if (action.id == null) {
       next(${ModelEntryName}StatusAction(status: LoadingStatus.success));
@@ -72,7 +76,7 @@ Middleware<AppState> _createGet${ModelEntryName}(
 }
 
 Middleware<AppState> _createGet${ModelEntryName}s(
-    ${ModelEntryName}Repository repository, ${ModelEntryName}RepositoryDB repositoryDB) {
+    ${ModelEntryName}Repository repository<#if genDatabase><#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
     next(${ModelEntryName}StatusAction(status: LoadingStatus.loading));
     if (action.isRefresh) {
@@ -123,7 +127,7 @@ Middleware<AppState> _createGet${ModelEntryName}s(
 }
 
 Middleware<AppState> _createCreate${ModelEntryName}(
-    ${ModelEntryName}Repository repository, ${ModelEntryName}RepositoryDB repositoryDB) {
+    ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
     next(${ModelEntryName}StatusAction(status: LoadingStatus.loading));
     repository.create${ModelEntryName}(action.${(ModelEntryName)?lower_case}).then((item) {
@@ -141,7 +145,7 @@ Middleware<AppState> _createCreate${ModelEntryName}(
 }
 
 Middleware<AppState> _createUpdate${ModelEntryName}(
-    ${ModelEntryName}Repository repository, ${ModelEntryName}RepositoryDB repositoryDB) {
+    ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
     next(${ModelEntryName}StatusAction(status: LoadingStatus.loading));
     repository.update${ModelEntryName}(action.${(ModelEntryName)?lower_case}).then((item) {
@@ -159,7 +163,7 @@ Middleware<AppState> _createUpdate${ModelEntryName}(
 }
 
 Middleware<AppState> _createDelete${ModelEntryName}(
-    ${ModelEntryName}Repository repository, ${ModelEntryName}RepositoryDB repositoryDB) {
+    ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
     next(${ModelEntryName}StatusAction(status: LoadingStatus.loading));
     repository.delete${ModelEntryName}(action.${(ModelEntryName)?lower_case}.id).then((item) {

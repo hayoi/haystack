@@ -59,27 +59,29 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: '${ProjectName}',
-      debugShowCheckedModeBanner: false,
-      routes: _routes(),
-      theme: _options.theme.copyWith(platform: _options.platform),
-      builder: (BuildContext context, Widget child) {
-        return new Directionality(
-          textDirection: _options.textDirection,
-          child: _applyTextScaleFactor(child),
-        );
-      },
-      localizationsDelegates: [
-        const TranslationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('zh', 'CH'),
-        const Locale('en', 'US'),
-      ],
-    );
+    return StoreProvider<AppState>(
+        store: widget.store,
+        child: MaterialApp(
+          title: '${ProjectName}',
+          debugShowCheckedModeBanner: false,
+          routes: _routes(),
+          theme: _options.theme.copyWith(platform: _options.platform),
+          builder: (BuildContext context, Widget child) {
+            return new Directionality(
+              textDirection: _options.textDirection,
+              child: _applyTextScaleFactor(child),
+            );
+          },
+          localizationsDelegates: [
+            const TranslationsDelegate(),
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale('zh', 'CH'),
+            const Locale('en', 'US'),
+          ],
+        ));
   }
 
 

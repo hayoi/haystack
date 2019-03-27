@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="haystack.ui.JSONEditDialog">
   <grid id="cbd77" binding="contentPane" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="18" y="54" width="658" height="434"/>
+      <xy x="18" y="54" width="683" height="434"/>
     </constraints>
     <properties>
       <enabled value="true"/>
@@ -22,7 +22,7 @@
             <properties/>
             <border type="none" title="Page Info"/>
             <children>
-              <grid id="aae7" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="aae7" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="8" fill="2" indent="0" use-parent-layout="false"/>
@@ -45,6 +45,22 @@
                       </grid>
                     </constraints>
                     <properties/>
+                  </component>
+                  <component id="a0cc6" class="javax.swing.JCheckBox" binding="widgetCheckBox" default-binding="true">
+                    <constraints>
+                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="widget"/>
+                    </properties>
+                  </component>
+                  <component id="19223" class="javax.swing.JCheckBox" binding="uiOnlyCheckBox">
+                    <constraints>
+                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="UI only"/>
+                    </properties>
                   </component>
                 </children>
               </grid>
@@ -284,6 +300,7 @@
                     <constraints/>
                     <properties>
                       <preferredSize width="160" height="30"/>
+                      <text value=""/>
                     </properties>
                   </component>
                 </children>
@@ -301,7 +318,7 @@
                     <properties/>
                     <border type="line" title="Copy JSON here"/>
                     <children>
-                      <component id="ea876" class="javax.swing.JTextPane" binding="jsonTestPanel">
+                      <component id="ea876" class="javax.swing.JTextPane" binding="jsonTextPanel">
                         <constraints/>
                         <properties>
                           <font size="14"/>

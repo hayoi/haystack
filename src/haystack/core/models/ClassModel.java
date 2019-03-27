@@ -32,7 +32,7 @@ public class ClassModel {
         this.name = name;
     }
 
-    public boolean isGenApi() {
+    public boolean isGenDBModule() {
         return genApi;
     }
 

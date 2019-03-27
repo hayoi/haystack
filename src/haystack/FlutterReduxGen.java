@@ -27,7 +27,6 @@ import haystack.ui.JSONEditDialog;
 import haystack.ui.ModelTableDialog;
 import haystack.ui.TextResources;
 import haystack.util.FileUtil;
-import org.kohsuke.rngom.util.Uri;
 
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -122,14 +121,17 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     }
 
     private void cacheResources(String resources, String fileName) {
+//        if (new File(resources + fileName).exists()){
+//            return;
+//        }
         InputStream in = null;
         OutputStream out = null;
         try {
             byte[] tempbytes = new byte[100];
             int byteread = 0;
             in = this.getClass().getResourceAsStream(fileName);
-            URL p =this.getClass().getResource(fileName);
-            System.out.println("url: "+p.getPath());
+            URL p = this.getClass().getResource(fileName);
+            System.out.println("url: " + p.getPath());
             out = new FileOutputStream(resources + fileName);
             while ((byteread = in.read(tempbytes)) != -1) {
                 out.write(tempbytes, 0, byteread);
@@ -154,18 +156,22 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
     @Override
     public void onJsonParsed(PageModel pageModel) {
-        ModelTableDialog tableDialog = new ModelTableDialog(pageModel, languageResolver, textResources, this);
-        if (lastDialogLocation != null) {
-            tableDialog.setLocation(lastDialogLocation);
-        }
-        tableDialog.addComponentListener(new ComponentAdapter() {
-            public void componentMoved(ComponentEvent e) {
-                lastDialogLocation = tableDialog.getLocation();
+        if (pageModel.isUIOnly) {
+            genStructure(pageModel);
+        } else {
+            ModelTableDialog tableDialog = new ModelTableDialog(pageModel, languageResolver, textResources, this);
+            if (lastDialogLocation != null) {
+                tableDialog.setLocation(lastDialogLocation);
             }
-        });
+            tableDialog.addComponentListener(new ComponentAdapter() {
+                public void componentMoved(ComponentEvent e) {
+                    lastDialogLocation = tableDialog.getLocation();
+                }
+            });
 
-        tableDialog.pack();
-        tableDialog.setVisible(true);
+            tableDialog.pack();
+            tableDialog.setVisible(true);
+        }
     }
 
     @Override
@@ -176,6 +182,10 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     @Override
     public void onModelsReady(PageModel pageModel) {
 
+        genStructure(pageModel);
+    }
+
+    private void genStructure(PageModel pageModel) {
         Project project = directory.getProject();
         PsiFileFactory factory = PsiFileFactory.getInstance(project);
         PsiDirectoryFactory directoryFactory = PsiDirectoryFactory.getInstance(directory.getProject());
@@ -215,6 +225,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         rootMap.put("GenSliverGrid", pageModel.genSliverGrid);
         rootMap.put("GenSliverToBoxAdapter", pageModel.genSliverToBoxAdapter);
         rootMap.put("FabInAppBar", pageModel.genSliverFab);
+        rootMap.put("IsCustomWidget", pageModel.isCustomWidget);
 
         if (pageModel.genActionButton) {
             rootMap.put("HasActionSearch", pageModel.hasActionSearch);
@@ -225,13 +236,18 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
             rootMap.put("ActionList", new ArrayList<String>());
             rootMap.put("ActionBtnCount", 0);
         }
-        for (ClassModel classModel : pageModel.classModels) {
-            generateModelEntry(classModel, rootMap);
-        }
+        if (!pageModel.isUIOnly) {
+            for (ClassModel classModel : pageModel.classModels) {
+                if (classModel.getName().equals(pageModel.modelName)) {
+                    rootMap.put("genDatabase", classModel.isGenDBModule());
+                }
+                generateModelEntry(classModel, rootMap);
+            }
 
-        generateFeature(rootMap);
-        generateRepository(rootMap);
-        generateRedux(rootMap);
+            generateRepository(rootMap);
+            generateRedux(rootMap);
+        }
+        generateFeature(rootMap, pageModel.isCustomWidget);
     }
 
     private void generateRedux(Map<String, Object> rootMap) {
@@ -394,8 +410,8 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         Messages.showMessageDialog(project, "初始化MVP结构完成！", "初始化", Messages.getInformationIcon());
     }
 
-    private void generateFeature(Map<String, Object> rootMap) {
-        String path = selectGroup.getPath() + "/features/" + rootMap.get("PageName").toString().toLowerCase() + "/"
+    private void generateFeature(Map<String, Object> rootMap, boolean isCustomWidget) {
+        String path = selectGroup.getPath() + "/features/" + (isCustomWidget ? "customize/" : "") + rootMap.get("PageName").toString().toLowerCase() + "/"
                 + rootMap.get("PageName").toString().toLowerCase();
         generateFile(new File(path + "_view_model.dart"), "view_model.dart.ftl", rootMap);
         generateFile(new File(path + "_view.dart"), "view.dart.ftl", rootMap);
@@ -404,7 +420,10 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     private void generateRepository(Map<String, Object> rootMap) {
         String path = selectGroup.getPath() + "/data";
 
-        generateFile(new File(path + "/db/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_repository_db.dart"), "repository_db.dart.ftl", rootMap);
+        boolean db = (boolean) rootMap.get("genDatabase");
+        if ((db)) {
+            generateFile(new File(path + "/db/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_repository_db.dart"), "repository_db.dart.ftl", rootMap);
+        }
         generateFile(new File(path + "/remote/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_repository.dart"), "repository.dart.ftl", rootMap);
     }
 
@@ -459,12 +478,12 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         Map<String, Object> subMap = new HashMap<String, Object>(map);
         subMap.remove("ModelEntryName");
         subMap.put("ModelEntryName", classModel.getName());
-        subMap.put("genDatabase", classModel.isGenApi());
+        subMap.put("genDatabase", classModel.isGenDBModule());
         subMap.put("Fields", classModel.getFields());
 
         File f = new File(selectGroup.getPath() + "/data/model/" + classModel.getName().toLowerCase() + "_data.dart");
         generateFile(f, "model_entry_data.dart.ftl", subMap);
-        if (classModel.isGenApi()) {
+        if (classModel.isGenDBModule()) {
             writeDatabaseClient(subMap);
         }
     }

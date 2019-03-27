@@ -99,7 +99,7 @@ public class ModelTableDialog extends JDialog implements ClassesListDelegate.OnC
                     if (!field.isEnabled()) {
                         iterator.remove();
                     } else {
-                        if (!field.getType().equals("int") && !field.getType().equals("double") && !field.getType().equals("String") && !field.getType().equals("int")) {
+                        if (!field.getType().equals("int") && !field.getType().equals("double") && !field.getType().equals("String") && !field.getType().equals("bool")) {
                             field.setDefaultValue("null");
                         }
                         String fieldClassName = classNames.get(field.getType());

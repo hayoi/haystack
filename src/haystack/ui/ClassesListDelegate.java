@@ -75,7 +75,7 @@ public class ClassesListDelegate {
         public Object getValueAt(int rowIndex, int columnIndex) {
             switch (columnIndex) {
                 case 0:
-                    return classData.get(rowIndex).isGenApi();
+                    return classData.get(rowIndex).isGenDBModule();
                 case 1:
                     return classNames.get(classData.get(rowIndex).getName());
             }
@@ -106,7 +106,7 @@ public class ClassesListDelegate {
         public String getColumnName(int column) {
             switch (column) {
                 case 0:
-                    return "gen Api";
+                    return "DB module";
                 case 1:
                     return "class name";
             }

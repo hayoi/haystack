@@ -6,6 +6,8 @@ public class PageModel {
     public String pageName;
     public String pageType;
     public String modelName;
+    public boolean isUIOnly;
+    public boolean isCustomWidget;
     public boolean genAppBar;
     public boolean genBottomTabBar;
     public boolean genTopTabBar;

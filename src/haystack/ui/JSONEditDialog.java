@@ -23,7 +23,7 @@ public class JSONEditDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField classNameTextField;
-    private JTextPane jsonTestPanel;
+    private JTextPane jsonTextPanel;
     private JLabel jsonErrorLabel;
     private JPanel modelSetting;
     private JPanel pageSetting;
@@ -32,7 +32,7 @@ public class JSONEditDialog extends JDialog {
     private JRadioButton loginRadioButton;
     private JRadioButton mannulRadioButton;
     private JRadioButton sliverRadioButton;
-//    private JRadioButton profileRadioButton;
+    //    private JRadioButton profileRadioButton;
     private JCheckBox appBarCheckBox;
     private JCheckBox bottomTabBarCheckBox;
     private JCheckBox listViewCheckBox;
@@ -57,6 +57,8 @@ public class JSONEditDialog extends JDialog {
     private JCheckBox barAddIcon;
     private JPanel bottomPanel;
     private JPanel North;
+    private JCheckBox widgetCheckBox;
+    private JCheckBox uiOnlyCheckBox;
     private JSONColorizer jsonColorizer;
     private JSONEditCallbacks callbacks;
     private ErrorMessageParser errorMessageParser;
@@ -86,7 +88,9 @@ public class JSONEditDialog extends JDialog {
         sliver.add(sliverFixedList);
         sliver.add(sliverGrid);
         sliver.add(sliverToBoxAdapter);
-
+        uiOnlyCheckBox.addItemListener(e -> {
+            jsonTextPanel.setEnabled(!uiOnlyCheckBox.isSelected());
+        });
         actionButtonCheckBox.addItemListener(e -> {
             appBarInfo.setVisible(actionButtonCheckBox.isSelected());
         });
@@ -146,33 +150,33 @@ public class JSONEditDialog extends JDialog {
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
                 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        jsonTestPanel.getDocument().addDocumentListener(new DocumentListener() {
+        jsonTextPanel.getDocument().addDocumentListener(new DocumentListener() {
 
             @Override
             public void insertUpdate(DocumentEvent e) {
                 if (!isFormatting) {
-                    formatJson(jsonTestPanel.getText());
+                    formatJson(jsonTextPanel.getText());
                 }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 if (!isFormatting) {
-                    formatJson(jsonTestPanel.getText());
+                    formatJson(jsonTextPanel.getText());
                 }
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
                 if (!isFormatting) {
-                    formatJson(jsonTestPanel.getText());
+                    formatJson(jsonTextPanel.getText());
                 }
             }
         });
-        PopupListener popupListener = new PopupListener(GuiHelper.getJsonContextMenuPopup(jsonTestPanel, textResources));
-        jsonTestPanel.addMouseListener(popupListener);
+        PopupListener popupListener = new PopupListener(GuiHelper.getJsonContextMenuPopup(jsonTextPanel, textResources));
+        jsonTextPanel.addMouseListener(popupListener);
 
-        jsonColorizer = new JSONColorizer(jsonTestPanel);
+        jsonColorizer = new JSONColorizer(jsonTextPanel);
         errorMessageParser = new ErrorMessageParser();
     }
 
@@ -183,8 +187,8 @@ public class JSONEditDialog extends JDialog {
     }
 
     private void onOK() {
-        String text = jsonTestPanel.getText();
-        if (text.isEmpty()) {
+        String text = jsonTextPanel.getText();
+        if (!uiOnlyCheckBox.isSelected() && text.isEmpty()) {
             Messages.showErrorDialog(textResources.getEmptyJSONMessage(),
                     textResources.getEmptyJSONTitle());
             return;
@@ -206,6 +210,8 @@ public class JSONEditDialog extends JDialog {
         PageModel pageModel = new PageModel();
         pageModel.pageName = pageName;
         pageModel.modelName = className.trim();
+        pageModel.isCustomWidget = widgetCheckBox.isSelected();
+        pageModel.isUIOnly = uiOnlyCheckBox.isSelected();
         if (mannulRadioButton.isSelected()) {
             pageModel.pageType = PageType.MANNUL;
             pageModel.genAppBar = appBarCheckBox.isSelected();
@@ -271,9 +277,9 @@ public class JSONEditDialog extends JDialog {
         Runnable doFormatting = () -> {
             try {
                 JSONObject json = new JSONObject(text);
-                int currentCaretPosition = jsonTestPanel.getCaretPosition();
-                jsonTestPanel.setText(json.toString(4));
-                jsonTestPanel.setCaretPosition(currentCaretPosition);
+                int currentCaretPosition = jsonTextPanel.getCaretPosition();
+                jsonTextPanel.setText(json.toString(4));
+                jsonTextPanel.setCaretPosition(currentCaretPosition);
                 jsonErrorLabel.setText("");
                 jsonColorizer.clearErrorHighLight();
             } catch (JSONException jsonException) {
@@ -296,27 +302,14 @@ public class JSONEditDialog extends JDialog {
 
     private void processJSON(PageModel pageModel, String jsonText, String rootClassName) {
         try {
-            SimpleParser parser = new SimpleParser(new DartResolver());
-            JSONObject json = new JSONObject(jsonText);
-            parser.parse(json, rootClassName);
-            List<ClassModel> parsedClasses = parser.getClasses();
-
+            if (!pageModel.isUIOnly) {
+                SimpleParser parser = new SimpleParser(new DartResolver());
+                JSONObject json = new JSONObject(jsonText);
+                parser.parse(json, rootClassName);
+                pageModel.classModels = parser.getClasses();
+            }
             dispose();
             if (callbacks != null) {
-//                for (ClassModel model : parsedClasses) {
-//                    boolean isContainId = false;
-//                    for (FieldModel fieldModel : model.fields) {
-//                        if (fieldModel.name.equals("id")) {
-//                            isContainId = true;
-//                            break;
-//                        }
-//                    }
-//                    if (!isContainId) {
-//                        FieldModel f = new FieldModel("id", "id", "int", "0");
-//                        model.fields.add(0, f);
-//                    }
-//                }
-                pageModel.classModels = parsedClasses;
                 callbacks.onJsonParsed(pageModel);
             }
 
