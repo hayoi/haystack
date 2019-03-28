@@ -7,8 +7,10 @@ import 'package:${ProjectName}/trans/translations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:${ProjectName}/redux/loading_status.dart';
 import 'package:${ProjectName}/redux/app/app_state.dart';
-import 'package:${ProjectName}/features/${(PageName)?lower_case}/${(PageName)?lower_case}_view_model.dart';
+import 'package:${ProjectName}/features/<#if IsCustomWidget>customize/</#if>${(PageName)?lower_case}/${(PageName)?lower_case}_view_model.dart';
+<#if GenerateListView>
 import 'package:${ProjectName}/features/widget/swipe_list_item.dart';
+</#if>
 <#if GenSliverGrid>
 import 'package:flutter_mvp/features/widget/spannable_grid.dart';
 </#if>
@@ -145,7 +147,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
           onPageChanged: onPageChanged,
         );
 	  <#else>
-	  widget = Text("Hello word");
+	    widget = Text("Hello word");
 	  </#if>
 	  </#if>
     }

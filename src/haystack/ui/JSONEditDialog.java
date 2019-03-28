@@ -59,6 +59,12 @@ public class JSONEditDialog extends JDialog {
     private JPanel North;
     private JCheckBox widgetCheckBox;
     private JCheckBox uiOnlyCheckBox;
+    private JPanel viewmodel;
+    private JCheckBox queryCheckBox;
+    private JCheckBox getCheckBox;
+    private JCheckBox createCheckBox;
+    private JCheckBox updateCheckBox;
+    private JCheckBox deleteCheckBox;
     private JSONColorizer jsonColorizer;
     private JSONEditCallbacks callbacks;
     private ErrorMessageParser errorMessageParser;
@@ -212,6 +218,12 @@ public class JSONEditDialog extends JDialog {
         pageModel.modelName = className.trim();
         pageModel.isCustomWidget = widgetCheckBox.isSelected();
         pageModel.isUIOnly = uiOnlyCheckBox.isSelected();
+
+        pageModel.viewModelQuery = queryCheckBox.isSelected();
+        pageModel.viewModelGet = getCheckBox.isSelected();
+        pageModel.viewModelCreate = createCheckBox.isSelected();
+        pageModel.viewModelUpdate = updateCheckBox.isSelected();
+        pageModel.viewModelDelete = deleteCheckBox.isSelected();
         if (mannulRadioButton.isSelected()) {
             pageModel.pageType = PageType.MANNUL;
             pageModel.genAppBar = appBarCheckBox.isSelected();

@@ -18,6 +18,12 @@ public class PageModel {
     public List<String> actionList;
     public boolean hasActionSearch;
 
+    public boolean viewModelQuery;
+    public boolean viewModelGet;
+    public boolean viewModelCreate;
+    public boolean viewModelUpdate;
+    public boolean viewModelDelete;
+
     public boolean genSliverFixedList;
     public boolean genSliverGrid;
     public boolean genSliverToBoxAdapter;

@@ -1,79 +1,77 @@
-import 'dart:async';
-
 import 'package:meta/meta.dart';
 import 'package:${ProjectName}/data/model/${(ModelEntryName)?lower_case}_data.dart';
-import 'package:${ProjectName}/redux/loading_status.dart';
+import 'package:${ProjectName}/redux/action_report.dart';
 import 'package:${ProjectName}/data/model/page_data.dart';
 
 class Get${ModelEntryName}sAction {
-  Get${ModelEntryName}sAction({this.isRefresh});
-
+  final String actionName = "Get${ModelEntryName}sAction";
   final bool isRefresh;
+
+  Get${ModelEntryName}sAction({this.isRefresh});
 }
 
 class Get${ModelEntryName}Action {
+  final String actionName = "Get${ModelEntryName}Action";
   final int id;
 
-  Get${ModelEntryName}Action({this.id});
+  Get${ModelEntryName}Action({@required this.id});
 }
 
 class ${ModelEntryName}StatusAction {
-  ${ModelEntryName}StatusAction({this.status});
+  final String actionName = "${ModelEntryName}StatusAction";
+  final ActionReport report;
 
-  final LoadingStatus status;
+  ${ModelEntryName}StatusAction({@required this.report});
 }
 
 class Sync${ModelEntryName}sAction {
-  Sync${ModelEntryName}sAction({this.page, this.${(ModelEntryName)?lower_case}s});
-
+  final String actionName = "Sync${ModelEntryName}sAction";
   final Page page;
   final List<${ModelEntryName}> ${(ModelEntryName)?lower_case}s;
+
+  Sync${ModelEntryName}sAction({this.page, this.${(ModelEntryName)?lower_case}s});
 }
 
 class Sync${ModelEntryName}Action {
-  Sync${ModelEntryName}Action({this.${(ModelEntryName)?lower_case}});
-
+  final String actionName = "Sync${ModelEntryName}Action";
   final ${ModelEntryName} ${(ModelEntryName)?lower_case};
+
+  Sync${ModelEntryName}Action({@required this.${(ModelEntryName)?lower_case}});
 }
 
 class Create${ModelEntryName}Action {
-  Create${ModelEntryName}Action({this.${(ModelEntryName)?lower_case}, this.completer});
-
-  final Completer completer;
+  final String actionName = "Create${ModelEntryName}Action";
   final ${ModelEntryName} ${(ModelEntryName)?lower_case};
+
+  Create${ModelEntryName}Action({@required this.${(ModelEntryName)?lower_case}});
 }
 
 class Update${ModelEntryName}Action {
-  Update${ModelEntryName}Action({this.${(ModelEntryName)?lower_case}, this.completer});
-
-  final Completer completer;
+  final String actionName = "Update${ModelEntryName}Action";
   final ${ModelEntryName} ${(ModelEntryName)?lower_case};
+
+  Update${ModelEntryName}Action({@required this.${(ModelEntryName)?lower_case}});
 }
 
 class Delete${ModelEntryName}Action {
-  Delete${ModelEntryName}Action({this.${(ModelEntryName)?lower_case}, this.completer});
-
-  final Completer completer;
+  final String actionName = "Delete${ModelEntryName}Action";
   final ${ModelEntryName} ${(ModelEntryName)?lower_case};
+
+  Delete${ModelEntryName}Action({@required this.${(ModelEntryName)?lower_case}});
 }
 
 class Remove${ModelEntryName}Action {
-  Remove${ModelEntryName}Action({this.id});
-
+  final String actionName = "Remove${ModelEntryName}Action";
   final int id;
-}
 
-class ${ModelEntryName}FailAction {
-  final String error;
-
-  ${ModelEntryName}FailAction({this.error});
+  Remove${ModelEntryName}Action({@required this.id});
 }
 
 <#if ModelEntryName=="User">
-class UserLoginAction {
-  UserLoginAction({this.l, this.completer});
-
+class ${ModelEntryName}LoginAction {
+  final String actionName = "${ModelEntryName}LoginAction";
   final Login l;
-  final Completer completer;
+
+  ${ModelEntryName}LoginAction({@required this.l});
 }
 </#if>

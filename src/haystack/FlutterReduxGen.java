@@ -221,6 +221,12 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         rootMap.put("GenerateWebView", pageModel.genWebView);
         rootMap.put("GenerateActionButton", pageModel.genActionButton);
 
+        rootMap.put("viewModelQuery", pageModel.viewModelQuery);
+        rootMap.put("viewModelGet", pageModel.viewModelGet);
+        rootMap.put("viewModelCreate", pageModel.viewModelCreate);
+        rootMap.put("viewModelUpdate", pageModel.viewModelUpdate);
+        rootMap.put("viewModelDelete", pageModel.viewModelDelete);
+
         rootMap.put("GenSliverFixedExtentList", pageModel.genSliverFixedList);
         rootMap.put("GenSliverGrid", pageModel.genSliverGrid);
         rootMap.put("GenSliverToBoxAdapter", pageModel.genSliverToBoxAdapter);
@@ -326,9 +332,9 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         }
         int poi3 = content.indexOf("return AppState(") + "return AppState(".length();
         param = "\n        " + rootMap.get("ModelEntryName").toString().toLowerCase() + "State: " + rootMap.get("ModelEntryName").toString() + "State(\n" +
-                "            loadingStatus: LoadingStatus.loading,\n" +
+                "            " + rootMap.get("ModelEntryName").toString().toLowerCase() + ": null,\n" +
                 "            " + rootMap.get("ModelEntryName").toString().toLowerCase() + "s: Map(),\n" +
-                "            error: \"\",\n" +
+                "            status: Map(),\n" +
                 "            page: Page(),),";
         if (!content.contains(param)) {
             sb.append(content.substring(poi2, poi3));

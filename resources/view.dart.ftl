@@ -8,7 +8,9 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:${ProjectName}/redux/loading_status.dart';
 import 'package:${ProjectName}/redux/app/app_state.dart';
 import 'package:${ProjectName}/features/<#if IsCustomWidget>customize/</#if>${(PageName)?lower_case}/${(PageName)?lower_case}_view_model.dart';
+<#if GenerateListView>
 import 'package:${ProjectName}/features/widget/swipe_list_item.dart';
+</#if>
 <#if GenSliverGrid>
 import 'package:flutter_mvp/features/widget/spannable_grid.dart';
 </#if>
@@ -105,12 +107,6 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   Widget build(BuildContext context) {
     var widget;
 
-    if (this.widget.viewModel.status == LoadingStatus.loading) {
-      widget = Center(
-          child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: CircularProgressIndicator()));
-    } else {
       <#if PageType == "LOGIN">
       widget = loginForm();
       <#elseif PageType == "CUSTOMSCROLLVIEW">
@@ -148,7 +144,6 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
 	    widget = Text("Hello word");
 	  </#if>
 	  </#if>
-    }
 	<#if GenerateTopTabBar>
     return DefaultTabController(
       length: 3,
@@ -211,8 +206,8 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
       if (_scrollController.mostRecentlyUpdatedPosition.maxScrollExtent > _scrollController.offset &&
           _scrollController.mostRecentlyUpdatedPosition.maxScrollExtent - _scrollController.offset <= 50) {
         // load more
-        if (this.widget.viewModel.status == LoadingStatus.success ||
-            this.widget.viewModel.status == LoadingStatus.error) {
+        if (this.widget.viewModel.get${ModelEntryName}sReport.status == ActionStatus.complete ||
+            this.widget.viewModel.get${ModelEntryName}sReport.status == ActionStatus.error) {
           // have next page
           _loadMoreData();
           setState(() {});
@@ -291,7 +286,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   }
   
   Widget _getLoadMoreWidget() {
-    if (this.widget.viewModel.status == LoadingStatus.loading) {
+    if (this.widget.viewModel.get${ModelEntryName}sReport.status == ActionStatus.running) {
       return Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0),
           child: CircularProgressIndicator());

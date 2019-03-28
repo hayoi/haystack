@@ -1,7 +1,7 @@
 import 'package:redux/redux.dart';
+import 'package:${ProjectName}/redux/action_report.dart';
 import 'package:${ProjectName}/redux/app/app_state.dart';
-import 'package:${ProjectName}/redux/loading_status.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:${ProjectName}/redux/${(ModelEntryName)?lower_case}/${(ModelEntryName)?lower_case}_actions.dart';
 import 'package:${ProjectName}/data/model/${(ModelEntryName)?lower_case}_data.dart';
 import 'package:${ProjectName}/data/remote/${(ModelEntryName)?lower_case}_repository.dart';
 <#if genDatabase>
@@ -20,14 +20,14 @@ List<Middleware<AppState>> create${ModelEntryName}Middleware([
   final login = _createLogin(_repository<#if genDatabase>, _repositoryDB</#if>);
   </#if>
   final get${ModelEntryName} = _createGet${ModelEntryName}(_repository<#if genDatabase>, _repositoryDB</#if>);
-  final get${ModelEntryName}s = _createGet${ModelEntryName}s(_repository, _repositoryDB</#if>);
+  final get${ModelEntryName}s = _createGet${ModelEntryName}s(_repository<#if genDatabase>, _repositoryDB</#if>);
   final create${ModelEntryName} = _createCreate${ModelEntryName}(_repository<#if genDatabase>, _repositoryDB</#if>);
   final update${ModelEntryName} = _createUpdate${ModelEntryName}(_repository<#if genDatabase>, _repositoryDB</#if>);
   final delete${ModelEntryName} = _createDelete${ModelEntryName}(_repository<#if genDatabase>, _repositoryDB</#if>);
 
   return [
     <#if ModelEntryName=="User">
-    TypedMiddleware<AppState, UserLoginAction>(login),
+    TypedMiddleware<AppState, ${ModelEntryName}LoginAction>(login),
     </#if>
     TypedMiddleware<AppState, Get${ModelEntryName}Action>(get${ModelEntryName}),
     TypedMiddleware<AppState, Get${ModelEntryName}sAction>(get${ModelEntryName}s),
@@ -39,19 +39,14 @@ List<Middleware<AppState>> create${ModelEntryName}Middleware([
 
 <#if ModelEntryName=="User">
 Middleware<AppState> _createLogin(
-    UserRepository repository<#if genDatabase>, UserRepositoryDB repositoryDB</#if>) {
+    ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    next(UserStatusAction(status: LoadingStatus.loading));
+    running(next, action);
     repository.login(action.l).then((item) {
-      if (action.completer != null) {
-        action.completer.complete();
-      }
-      next(SyncUserAction(user: item));
+      next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
+      completed(next, action);
     }).catchError((error) {
-      if (action.completer != null) {
-        action.completer.completeError(error);
-      }
-      next(UserFailAction(error: error.toString()));
+      catchError(next, action, error);
     });
   };
 }
@@ -61,31 +56,30 @@ Middleware<AppState> _createGet${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
     if (action.id == null) {
-      next(${ModelEntryName}StatusAction(status: LoadingStatus.success));
+      idEmpty(next, action);
     } else {
-      next(${ModelEntryName}StatusAction(status: LoadingStatus.loading));
+      running(next, action);
       repository.get${ModelEntryName}(action.id).then((item) {
         next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
-        next(${ModelEntryName}StatusAction(status: LoadingStatus.success));
+        completed(next, action);
       }).catchError((error) {
-        next(${ModelEntryName}FailAction(error: error.toString()));
-        next(${ModelEntryName}StatusAction(status: LoadingStatus.init));
+        catchError(next, action, error);
       });
     }
   };
 }
 
 Middleware<AppState> _createGet${ModelEntryName}s(
-    ${ModelEntryName}Repository repository<#if genDatabase><#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
+    ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    next(${ModelEntryName}StatusAction(status: LoadingStatus.loading));
+    running(next, action);
     if (action.isRefresh) {
       store.state.${(ModelEntryName)?lower_case}State.page.currPage = 0;
       store.state.${(ModelEntryName)?lower_case}State.${(ModelEntryName)?lower_case}s.clear();
     } else {
       var p = ++store.state.${(ModelEntryName)?lower_case}State.page.currPage;
       if (p > ++store.state.${(ModelEntryName)?lower_case}State.page.totalPage) {
-        next(${ModelEntryName}StatusAction(status: LoadingStatus.success));
+        noMoreItem(next, action);
         return;
       }
     }
@@ -103,11 +97,12 @@ Middleware<AppState> _createGet${ModelEntryName}s(
             totalCount: map["totalCount"]);
         var l = map["list"] ?? List();
         List<${ModelEntryName}> list =
-        l.map<${ModelEntryName}>((item) => new ${ModelEntryName}.fromJson(item)).toList();
+            l.map<${ModelEntryName}>((item) => new ${ModelEntryName}.fromJson(item)).toList();
         next(Sync${ModelEntryName}sAction(page: page, ${(ModelEntryName)?lower_case}s: list));
+        completed(next, action);
       }
     }).catchError((error) {
-      next(${ModelEntryName}FailAction(error: error.toString()));
+      catchError(next, action, error);
     });
 //    repositoryDB
 //        .get${ModelEntryName}sList(
@@ -119,9 +114,10 @@ Middleware<AppState> _createGet${ModelEntryName}s(
 //      if (map.isNotEmpty) {
 //        var page = Page(currPage: store.state.${(ModelEntryName)?lower_case}State.page.currPage + 1);
 //        next(Sync${ModelEntryName}sAction(page: page, ${(ModelEntryName)?lower_case}s: map));
+//        completed(next, action);
 //      }
 //    }).catchError((error) {
-//      next(${ModelEntryName}FailAction(error: error.toString()));
+//      catchError(next, action, error);
 //    });
   };
 }
@@ -129,17 +125,12 @@ Middleware<AppState> _createGet${ModelEntryName}s(
 Middleware<AppState> _createCreate${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    next(${ModelEntryName}StatusAction(status: LoadingStatus.loading));
+    running(next, action);
     repository.create${ModelEntryName}(action.${(ModelEntryName)?lower_case}).then((item) {
-      if (action.completer != null) {
-        action.completer.complete();
-      }
       next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
+      completed(next, action);
     }).catchError((error) {
-      if (action.completer != null) {
-        action.completer.completeError(error);
-      }
-      next(${ModelEntryName}FailAction(error: error.toString()));
+      catchError(next, action, error);
     });
   };
 }
@@ -147,17 +138,12 @@ Middleware<AppState> _createCreate${ModelEntryName}(
 Middleware<AppState> _createUpdate${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    next(${ModelEntryName}StatusAction(status: LoadingStatus.loading));
+    running(next, action);
     repository.update${ModelEntryName}(action.${(ModelEntryName)?lower_case}).then((item) {
-      if (action.completer != null) {
-        action.completer.complete();
-      }
       next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
+      completed(next, action);
     }).catchError((error) {
-      if (action.completer != null) {
-        action.completer.completeError(error);
-      }
-      next(${ModelEntryName}FailAction(error: error.toString()));
+      catchError(next, action, error);
     });
   };
 }
@@ -165,17 +151,52 @@ Middleware<AppState> _createUpdate${ModelEntryName}(
 Middleware<AppState> _createDelete${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    next(${ModelEntryName}StatusAction(status: LoadingStatus.loading));
+    running(next, action);
     repository.delete${ModelEntryName}(action.${(ModelEntryName)?lower_case}.id).then((item) {
-      if (action.completer != null) {
-        action.completer.complete();
-      }
       next(Remove${ModelEntryName}Action(id: action.${(ModelEntryName)?lower_case}.id));
+      completed(next, action);
     }).catchError((error) {
-      if (action.completer != null) {
-        action.completer.completeError(error);
-      }
-      next(${ModelEntryName}FailAction(error: error.toString()));
+      catchError(next, action, error);
     });
   };
+}
+
+void catchError(NextDispatcher next, action, error) {
+  next(${ModelEntryName}StatusAction(
+      report: ActionReport(
+          actionName: action.actionName,
+          status: ActionStatus.error,
+          msg: "${r"${action.actionName}"} is error; ${r"${error.toString()}"}")));
+}
+
+void completed(NextDispatcher next, action) {
+  next(${ModelEntryName}StatusAction(
+      report: ActionReport(
+          actionName: action.actionName,
+          status: ActionStatus.complete,
+          msg: "${r"${action.actionName}"} is completed")));
+}
+
+void noMoreItem(NextDispatcher next, action) {
+  next(${ModelEntryName}StatusAction(
+      report: ActionReport(
+          actionName: action.actionName,
+          status: ActionStatus.complete,
+          msg: "no more items")));
+}
+
+void running(NextDispatcher next, action) {
+  next(${ModelEntryName}StatusAction(
+      report: ActionReport(
+          actionName: action.actionName,
+          status: ActionStatus.running,
+          msg: "${r"${action.actionName}"} is running")));
+}
+
+void idEmpty(NextDispatcher next, action) {
+  next(${ModelEntryName}StatusAction(
+      report: ActionReport(
+          actionName: action.actionName,
+          status: ActionStatus.error,
+          msg: "Id is empty")));
 }
