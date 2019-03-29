@@ -26,7 +26,7 @@ class NetworkUtils {
     final String msg = contactsContainer['msg'];
     final int code = contactsContainer['code'];
     final results = contactsContainer['data'];
-    if (code != 10000) {
+    if (code != 0) {
       throw new Exception("statusCode:$code, msg: $msg");
     }
     return results;

@@ -5,9 +5,9 @@ import 'package:${ProjectName}/data/model/${(ModelEntryName)?lower_case}_data.da
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:${ProjectName}/trans/translations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:${ProjectName}/redux/loading_status.dart';
 import 'package:${ProjectName}/redux/app/app_state.dart';
 import 'package:${ProjectName}/features/<#if IsCustomWidget>customize/</#if>${(PageName)?lower_case}/${(PageName)?lower_case}_view_model.dart';
+import 'package:redux_example/redux/action_report.dart';
 <#if GenerateListView>
 import 'package:${ProjectName}/features/widget/swipe_list_item.dart';
 </#if>
@@ -72,7 +72,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   void initState() {
     super.initState();
 	<#if GenerateListView>
-    if (this.widget.viewModel.${(ModelEntryName)?lower_case}s.length == 0) {
+    if (this.widget.viewModel.${(ModelEntryName)?lower_case}s?.length == 0) {
       this.widget.viewModel.get${ModelEntryName}s(true);
     }
 	</#if>
@@ -93,10 +93,65 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
         _password != null &&
         _password.isNotEmpty &&
         _userName.isNotEmpty) {
-      widget.viewModel.login(context, Login(_userName, _password));
+      widget.viewModel.login(Login(_userName, _password));
     }
   }
   </#if>
+
+
+  @override
+  void didUpdateWidget(HomeViewContent oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    Future.delayed(Duration.zero, () {
+      <#if viewModelCreate>
+      if (this.widget.viewModel.create${ModelEntryName}Report?.status ==
+          ActionStatus.running) {
+        if (cpr == null) {
+          cpr = new ProgressDialog(context);
+        }
+        cpr.setMessage("Creating...");
+        cpr.show();
+      } else {
+        if (cpr != null && cpr.isShowing()) {
+          cpr.hide();
+          cpr = null;
+        }
+      }
+      </#if>
+      <#if viewModelUpdate>
+
+      if (this.widget.viewModel.update${ModelEntryName}Report?.status ==
+          ActionStatus.running) {
+        if (upr == null) {
+          upr = new ProgressDialog(context);
+        }
+        upr.setMessage("Updating...");
+        upr.show();
+      } else {
+        if (upr != null && upr.isShowing()) {
+          upr.hide();
+          upr = null;
+        }
+      }
+      </#if>
+      <#if viewModelDelete>
+
+      if (this.widget.viewModel.delete${ModelEntryName}Report?.status ==
+          ActionStatus.running) {
+        if (dpr == null) {
+          dpr = new ProgressDialog(context);
+        }
+        dpr.setMessage("Deleting...");
+        dpr.show();
+      } else {
+        if (dpr != null && dpr.isShowing()) {
+          dpr.hide();
+          dpr = null;
+        }
+      }
+      </#if>
+    });
+  }
 
   void showError(String error) {
     final snackBar = SnackBar(content: Text(error));
@@ -107,43 +162,43 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   Widget build(BuildContext context) {
     var widget;
 
-      <#if PageType == "LOGIN">
-      widget = loginForm();
-      <#elseif PageType == "CUSTOMSCROLLVIEW">
-      widget = buildCustomScrollView();
-      <#elseif PageType == "PROFILE">
-      <#else>
-	  <#if GenerateListView>
-      widget = NotificationListener(
-          onNotification: _onNotification,
-          child: RefreshIndicator(
-            key: _refreshIndicatorKey,
-            onRefresh: _handleRefresh,
-            child: ListView.builder(
-              controller: _scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: this.widget.viewModel.${(ModelEntryName)?lower_case}s.length + 1,
-              itemBuilder: (_, int index) => _createItem(context, index),
-            ),
-          ));
-	  <#elseif GenerateTopTabBar>
-      widget = TabBarView(
-        children: [
-          Icon(Icons.directions_car),
-          Icon(Icons.directions_transit),
-          Icon(Icons.directions_bike),
-        ],
+    <#if PageType == "LOGIN">
+    widget = loginForm();
+    <#elseif PageType == "CUSTOMSCROLLVIEW">
+    widget = buildCustomScrollView();
+    <#elseif PageType == "PROFILE">
+    <#else>
+	<#if GenerateListView>
+    widget = NotificationListener(
+        onNotification: _onNotification,
+        child: RefreshIndicator(
+          key: _refreshIndicatorKey,
+          onRefresh: _handleRefresh,
+          child: ListView.builder(
+            controller: _scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: this.widget.viewModel.${(ModelEntryName)?lower_case}s?.length + 1,
+            itemBuilder: (_, int index) => _createItem(context, index),
+          ),
+        ));
+	<#elseif GenerateTopTabBar>
+    widget = TabBarView(
+      children: [
+        Icon(Icons.directions_car),
+        Icon(Icons.directions_transit),
+        Icon(Icons.directions_bike),
+      ],
+    );
+	<#elseif GenerateBottomTabBar>
+	widget = PageView(
+        children: <Widget>[ContactView(), Message(), Mine()],
+        controller: pageController,
+        onPageChanged: onPageChanged,
       );
-	  <#elseif GenerateBottomTabBar>
-	  widget = PageView(
-          children: <Widget>[ContactView(), Message(), Mine()],
-          controller: pageController,
-          onPageChanged: onPageChanged,
-        );
-	  <#else>
-	    widget = Text("Hello word");
-	  </#if>
-	  </#if>
+	<#else>
+	  widget = Text("Hello word");
+	</#if>
+	</#if>
 	<#if GenerateTopTabBar>
     return DefaultTabController(
       length: 3,
@@ -206,8 +261,8 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
       if (_scrollController.mostRecentlyUpdatedPosition.maxScrollExtent > _scrollController.offset &&
           _scrollController.mostRecentlyUpdatedPosition.maxScrollExtent - _scrollController.offset <= 50) {
         // load more
-        if (this.widget.viewModel.get${ModelEntryName}sReport.status == ActionStatus.complete ||
-            this.widget.viewModel.get${ModelEntryName}sReport.status == ActionStatus.error) {
+        if (this.widget.viewModel.get${ModelEntryName}sReport?.status == ActionStatus.complete ||
+            this.widget.viewModel.get${ModelEntryName}sReport?.status == ActionStatus.error) {
           // have next page
           _loadMoreData();
           setState(() {});
@@ -230,9 +285,9 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   }
 
   _createItem(BuildContext context, int index) {
-    if (index < this.widget.viewModel.${(ModelEntryName)?lower_case}s.length) {
+    if (index < this.widget.viewModel.${(ModelEntryName)?lower_case}s?.length) {
       return SwipeListItem<${ModelEntryName}>(
-          item: this.widget.viewModel.${(ModelEntryName)?lower_case}s[index],
+          item: this.widget.viewModel.${(ModelEntryName)?lower_case}s?[index],
           onArchive: _handleArchive,
           onDelete: _handleDelete,
           child: Container(
@@ -243,7 +298,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
                   //  context,
                   //  MaterialPageRoute(
                   //    builder: (context) =>
-                  //        View${ModelEntryName}(${(ModelEntryName)?lower_case}: this.widget.viewModel.${(ModelEntryName)?lower_case}s[index]),
+                  //        View${ModelEntryName}(${(ModelEntryName)?lower_case}: this.widget.viewModel.${(ModelEntryName)?lower_case}s?[index]),
                   //  ),
                   //);
                 },
@@ -286,7 +341,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   }
   
   Widget _getLoadMoreWidget() {
-    if (this.widget.viewModel.get${ModelEntryName}sReport.status == ActionStatus.running) {
+    if (this.widget.viewModel.get${ModelEntryName}sReport?.status == ActionStatus.running) {
       return Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0),
           child: CircularProgressIndicator());
@@ -383,7 +438,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
                       return;
                     }
 
-                    widget.viewModel.login(context, Login(_userName, _password));
+                    widget.viewModel.login(Login(_userName, _password));
                   },
                   color: Colors.lightBlueAccent,
                   child: Text('Log In', style: TextStyle(color: Colors.white)),

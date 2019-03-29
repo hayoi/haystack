@@ -1,33 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="339fc0d7-e457-40a1-9156-b66e3268ec41" name="Default Changelist" comment="only create Ui module">
-      <change afterPath="$PROJECT_DIR$/resources/action_report.dart.ftl" afterDir="false" />
+    <list default="true" id="339fc0d7-e457-40a1-9156-b66e3268ec41" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/haystack/haystack/FlutterReduxGen$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/haystack/FlutterReduxGen$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/haystack/haystack/FlutterReduxGen$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/haystack/FlutterReduxGen$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/haystack/actions.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/actions.dart.ftl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/haystack/dependency_injection.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/dependency_injection.dart.ftl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/haystack/haystack/FlutterReduxGen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/haystack/FlutterReduxGen.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/haystack/haystack/core/models/ClassModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/haystack/core/models/ClassModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/haystack/haystack/core/models/PageModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/haystack/core/models/PageModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/haystack/haystack/ui/ClassesListDelegate$ClassesListModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/haystack/ui/ClassesListDelegate$ClassesListModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/haystack/haystack/ui/JSONEditDialog$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/haystack/ui/JSONEditDialog$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/haystack/haystack/ui/JSONEditDialog$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/haystack/ui/JSONEditDialog$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/haystack/haystack/ui/JSONEditDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/haystack/ui/JSONEditDialog.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/haystack/haystack/ui/ModelTableDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/haystack/ui/ModelTableDialog.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/haystack/middleware.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/middleware.dart.ftl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/haystack/network_utils.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/network_utils.dart.ftl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/haystack/reducer.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/reducer.dart.ftl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/haystack/state.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/state.dart.ftl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/haystack/view.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/view.dart.ftl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/actions.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/resources/actions.dart.ftl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/dependency_injection.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/resources/dependency_injection.dart.ftl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/middleware.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/resources/middleware.dart.ftl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/network_utils.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/resources/network_utils.dart.ftl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/reducer.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/resources/reducer.dart.ftl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/state.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/resources/state.dart.ftl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/haystack/view_model.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/haystack/view_model.dart.ftl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/app_state.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/resources/app_state.dart.ftl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/view.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/resources/view.dart.ftl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/view_model.dart.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/resources/view_model.dart.ftl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/haystack/FlutterReduxGen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/haystack/FlutterReduxGen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/haystack/core/models/PageModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/haystack/core/models/PageModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/haystack/ui/JSONEditDialog.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/haystack/ui/JSONEditDialog.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/haystack/ui/JSONEditDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/haystack/ui/JSONEditDialog.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,60 +25,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/state.dart.ftl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
-              <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="37" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/middleware.dart.ftl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="168" column="54" selection-start-line="168" selection-start-column="54" selection-end-line="168" selection-end-column="54" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/actions.dart.ftl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="48" column="12" lean-forward="true" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/dependency_injection.dart.ftl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1104">
-              <caret line="63" column="58" selection-start-line="63" selection-start-column="58" selection-end-line="63" selection-end-column="58" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/haystack/FlutterReduxGen.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="334" column="60" selection-start-line="334" selection-start-column="60" selection-end-line="334" selection-end-column="60" />
-              <folding>
-                <element signature="e#6877#6878#0" expanded="true" />
-                <element signature="e#7784#7800#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/view.dart.ftl">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-983">
-              <caret line="109" column="21" selection-start-line="109" selection-start-column="21" selection-end-line="109" selection-end-column="21" />
+            <state relative-caret-position="1202">
+              <caret line="154" lean-forward="true" selection-start-line="154" selection-end-line="154" />
             </state>
           </provider>
         </entry>
@@ -99,31 +37,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/view_model.dart.ftl">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="64" column="45" selection-start-line="64" selection-start-column="45" selection-end-line="64" selection-end-column="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/reducer.dart.ftl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="305">
-              <caret line="22" column="45" lean-forward="true" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/haystack/ui/JSONEditDialog.form">
-          <provider selected="true" editor-type-id="ui-designer" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/haystack/ui/JSONEditDialog.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="194" column="25" lean-forward="true" selection-start-line="194" selection-start-column="25" selection-end-line="194" selection-end-column="25" />
+            <state relative-caret-position="506">
+              <caret line="25" column="2" lean-forward="true" selection-start-line="25" selection-start-column="2" selection-end-line="25" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -134,17 +49,21 @@
     <findStrings>
       <find>_repositoryDB</find>
       <find>genDatabase</find>
-      <find>User</find>
       <find>getLo</find>
       <find>user</find>
       <find>_onN</find>
       <find>Home</find>
       <find>build(</find>
+      <find>context</find>
+      <find>in(contex</find>
+      <find>loading</find>
+      <find>viewModel</find>
+      <find>User</find>
     </findStrings>
     <replaceStrings>
-      <replace>${ModelEntryName}</replace>
       <replace>${(ModelEntryName)?lower_case}</replace>
       <replace>${PageName}</replace>
+      <replace>${ModelEntryName}</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -155,7 +74,6 @@
       <list>
         <option value="$PROJECT_DIR$/resources/META-INF/plugin.xml" />
         <option value="$PROJECT_DIR$/resources/repository.dart.ftl" />
-        <option value="$PROJECT_DIR$/resources/pubspec.yaml.ftl" />
         <option value="$PROJECT_DIR$/resources/main.dart.ftl" />
         <option value="$PROJECT_DIR$/resources/model_entry_data.dart.ftl" />
         <option value="$PROJECT_DIR$/src/haystack/ui/ModelTableDialog.java" />
@@ -171,8 +89,10 @@
         <option value="$PROJECT_DIR$/resources/dependency_injection.dart.ftl" />
         <option value="$PROJECT_DIR$/resources/network_utils.dart.ftl" />
         <option value="$PROJECT_DIR$/resources/middleware.dart.ftl" />
-        <option value="$PROJECT_DIR$/src/haystack/FlutterReduxGen.java" />
         <option value="$PROJECT_DIR$/resources/view_model.dart.ftl" />
+        <option value="$PROJECT_DIR$/resources/app_state.dart.ftl" />
+        <option value="$PROJECT_DIR$/src/haystack/FlutterReduxGen.java" />
+        <option value="$PROJECT_DIR$/resources/pubspec.yaml.ftl" />
         <option value="$PROJECT_DIR$/resources/view.dart.ftl" />
       </list>
     </option>
@@ -202,7 +122,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -244,34 +163,19 @@
               <item name="haystack" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="haystack" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="JSONEditDialog" type="e9f4de52:FormNode" />
-            </path>
-            <path>
-              <item name="haystack" type="b2602c69:ProjectViewProjectNode" />
-              <item name="haystack" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="haystack" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="ModelTableDialog" type="e9f4de52:FormNode" />
-            </path>
-            <path>
-              <item name="haystack" type="b2602c69:ProjectViewProjectNode" />
-              <item name="haystack" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="haystack" type="462c0819:PsiDirectoryNode" />
               <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW" value="true" />
     <property name="android.sdk.path" value="D:/Android/Sdk" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553766190009" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553851574730" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/json-20170516.jar!/" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -352,14 +256,21 @@
       <option name="project" value="LOCAL" />
       <updated>1553667718796</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="a lot of change">
+      <created>1553766232634</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1553766232634</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1288" y="-173" width="1296" height="1000" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2710356" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27508092" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -393,7 +304,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add StoreProvider in main.dart" />
     <MESSAGE value="only create Ui module" />
-    <option name="LAST_COMMIT_MESSAGE" value="only create Ui module" />
+    <MESSAGE value="a lot of change" />
+    <option name="LAST_COMMIT_MESSAGE" value="a lot of change" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -456,13 +368,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/pubspec.yaml.ftl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="29" column="25" lean-forward="true" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/haystack/ui/ModelTableDialog.form">
       <provider selected="true" editor-type-id="ui-designer" />
     </entry>
@@ -519,23 +424,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/haystack/ui/JSONEditDialog.form">
-      <provider selected="true" editor-type-id="ui-designer" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/reducer.dart.ftl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="22" column="45" lean-forward="true" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/state.dart.ftl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/app_state.dart.ftl">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -556,56 +444,80 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/haystack/ui/JSONEditDialog.java">
+    <entry file="file://$PROJECT_DIR$/resources/state.dart.ftl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="194" column="25" lean-forward="true" selection-start-line="194" selection-start-column="25" selection-end-line="194" selection-end-column="25" />
+        <state relative-caret-position="138">
+          <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/middleware.dart.ftl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
+        <state relative-caret-position="3864">
           <caret line="168" column="54" selection-start-line="168" selection-start-column="54" selection-end-line="168" selection-end-column="54" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/haystack/FlutterReduxGen.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
+        <state relative-caret-position="6624">
           <caret line="334" column="60" selection-start-line="334" selection-start-column="60" selection-end-line="334" selection-end-column="60" />
           <folding>
+            <element signature="e#6847#6848#0" expanded="true" />
             <element signature="e#6877#6878#0" expanded="true" />
-            <element signature="e#7784#7800#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/reducer.dart.ftl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="22" column="45" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/haystack/ui/JSONEditDialog.form">
+      <provider selected="true" editor-type-id="ui-designer" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/haystack/ui/JSONEditDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4048">
+          <caret line="194" column="25" selection-start-line="194" selection-start-column="25" selection-end-line="194" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/dependency_injection.dart.ftl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1104">
+        <state relative-caret-position="1449">
           <caret line="63" column="58" selection-start-line="63" selection-start-column="58" selection-end-line="63" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/pubspec.yaml.ftl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="32" column="25" selection-start-line="32" selection-start-column="25" selection-end-line="32" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/actions.dart.ftl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="48" column="12" lean-forward="true" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="29" />
+        <state relative-caret-position="483">
+          <caret line="21" column="28" lean-forward="true" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/view_model.dart.ftl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="64" column="45" selection-start-line="64" selection-start-column="45" selection-end-line="64" selection-end-column="45" />
+        <state relative-caret-position="506">
+          <caret line="25" column="2" lean-forward="true" selection-start-line="25" selection-start-column="2" selection-end-line="25" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/view.dart.ftl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-983">
-          <caret line="109" column="21" selection-start-line="109" selection-start-column="21" selection-end-line="109" selection-end-column="21" />
+        <state relative-caret-position="1202">
+          <caret line="154" lean-forward="true" selection-start-line="154" selection-end-line="154" />
         </state>
       </provider>
     </entry>

@@ -52,7 +52,7 @@ class Injector {
           final JsonDecoder _decoder = new JsonDecoder();
           final resultContainer = _decoder.convert(jsonBody);
           final int code = resultContainer['code'];
-          if (code == 10000) {
+          if (code == 0) {
             final Map results = resultContainer['data'];
             prefs.setString("token", results["token"]);
             prefs.setInt("expire", results["expired"]);
