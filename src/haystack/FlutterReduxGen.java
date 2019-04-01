@@ -101,7 +101,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
                 "/settings_option.dart.ftl", "/settings_option_page.dart.ftl", "/spannable_grid.dart.ftl", "/state.dart.ftl",
                 "/store.dart.ftl", "/swipe_list_item.dart.ftl", "/test_view.dart.ftl", "/text_scale.dart.ftl",
                 "/theme.dart.ftl", "/toast_utils.dart.ftl", "/translations.dart.ftl", "/view.dart.ftl",
-                "/view_model.dart.ftl"
+                "/view_model.dart.ftl", "/progress_dialog.dart.ftl"
         };
         for (String name : fileNames) {
             cacheResources(resources, name);
@@ -389,6 +389,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         generateFile(new File(selectGroup.getParent().getPath() + "/pubspec.yaml"), "pubspec.yaml.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/main.dart"), "main.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/utils/network_utils.dart"), "network_utils.dart.ftl", rootMap);
+        generateFile(new File(selectGroup.getPath() + "/utils/progress_dialog.dart"), "progress_dialog.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/utils/toast_utils.dart"), "toast_utils.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/data/model/remote_wrap.dart"), "remote_wrap.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/data/model/page_data.dart"), "page_data.dart.ftl", rootMap);
@@ -396,7 +397,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         generateFile(new File(selectGroup.getPath() + "/trans/translations.dart"), "translations.dart.ftl", rootMap);
 
         generateFile(new File(selectGroup.getPath() + "/redux/store.dart"), "store.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/redux/loading_status.dart"), "loading_status.dart.ftl", rootMap);
+        generateFile(new File(selectGroup.getPath() + "/redux/action_report.dart"), "action_report.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/redux/app/app_reducer.dart"), "app_reducer.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/redux/app/app_state.dart"), "app_state.dart.ftl", rootMap);
 

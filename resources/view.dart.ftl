@@ -7,12 +7,13 @@ import 'package:${ProjectName}/trans/translations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:${ProjectName}/redux/app/app_state.dart';
 import 'package:${ProjectName}/features/<#if IsCustomWidget>customize/</#if>${(PageName)?lower_case}/${(PageName)?lower_case}_view_model.dart';
-import 'package:redux_example/redux/action_report.dart';
-<#if GenerateListView>
+import 'package:${ProjectName}/redux/action_report.dart';
+import 'package:thmonitor/utils/progress_dialog.dart';
+<#if viewModelDelete>
 import 'package:${ProjectName}/features/widget/swipe_list_item.dart';
 </#if>
 <#if GenSliverGrid>
-import 'package:flutter_mvp/features/widget/spannable_grid.dart';
+import 'package:${ProjectName}/features/widget/spannable_grid.dart';
 </#if>
 
 class ${PageName}View extends StatelessWidget {
@@ -60,6 +61,18 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   <#if GenerateCustomScrollView>
   final double _appBarHeight = 256.0;
   </#if>
+  <#if viewModelCreate>
+  var cpr;
+  </#if>
+  <#if viewModelUpdate>
+  var upr;
+  </#if>
+  <#if viewModelDelete>
+  var dpr;
+  </#if>
+  <#if PageType == "LOGIN">
+  var lpr;
+  </#if>
 
   <#if PageType == "LOGIN">
   String _userName = "";
@@ -72,7 +85,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   void initState() {
     super.initState();
 	<#if GenerateListView>
-    if (this.widget.viewModel.${(ModelEntryName)?lower_case}s?.length == 0) {
+    if (this.widget.viewModel.${(ModelEntryName)?lower_case}s.length == 0) {
       this.widget.viewModel.get${ModelEntryName}s(true);
     }
 	</#if>
@@ -100,7 +113,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
 
 
   @override
-  void didUpdateWidget(HomeViewContent oldWidget) {
+  void didUpdateWidget(${PageName}ViewContent oldWidget) {
     super.didUpdateWidget(oldWidget);
     Future.delayed(Duration.zero, () {
       <#if viewModelCreate>
@@ -150,6 +163,36 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
         }
       }
       </#if>
+      <#if PageType == "LOGIN">
+      if (this.widget.viewModel.loginReport?.status ==
+          ActionStatus.running) {
+        if (lpr == null) {
+          lpr = new ProgressDialog(context);
+        }
+        lpr.setMessage("Login...");
+        lpr.show();
+      } else if (this.widget.viewModel.loginReport?.status ==
+          ActionStatus.error) {
+        if (lpr != null && lpr.isShowing()) {
+          lpr.hide();
+          lpr = null;
+        }
+        showError(this.widget.viewModel.loginReport?.msg.toString());
+      } else if (this.widget.viewModel.loginReport?.status ==
+          ActionStatus.complete) {
+        if (lpr != null && lpr.isShowing()) {
+          lpr.hide();
+          lpr = null;
+        }
+        Navigator.of(context).pushReplacementNamed("/home");
+      } else {
+        if (lpr != null && lpr.isShowing()) {
+          lpr.hide();
+          lpr = null;
+        }
+        Navigator.of(context).pushReplacementNamed("/home");
+      }
+      </#if>
     });
   }
 
@@ -177,7 +220,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
           child: ListView.builder(
             controller: _scrollController,
             physics: const AlwaysScrollableScrollPhysics(),
-            itemCount: this.widget.viewModel.${(ModelEntryName)?lower_case}s?.length + 1,
+            itemCount: this.widget.viewModel.${(ModelEntryName)?lower_case}s.length + 1,
             itemBuilder: (_, int index) => _createItem(context, index),
           ),
         ));
@@ -286,11 +329,11 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
 
   _createItem(BuildContext context, int index) {
     if (index < this.widget.viewModel.${(ModelEntryName)?lower_case}s?.length) {
-      return SwipeListItem<${ModelEntryName}>(
-          item: this.widget.viewModel.${(ModelEntryName)?lower_case}s?[index],
+      return <#if viewModelDelete>SwipeListItem<${ModelEntryName}>(
+          item: this.widget.viewModel.${(ModelEntryName)?lower_case}s[index],
           onArchive: _handleArchive,
           onDelete: _handleDelete,
-          child: Container(
+          child: </#if>Container(
               child: _${ModelEntryName}ListItem(
                 ${(ModelEntryName)?lower_case}: this.widget.viewModel.${(ModelEntryName)?lower_case}s[index],
                 onTap: () {
@@ -304,7 +347,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
                 },
               ),
               decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.black26)))));
+                  border: Border(bottom: BorderSide(color: Colors.black26))))<#if viewModelDelete>)</#if>;
     }
 
     return Container(
@@ -314,6 +357,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
       ),
     );
   }
+  <#if viewModelDelete>
 
   void _handleArchive(${ModelEntryName} item) {}
 
@@ -339,6 +383,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
           ),
     );
   }
+  </#if>
   
   Widget _getLoadMoreWidget() {
     if (this.widget.viewModel.get${ModelEntryName}sReport?.status == ActionStatus.running) {
@@ -376,13 +421,10 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
         child: ListView(
           shrinkWrap: true,
           children: [
-            Hero(
-              tag: 'hero',
-              child: CircleAvatar(
+            CircleAvatar(
                 backgroundColor: Colors.transparent,
                 radius: 48.0,
                 child: Image.asset('assets/images/flower.png'),
-              ),
             ),
             SizedBox(
               height: 48.0,

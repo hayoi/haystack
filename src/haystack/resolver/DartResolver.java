@@ -87,7 +87,7 @@ public class DartResolver extends LanguageResolver {
 
     @Override
     public String getArrayOriginalValue() {
-        return "List";
+        return "[]";
     }
 
     @Override

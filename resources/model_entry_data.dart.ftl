@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:intl/intl.dart';
 <#if genDatabase>
 import 'package:sqflite/sqflite.dart';
@@ -83,6 +84,8 @@ class ${ModelEntryName} {
         <#list Fields as item>
         <#if (item.type == "int" || item.type == "String")>
         ${item.name} = map['${item.jsonName}']<#if item_has_next>,<#else>;</#if>
+        <#elseif item.type?starts_with("List")>
+        ${item.name} = json.decode(map['${item.jsonName}'])<#if item_has_next>,<#else>;</#if>
         <#elseif item.type == "DateTime">
         ${item.name} = map['${item.jsonName}'] == null? null
                : DateTime.parse(map["${item.jsonName}"])<#if item_has_next>,<#else>;</#if>
@@ -95,6 +98,8 @@ class ${ModelEntryName} {
         <#list Fields as item>
         <#if (item.type == "int" || item.type == "String")>
         '${item.jsonName}': ${item.name},
+        <#elseif item.type?starts_with("List")>
+        '${item.jsonName}': ${item.name}.toString(),
         <#elseif item.type == "DateTime">
         '${item.jsonName}': ${item.name} == null? null
                : DateFormat('yyyy-MM-dd HH:mm:ss').format(${item.name}),

@@ -7,12 +7,12 @@ import 'package:${ProjectName}/trans/translations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:${ProjectName}/redux/app/app_state.dart';
 import 'package:${ProjectName}/features/<#if IsCustomWidget>customize/</#if>${(PageName)?lower_case}/${(PageName)?lower_case}_view_model.dart';
-import 'package:redux_example/redux/action_report.dart';
-<#if GenerateListView>
+import 'package:${ProjectName}/redux/action_report.dart';
+<#if viewModelDelete>
 import 'package:${ProjectName}/features/widget/swipe_list_item.dart';
 </#if>
 <#if GenSliverGrid>
-import 'package:flutter_mvp/features/widget/spannable_grid.dart';
+import 'package:${ProjectName}/features/widget/spannable_grid.dart';
 </#if>
 
 class ${PageName}View extends StatelessWidget {
@@ -97,6 +97,61 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
     }
   }
   </#if>
+
+
+  @override
+  void didUpdateWidget(${PageName}ViewContent oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    Future.delayed(Duration.zero, () {
+      <#if viewModelCreate>
+      if (this.widget.viewModel.create${ModelEntryName}Report?.status ==
+          ActionStatus.running) {
+        if (cpr == null) {
+          cpr = new ProgressDialog(context);
+        }
+        cpr.setMessage("Creating...");
+        cpr.show();
+      } else {
+        if (cpr != null && cpr.isShowing()) {
+          cpr.hide();
+          cpr = null;
+        }
+      }
+      </#if>
+      <#if viewModelUpdate>
+
+      if (this.widget.viewModel.update${ModelEntryName}Report?.status ==
+          ActionStatus.running) {
+        if (upr == null) {
+          upr = new ProgressDialog(context);
+        }
+        upr.setMessage("Updating...");
+        upr.show();
+      } else {
+        if (upr != null && upr.isShowing()) {
+          upr.hide();
+          upr = null;
+        }
+      }
+      </#if>
+      <#if viewModelDelete>
+
+      if (this.widget.viewModel.delete${ModelEntryName}Report?.status ==
+          ActionStatus.running) {
+        if (dpr == null) {
+          dpr = new ProgressDialog(context);
+        }
+        dpr.setMessage("Deleting...");
+        dpr.show();
+      } else {
+        if (dpr != null && dpr.isShowing()) {
+          dpr.hide();
+          dpr = null;
+        }
+      }
+      </#if>
+    });
+  }
 
   void showError(String error) {
     final snackBar = SnackBar(content: Text(error));
@@ -206,8 +261,8 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
       if (_scrollController.mostRecentlyUpdatedPosition.maxScrollExtent > _scrollController.offset &&
           _scrollController.mostRecentlyUpdatedPosition.maxScrollExtent - _scrollController.offset <= 50) {
         // load more
-        if (this.widget.viewModel.get${ModelEntryName}sReport.status == ActionStatus.complete ||
-            this.widget.viewModel.get${ModelEntryName}sReport.status == ActionStatus.error) {
+        if (this.widget.viewModel.get${ModelEntryName}sReport?.status == ActionStatus.complete ||
+            this.widget.viewModel.get${ModelEntryName}sReport?.status == ActionStatus.error) {
           // have next page
           _loadMoreData();
           setState(() {});
@@ -230,12 +285,12 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   }
 
   _createItem(BuildContext context, int index) {
-    if (index < this.widget.viewModel.${(ModelEntryName)?lower_case}s.length) {
-      return SwipeListItem<${ModelEntryName}>(
+    if (index < this.widget.viewModel.${(ModelEntryName)?lower_case}s?.length) {
+      return <#if viewModelDelete>SwipeListItem<${ModelEntryName}>(
           item: this.widget.viewModel.${(ModelEntryName)?lower_case}s[index],
           onArchive: _handleArchive,
           onDelete: _handleDelete,
-          child: Container(
+          child: </#if>Container(
               child: _${ModelEntryName}ListItem(
                 ${(ModelEntryName)?lower_case}: this.widget.viewModel.${(ModelEntryName)?lower_case}s[index],
                 onTap: () {
@@ -243,13 +298,13 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
                   //  context,
                   //  MaterialPageRoute(
                   //    builder: (context) =>
-                  //        View${ModelEntryName}(${(ModelEntryName)?lower_case}: this.widget.viewModel.${(ModelEntryName)?lower_case}s[index]),
+                  //        View${ModelEntryName}(${(ModelEntryName)?lower_case}: this.widget.viewModel.${(ModelEntryName)?lower_case}s?[index]),
                   //  ),
                   //);
                 },
               ),
               decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.black26)))));
+                  border: Border(bottom: BorderSide(color: Colors.black26))))<#if viewModelDelete>)</#if>;
     }
 
     return Container(
@@ -259,6 +314,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
       ),
     );
   }
+  <#if viewModelDelete>
 
   void _handleArchive(${ModelEntryName} item) {}
 
@@ -284,9 +340,10 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
           ),
     );
   }
+  </#if>
   
   Widget _getLoadMoreWidget() {
-    if (this.widget.viewModel.get${ModelEntryName}sReport.status == ActionStatus.running) {
+    if (this.widget.viewModel.get${ModelEntryName}sReport?.status == ActionStatus.running) {
       return Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0),
           child: CircularProgressIndicator());
@@ -321,13 +378,10 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
         child: ListView(
           shrinkWrap: true,
           children: [
-            Hero(
-              tag: 'hero',
-              child: CircleAvatar(
+            CircleAvatar(
                 backgroundColor: Colors.transparent,
                 radius: 48.0,
                 child: Image.asset('assets/images/flower.png'),
-              ),
             ),
             SizedBox(
               height: 48.0,

@@ -26,9 +26,6 @@ class Injector {
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       // Do something before request is sent
-
-      // set the token
-
       // set the token
       SharedPreferences prefs = await SharedPreferences.getInstance();
       options.headers["Authorization"] =
@@ -55,7 +52,7 @@ class Injector {
           if (code == 0) {
             final Map results = resultContainer['data'];
             prefs.setString("token", results["token"]);
-            prefs.setInt("expire", results["expired"]);
+            prefs.setInt("expired", results["expired"]);
           }
         }
       }

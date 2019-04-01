@@ -29,6 +29,7 @@ class ${PageName}ViewModel {
   </#if>
   <#if PageType == "LOGIN">
   final Function(Login) login;
+  final ActionReport loginReport;
   </#if>
 
   ${PageName}ViewModel({
@@ -56,6 +57,7 @@ class ${PageName}ViewModel {
     </#if>
     <#if PageType == "LOGIN">
     this.login,
+    this.loginReport,
     </#if>
   });
 
@@ -97,6 +99,7 @@ class ${PageName}ViewModel {
       login: (l) {
         store.dispatch(${ModelEntryName}LoginAction(l: l));
       },
+      loginReport: store.state.userState.status["UserLoginAction"],
       </#if>
     );
   }
