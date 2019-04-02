@@ -74,7 +74,7 @@ Middleware<AppState> _createGet${ModelEntryName}s(
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
     running(next, action);
     if (action.isRefresh) {
-      store.state.${(ModelEntryName)?lower_case}State.page.currPage = 0;
+      store.state.${(ModelEntryName)?lower_case}State.page.currPage = 1;
       store.state.${(ModelEntryName)?lower_case}State.${(ModelEntryName)?lower_case}s.clear();
     } else {
       var p = ++store.state.${(ModelEntryName)?lower_case}State.page.currPage;
@@ -86,9 +86,8 @@ Middleware<AppState> _createGet${ModelEntryName}s(
     repository
         .get${ModelEntryName}sList(
             "id",
-            store.state.${(ModelEntryName)?lower_case}State.page.pageSize,
-            store.state.${(ModelEntryName)?lower_case}State.page.pageSize *
-                store.state.${(ModelEntryName)?lower_case}State.page.currPage)
+            store.state.${(ModelEntryName)?lower_case}State.page.currPage,
+            store.state.${(ModelEntryName)?lower_case}State.page.pageSize)
         .then((map) {
       if (map.isNotEmpty) {
         var page = Page(
@@ -99,8 +98,8 @@ Middleware<AppState> _createGet${ModelEntryName}s(
         List<${ModelEntryName}> list =
             l.map<${ModelEntryName}>((item) => new ${ModelEntryName}.fromJson(item)).toList();
         next(Sync${ModelEntryName}sAction(page: page, ${(ModelEntryName)?lower_case}s: list));
-        completed(next, action);
       }
+      completed(next, action);
     }).catchError((error) {
       catchError(next, action, error);
     });
