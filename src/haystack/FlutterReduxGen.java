@@ -101,7 +101,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
                 "/settings_option.dart.ftl", "/settings_option_page.dart.ftl", "/spannable_grid.dart.ftl", "/state.dart.ftl",
                 "/store.dart.ftl", "/swipe_list_item.dart.ftl", "/test_view.dart.ftl", "/text_scale.dart.ftl",
                 "/theme.dart.ftl", "/toast_utils.dart.ftl", "/translations.dart.ftl", "/view.dart.ftl",
-                "/view_model.dart.ftl", "/progress_dialog.dart.ftl"
+                "/view_model.dart.ftl", "/progress_dialog.dart.ftl","/choice_data.dart.ftl"
         };
         for (String name : fileNames) {
             cacheResources(resources, name);
@@ -392,6 +392,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         generateFile(new File(selectGroup.getPath() + "/utils/progress_dialog.dart"), "progress_dialog.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/utils/toast_utils.dart"), "toast_utils.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/data/model/remote_wrap.dart"), "remote_wrap.dart.ftl", rootMap);
+        generateFile(new File(selectGroup.getPath() + "/data/model/choice_data.dart"), "choice_data.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/data/model/page_data.dart"), "page_data.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/trans/translations.dart"), "translations.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/trans/translations.dart"), "translations.dart.ftl", rootMap);

@@ -2,6 +2,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:${ProjectName}/data/model/${(ModelEntryName)?lower_case}_data.dart';
+<#if GenerateActionButton>
+import 'package:${ProjectName}/data/model/choice_data.dart';
+</#if>
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:${ProjectName}/trans/translations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -341,7 +344,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
                   //  context,
                   //  MaterialPageRoute(
                   //    builder: (context) =>
-                  //        View${ModelEntryName}(${(ModelEntryName)?lower_case}: this.widget.viewModel.${(ModelEntryName)?lower_case}s?[index]),
+                  //        View${ModelEntryName}(${(ModelEntryName)?lower_case}: this.widget.viewModel.${(ModelEntryName)?lower_case}s[index]),
                   //  ),
                   //);
                 },
@@ -744,13 +747,6 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
 
 }
 <#if GenerateActionButton>
-
-class Choice {
-  const Choice({this.title, this.icon});
-
-  final String title;
-  final IconData icon;
-}
 
 const List<Choice> choices = const <Choice>[
   <#list ActionList as act>

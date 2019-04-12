@@ -38,6 +38,15 @@ class Sync${ModelEntryName}Action {
 
   Sync${ModelEntryName}Action({@required this.${(ModelEntryName)?lower_case}});
 }
+<#if ModelEntryName == "User">
+
+class SyncProfileAction {
+  final String actionName = "SyncProfileAction";
+  final User profile;
+
+  SyncProfileAction({@required this.profile});
+}
+</#if>
 
 class Create${ModelEntryName}Action {
   final String actionName = "Create${ModelEntryName}Action";

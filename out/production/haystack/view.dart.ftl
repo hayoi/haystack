@@ -2,12 +2,16 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:${ProjectName}/data/model/${(ModelEntryName)?lower_case}_data.dart';
+<#if GenerateActionButton>
+import 'package:${ProjectName}/data/model/choice_data.dart';
+</#if>
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:${ProjectName}/trans/translations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:${ProjectName}/redux/app/app_state.dart';
 import 'package:${ProjectName}/features/<#if IsCustomWidget>customize/</#if>${(PageName)?lower_case}/${(PageName)?lower_case}_view_model.dart';
 import 'package:${ProjectName}/redux/action_report.dart';
+import 'package:thmonitor/utils/progress_dialog.dart';
 <#if viewModelDelete>
 import 'package:${ProjectName}/features/widget/swipe_list_item.dart';
 </#if>
@@ -59,6 +63,18 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   </#if>
   <#if GenerateCustomScrollView>
   final double _appBarHeight = 256.0;
+  </#if>
+  <#if viewModelCreate>
+  var cpr;
+  </#if>
+  <#if viewModelUpdate>
+  var upr;
+  </#if>
+  <#if viewModelDelete>
+  var dpr;
+  </#if>
+  <#if PageType == "LOGIN">
+  var lpr;
   </#if>
 
   <#if PageType == "LOGIN">
@@ -148,6 +164,36 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
           dpr.hide();
           dpr = null;
         }
+      }
+      </#if>
+      <#if PageType == "LOGIN">
+      if (this.widget.viewModel.loginReport?.status ==
+          ActionStatus.running) {
+        if (lpr == null) {
+          lpr = new ProgressDialog(context);
+        }
+        lpr.setMessage("Login...");
+        lpr.show();
+      } else if (this.widget.viewModel.loginReport?.status ==
+          ActionStatus.error) {
+        if (lpr != null && lpr.isShowing()) {
+          lpr.hide();
+          lpr = null;
+        }
+        showError(this.widget.viewModel.loginReport?.msg.toString());
+      } else if (this.widget.viewModel.loginReport?.status ==
+          ActionStatus.complete) {
+        if (lpr != null && lpr.isShowing()) {
+          lpr.hide();
+          lpr = null;
+        }
+        Navigator.of(context).pushReplacementNamed("/home");
+      } else {
+        if (lpr != null && lpr.isShowing()) {
+          lpr.hide();
+          lpr = null;
+        }
+        Navigator.of(context).pushReplacementNamed("/home");
       }
       </#if>
     });
@@ -298,7 +344,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
                   //  context,
                   //  MaterialPageRoute(
                   //    builder: (context) =>
-                  //        View${ModelEntryName}(${(ModelEntryName)?lower_case}: this.widget.viewModel.${(ModelEntryName)?lower_case}s?[index]),
+                  //        View${ModelEntryName}(${(ModelEntryName)?lower_case}: this.widget.viewModel.${(ModelEntryName)?lower_case}s[index]),
                   //  ),
                   //);
                 },
@@ -701,13 +747,6 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
 
 }
 <#if GenerateActionButton>
-
-class Choice {
-  const Choice({this.title, this.icon});
-
-  final String title;
-  final IconData icon;
-}
 
 const List<Choice> choices = const <Choice>[
   <#list ActionList as act>

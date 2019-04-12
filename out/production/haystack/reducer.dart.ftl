@@ -30,8 +30,14 @@ ${ModelEntryName}State _sync${ModelEntryName}s(${ModelEntryName}State state, Syn
 ${ModelEntryName}State _sync${ModelEntryName}(${ModelEntryName}State state, Sync${ModelEntryName}Action action) {
   state.${(ModelEntryName)?lower_case}s.update(action.${(ModelEntryName)?lower_case}.id.toString(), (u) => action.${(ModelEntryName)?lower_case},
       ifAbsent: () => action.${(ModelEntryName)?lower_case});
-  return state.copyWith(${(ModelEntryName)?lower_case}s: state.${(ModelEntryName)?lower_case}s);
+  return state.copyWith(${(ModelEntryName)?lower_case}s: state.${(ModelEntryName)?lower_case}s, ${(ModelEntryName)?lower_case}: action.${(ModelEntryName)?lower_case});
 }
+<#if ModelEntryName == "User">
+
+${ModelEntryName}State _syncProfile(${ModelEntryName}State state, SyncProfileAction action) {
+  return state.copyWith(profile: action.profile);
+}
+</#if>
 
 ${ModelEntryName}State _remove${ModelEntryName}(${ModelEntryName}State state, Remove${ModelEntryName}Action action) {
   return state.copyWith(${(ModelEntryName)?lower_case}s: state.${(ModelEntryName)?lower_case}s..remove(action.id.toString()));

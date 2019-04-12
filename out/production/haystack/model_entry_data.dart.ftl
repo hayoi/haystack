@@ -24,11 +24,17 @@ class ${ModelEntryName} {
         <#if item.originalValue == "Object">
         ${item.name} = ${item.type}.fromMap(map['${item.jsonName}'])<#if item_has_next>,<#else>;</#if>
         <#elseif item.type == "List<int>">
-        ${item.name} = map['${item.jsonName}'].cast<int>().toList()<#if item_has_next>,<#else>;</#if>
+        ${item.name} = map['${item.jsonName}'] == null
+            ? []
+            : map['${item.jsonName}'].cast<int>().toList()<#if item_has_next>,<#else>;</#if>
         <#elseif item.type == "List<String>">
-        ${item.name} = map['${item.jsonName}'].cast<String>().toList()<#if item_has_next>,<#else>;</#if>
+        ${item.name} = map['${item.jsonName}'] == null
+            ? []
+            : map['${item.jsonName}'].cast<String>().toList()<#if item_has_next>,<#else>;</#if>
         <#elseif item.type == "List<bool>">
-        ${item.name} = map['${item.jsonName}'].cast<bool>().toList()<#if item_has_next>,<#else>;</#if>
+        ${item.name} = map['${item.jsonName}'] == null
+            ? []
+            : map['${item.jsonName}'].cast<bool>().toList()<#if item_has_next>,<#else>;</#if>
         <#elseif item.type == "DateTime">
         ${item.name} = map['${item.jsonName}'] == null ? null
                : DateTime.parse(map["${item.jsonName}"])<#if item_has_next>,<#else>;</#if>
