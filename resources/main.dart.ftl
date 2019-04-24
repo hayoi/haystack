@@ -106,12 +106,11 @@ class _MyAppState extends State<MyApp> {
 
   Map<String, WidgetBuilder> _routes() {
     return <String, WidgetBuilder>{
-      '/home': (_) => new HomeView(),
       "/settings": (_) => SettingsOptionsPage(
             options: _options,
             onOptionsChanged: _handleOptionsChanged,
           ),
-      "/": (_) => new LoginView(),
+//      "/": (_) => new HomeView(),
     };
   }
 }

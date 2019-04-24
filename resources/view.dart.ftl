@@ -11,7 +11,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:${ProjectName}/redux/app/app_state.dart';
 import 'package:${ProjectName}/features/<#if IsCustomWidget>customize/</#if>${(PageName)?lower_case}/${(PageName)?lower_case}_view_model.dart';
 import 'package:${ProjectName}/redux/action_report.dart';
-import 'package:thmonitor/utils/progress_dialog.dart';
+import 'package:${ProjectName}/utils/progress_dialog.dart';
 <#if viewModelDelete>
 import 'package:${ProjectName}/features/widget/swipe_list_item.dart';
 </#if>

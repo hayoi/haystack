@@ -8,7 +8,7 @@ public class TextResources {
     }
 
     public String getJSONDialogTitle() {
-        return "Generate class from JSON";
+        return "Generate App Template";
     }
 
     public String getReplaceDialogTitle() {

@@ -1,9 +1,11 @@
 package haystack;
 
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.FileIndexFacade;
@@ -101,10 +103,22 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
                 "/settings_option.dart.ftl", "/settings_option_page.dart.ftl", "/spannable_grid.dart.ftl", "/state.dart.ftl",
                 "/store.dart.ftl", "/swipe_list_item.dart.ftl", "/test_view.dart.ftl", "/text_scale.dart.ftl",
                 "/theme.dart.ftl", "/toast_utils.dart.ftl", "/translations.dart.ftl", "/view.dart.ftl",
-                "/view_model.dart.ftl", "/progress_dialog.dart.ftl","/choice_data.dart.ftl"
+                "/view_model.dart.ftl", "/progress_dialog.dart.ftl", "/choice_data.dart.ftl"
         };
-        for (String name : fileNames) {
-            cacheResources(resources, name);
+        String version = PluginManager.getPlugin(PluginId.getId("com.github.hayoi.haystack")).getVersion();
+
+        if (new File(resources + "version").exists()) {
+            String cacheVersion = usingBufferedReader(resources + "version").replace("\n", "");
+            if (!version.equals(cacheVersion)) {
+                for (String name : fileNames) {
+                    cacheResources(resources, name);
+                }
+            }
+        } else {
+            mkFile(new File(resources + "version"), version);
+            for (String name : fileNames) {
+                cacheResources(resources, name);
+            }
         }
 
         configFreemarker(resources);
@@ -121,9 +135,6 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     }
 
     private void cacheResources(String resources, String fileName) {
-//        if (new File(resources + fileName).exists()){
-//            return;
-//        }
         InputStream in = null;
         OutputStream out = null;
         try {

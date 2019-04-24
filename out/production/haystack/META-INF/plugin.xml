@@ -1,15 +1,21 @@
 <idea-plugin>
-  <id>com.hayoi.redux.unique.plugin.id</id>
-  <name>Flutter Redux Generatot</name>
-  <version>1.0</version>
-  <vendor email="support@hayoi.com" url="http://www.hayoi.com">hayoi</vendor>
+  <id>com.github.hayoi.haystack</id>
+  <name>Flutter App Template Generator</name>
+  <version>1.0.1</version>
+  <vendor email="haystack1206@gmail.com" url="https://github.com/hayoi/haystack">hayoi</vendor>
 
-  <description>A plugin help to generate Flutter project template. Using Redux to manage and update UI.
-    1 json to dart class, support int, bool, String, double, Datetime
-    2 generate restful api
-    3 generate database module
-    4 generate basic page with BottomNavigatorBar, Draw, AppBar TopTabBar, ListView(bind model entry from restful api or Database
-    5 generate CustomScrollView page with FixedExtentLit, Grid, BoxAdapter
+  <description>
+    <![CDATA[
+    A plugin help to generate Flutter project template with your model entities.
+    <ul>
+    <li>Using Redux to manage state and update UI</li>
+    <li>json to dart entities class, support int, bool, String, double, Datetime</li>
+    <li>generate restful api base on your json entities</li>
+    <li>generate database module</li>
+    <li>generate basic page with BottomNavigatorBar, Draw, AppBar TopTabBar, ListView(bind model entry from restful api or Database</li>
+    <li>generate CustomScrollView page with FixedExtentLit, Grid, BoxAdapter</li>
+    </ul>
+    ]]>
   </description>
 
   <!--<change-notes>-->
@@ -30,7 +36,7 @@
 
   <actions>
     <!-- Add your actions here -->
-    <action id="flutter_redux_gen" class="haystack.FlutterReduxGen" text="Flutter Redux Generator"
+    <action id="flutter_redux_gen" class="haystack.FlutterReduxGen" text="Generate App Template"
             description="Flutter Redux Generator">
       <add-to-group group-id="NewGroup" anchor="first"/>
     </action>
