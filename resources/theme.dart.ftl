@@ -34,16 +34,16 @@ class AppTheme {
   }
 
   ThemeData _buildDarkTheme() {
-    const Color primaryColor = Colors.blue;
+    const Color primaryColor = const Color(0xFF3B3B48);3C3F41
     final ThemeData base = new ThemeData.dark();
     return base.copyWith(
       primaryColor: primaryColor,
       buttonColor: primaryColor,
-      indicatorColor: Colors.white,
+      indicatorColor: const Color(0xFF3F3F4C),
       accentColor: Colors.blueAccent,
-      canvasColor: Colors.black38,
-      scaffoldBackgroundColor: Colors.black38,
-      backgroundColor: Colors.black38,
+      canvasColor: const Color(0xFF2B2B2B),
+      scaffoldBackgroundColor: const Color(0xFF2E2E3B),
+      backgroundColor: const Color(0xFF2E2E3B),
       errorColor: const Color(0xFFB00020),
       buttonTheme: const ButtonThemeData(
         textTheme: ButtonTextTheme.primary,

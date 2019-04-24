@@ -350,7 +350,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
                 },
               ),
               decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.black26))))<#if viewModelDelete>)</#if>;
+                  border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor))))<#if viewModelDelete>)</#if>;
     }
 
     return Container(
