@@ -4,5 +4,9 @@
   "label_loading":"Loading...",
   "bottom_bar_label_home": "Home",
   "bottom_bar_label_notice": "Message",
-  "bottom_bar_label_mine": "Mine"
+  "bottom_bar_label_mine": "Mine",
+  "": "",
+  "": "",
+  "": "",
+  "": "",
 }

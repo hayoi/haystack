@@ -32,8 +32,8 @@ class Injector {
           "Bearer ${r"${prefs.getString('token')}"}";
 
       print(
-          "Pre request: ${r"${options.method}"} ${r"${options.baseUrl}"}${r"${options.path}"}");
-      print("Pre request ${r"${options.headers.toString()}"}");
+          "Pre request:${r"${options.method}"},${r"${options.baseUrl}"}${r"${options.path}"}");
+      print("Pre request:${r"${options.headers.toString()}"}");
 
       return options; //continue
     }, onResponse: (Response response) async {
@@ -58,8 +58,8 @@ class Injector {
       }
 
       print(
-          "Response From: ${r"${response.request.method}"} ${r"${response.request.baseUrl}"}${r"${response.request.path}"}");
-      print("Response From: ${r"${response.toString()}"}");
+          "Response From:${r"${response.request.method}"},${r"${response.request.baseUrl}"}${r"${response.request.path}"}");
+      print("Response From:${r"${response.toString()}"}");
       return response; // continue
     }, onError: (DioError e) {
       // Do something with response error

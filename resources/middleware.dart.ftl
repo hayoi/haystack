@@ -165,7 +165,7 @@ void catchError(NextDispatcher next, action, error) {
       report: ActionReport(
           actionName: action.actionName,
           status: ActionStatus.error,
-          msg: "${r"${action.actionName}"} is error; ${r"${error.toString()}"}")));
+          msg: "${r"${action.actionName}"} is error;${r"${error.toString()}"}")));
 }
 
 void completed(NextDispatcher next, action) {
