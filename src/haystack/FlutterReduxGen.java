@@ -168,7 +168,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     @Override
     public void onJsonParsed(PageModel pageModel) {
         if (pageModel.isUIOnly) {
-            genStructure(pageModel);
+            checkProjectStructure(pageModel);
         } else {
             ModelTableDialog tableDialog = new ModelTableDialog(pageModel, languageResolver, textResources, this);
             if (lastDialogLocation != null) {
@@ -185,6 +185,23 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         }
     }
 
+    private void checkProjectStructure(PageModel pageModel) {
+        if (!new File(selectGroup.getPath() + "/redux/").exists()||
+                !new File(selectGroup.getPath() + "/features/").exists() ||
+                !new File(selectGroup.getPath() + "/injection/").exists() ||
+                !new File(selectGroup.getPath() + "/trans/").exists() ||
+                !new File(selectGroup.getPath() + "/data/").exists()) {
+            int result = Messages.showOkCancelDialog(project, "You must init the project first!"
+                    , "Init Project", "OK", "NO", Messages.getWarningIcon());
+            if (result == Messages.OK) {
+                initTemplate();
+                genStructure(pageModel);
+            }
+        } else {
+            genStructure(pageModel);
+        }
+    }
+
     @Override
     public void onInitTemplate() {
         initTemplate();
@@ -192,8 +209,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
     @Override
     public void onModelsReady(PageModel pageModel) {
-
-        genStructure(pageModel);
+        checkProjectStructure(pageModel);
     }
 
     private void genStructure(PageModel pageModel) {
@@ -426,7 +442,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         generateFile(new File(selectGroup.getPath() + "/features/widget/spannable_grid.dart"), "spannable_grid.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/features/widget/swipe_list_item.dart"), "swipe_list_item.dart.ftl", rootMap);
 
-        Messages.showMessageDialog(project, "初始化MVP结构完成！", "初始化", Messages.getInformationIcon());
+        Messages.showMessageDialog(project, "Project init completed！", "Initialize", Messages.getInformationIcon());
     }
 
     private void generateFeature(Map<String, Object> rootMap, boolean isCustomWidget) {
