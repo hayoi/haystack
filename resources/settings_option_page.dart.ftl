@@ -4,7 +4,6 @@ import 'package:${ProjectName}/features/settings/text_scale.dart';
 import 'package:${ProjectName}/features/settings/theme.dart';
 
 const double _kItemHeight = 48.0;
-const EdgeInsetsDirectional _kItemPadding = const EdgeInsetsDirectional.only(start: 56.0);
 
 class _OptionsItem extends StatelessWidget {
   const _OptionsItem({Key key, this.child}) : super(key: key);
@@ -18,7 +17,6 @@ class _OptionsItem extends StatelessWidget {
     return MergeSemantics(
       child: Container(
         constraints: BoxConstraints(minHeight: _kItemHeight * textScaleFactor),
-        padding: _kItemPadding,
         alignment: AlignmentDirectional.centerStart,
         child: DefaultTextStyle(
           style: DefaultTextStyle.of(context).style,
@@ -35,8 +33,9 @@ class _OptionsItem extends StatelessWidget {
 }
 
 class _BooleanItem extends StatelessWidget {
-  const _BooleanItem(this.title, this.value, this.onChanged);
+  const _BooleanItem(this.title, this.value, this.onChanged, this.iconData);
 
+  final IconData iconData;
   final String title;
   final bool value;
   final ValueChanged<bool> onChanged;
@@ -47,6 +46,7 @@ class _BooleanItem extends StatelessWidget {
     return new _OptionsItem(
       child: new Row(
         children: <Widget>[
+          new Icon(iconData, color: Theme.of(context).textTheme.body1.color),
           new Expanded(child: new Text(title)),
           new Switch(
             value: value,
@@ -55,65 +55,6 @@ class _BooleanItem extends StatelessWidget {
             activeTrackColor: isDark ? Colors.white30 : Colors.black26,
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _ActionItem extends StatelessWidget {
-  const _ActionItem(this.text, this.onTap);
-
-  final String text;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return new _OptionsItem(
-      child: new _FlatButton(
-        onPressed: onTap,
-        child: new Text(text),
-      ),
-    );
-  }
-}
-
-class _FlatButton extends StatelessWidget {
-  const _FlatButton({Key key, this.onPressed, this.child}) : super(key: key);
-
-  final VoidCallback onPressed;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return new FlatButton(
-      padding: EdgeInsets.zero,
-      onPressed: onPressed,
-      child: new DefaultTextStyle(
-        style: Theme.of(context).primaryTextTheme.subhead,
-        child: child,
-      ),
-    );
-  }
-}
-
-class _Heading extends StatelessWidget {
-  const _Heading(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    return new _OptionsItem(
-      child: new DefaultTextStyle(
-        style: theme.textTheme.body1.copyWith(
-          fontFamily: 'GoogleSans',
-          color: theme.accentColor,
-        ),
-        child: new Semantics(
-          child: new Text(text),
-          header: true,
-        ),
       ),
     );
   }
@@ -128,22 +69,18 @@ class _ThemeItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    return new _BooleanItem(
-      'Dark Theme',
-      isDark,
-      (bool value) {
-        if (value) {
-          AppTheme.configure(ThemeName.DARK);
-        } else {
-          AppTheme.configure(ThemeName.LIGHT);
-        }
-        onOptionsChanged(
-          options.copyWith(
-            theme: AppTheme().appTheme,
-          ),
-        );
-      },
-    );
+    return new _BooleanItem('Dark Theme', isDark, (bool value) {
+      if (value) {
+        AppTheme.configure(ThemeName.DARK);
+      } else {
+        AppTheme.configure(ThemeName.LIGHT);
+      }
+      onOptionsChanged(
+        options.copyWith(
+          theme: AppTheme().appTheme,
+        ),
+      );
+    }, Icons.brightness_3);
   }
 }
 
@@ -160,16 +97,23 @@ class _TextScaleFactorItem extends StatelessWidget {
       child: new Row(
         children: <Widget>[
           new Expanded(
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const Text('Text size'),
-                new Text(
-                  '${r"${options.textScaleFactor.label}"}',
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                Icon(
+                  Icons.text_format,
+                  color: Theme.of(context).textTheme.body1.color,
                 ),
-              ],
-            ),
-          ),
+                new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text('Text size'),
+                    new Text(
+                      '${options.textScaleFactor.label}',
+                    ),
+                  ],
+                ),
+              ])),
           new PopupMenuButton<AppTextScaleValue>(
             padding: const EdgeInsetsDirectional.only(end: 16.0),
             icon: const Icon(
@@ -192,28 +136,6 @@ class _TextScaleFactorItem extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _TextDirectionItem extends StatelessWidget {
-  const _TextDirectionItem(this.options, this.onOptionsChanged);
-
-  final SettingsOptions options;
-  final ValueChanged<SettingsOptions> onOptionsChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return new _BooleanItem(
-      'Force RTL',
-      options.textDirection == TextDirection.rtl,
-      (bool value) {
-        onOptionsChanged(
-          options.copyWith(
-            textDirection: value ? TextDirection.rtl : TextDirection.ltr,
-          ),
-        );
-      },
     );
   }
 }
@@ -243,17 +165,24 @@ class _PlatformItem extends StatelessWidget {
       child: new Row(
         children: <Widget>[
           new Expanded(
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const Text('Platform mechanics'),
-                new Text(
-                  '${r"${_platformLabel(options.platform)}"}',
-                  style: Theme.of(context).primaryTextTheme.body1,
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                Icon(
+                  Icons.widgets,
+                  color: Theme.of(context).textTheme.body1.color,
                 ),
-              ],
-            ),
-          ),
+                new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text('Platform mechanics'),
+                    new Text(
+                      '${_platformLabel(options.platform)}',
+                      style: Theme.of(context).primaryTextTheme.body1,
+                    ),
+                  ],
+                ),
+              ])),
           new PopupMenuButton<TargetPlatform>(
             padding: const EdgeInsetsDirectional.only(end: 16.0),
             icon: const Icon(Icons.arrow_drop_down),
@@ -293,25 +222,18 @@ class SettingsOptionsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Settings"),
       ),
-      body: new ListView(
-        padding: const EdgeInsets.only(bottom: 124.0),
-        children: <Widget>[
-          const _Heading('Display'),
-          new _ThemeItem(options, onOptionsChanged),
-          new _TextScaleFactorItem(options, onOptionsChanged),
-          new _TextDirectionItem(options, onOptionsChanged),
-          const Divider(),
-          const _Heading('Platform mechanics'),
-          new _PlatformItem(options, onOptionsChanged),
-        ]..addAll(
-            <Widget>[
-              const Divider(),
-              const _Heading('Flutter gallery'),
-              new _ActionItem('About Flutter Gallery', () {
-//              showGalleryAboutDialog(context);
-              }),
-            ],
-          ),
+      body: Padding(
+        padding: EdgeInsets.only(left: 16.0, right: 16.0),
+        child: new ListView(
+          padding: const EdgeInsets.only(bottom: 124.0),
+          children: <Widget>[
+            new _ThemeItem(options, onOptionsChanged),
+            const Divider(),
+            new _TextScaleFactorItem(options, onOptionsChanged),
+            const Divider(),
+            new _PlatformItem(options, onOptionsChanged),
+          ],
+        ),
       ),
     );
   }

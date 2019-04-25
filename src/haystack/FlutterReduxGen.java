@@ -93,7 +93,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
             }
         }
 
-        String resources = System.getProperty("user.home") + "\\.flutter_redux_gen_cache\\";
+        String resources = System.getProperty("user.home") + "/.haystack_template_cache/";
         FileUtil.createDir(resources);
         String[] fileNames = {"/actions.dart.ftl", "/app_reducer.dart.ftl", "/app_state.dart.ftl",
                 "/database_client.dart.ftl", "/date_picker_widget.dart.ftl", "/dependency_injection.dart.ftl", "/i18n_en.json.ftl",
