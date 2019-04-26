@@ -2,10 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-/*
- * Translations.of(context).text('bottom_bar_label_home'),
- */
 
+///usage:
+///Translations.of(context).text('bottom_bar_label_home'),
 class Translations {
   Translations(Locale locale) {
     this.locale = locale;

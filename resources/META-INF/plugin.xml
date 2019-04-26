@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.github.hayoi.haystack</id>
   <name>Flutter App Template Generator</name>
-  <version>1.0.2</version>
+  <version>1.0.4</version>
   <vendor email="haystack1206@gmail.com" url="https://github.com/hayoi/haystack">hayoi</vendor>
 
   <description>
@@ -14,6 +14,13 @@
     <li>generate database module</li>
     <li>generate basic page with BottomNavigatorBar, Draw, AppBar TopTabBar, ListView(bind model entry from restful api or Database</li>
     <li>generate CustomScrollView page with FixedExtentLit, Grid, BoxAdapter</li>
+    </ul>
+    <head>Usage:</head>
+    <ul>
+    <li>Install the plugin, Create a Flutter project with AS/IDEA.</li>
+    <li>Right click the lib folder, select New --> Generate App Template.</li>
+    <li>First, click "Init Project" button to init.</li>
+    <li>Second, configure your page info: page name, model json and so on. click the "OK" to generate code.</li>
     </ul>
     ]]>
   </description>

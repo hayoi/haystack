@@ -96,9 +96,9 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         String resources = System.getProperty("user.home") + "/.haystack_template_cache/";
         FileUtil.createDir(resources);
         String[] fileNames = {"/actions.dart.ftl", "/app_reducer.dart.ftl", "/app_state.dart.ftl",
-                "/database_client.dart.ftl", "/date_picker_widget.dart.ftl", "/dependency_injection.dart.ftl", "/i18n_en.json.ftl",
+                "/database_client.dart.ftl", "/date_picker_widget.dart.ftl", "/i18n_en.json.ftl",
                 "/i18n_zh.json.ftl", "/action_report.dart.ftl", "/main.dart.ftl", "/middleware.dart.ftl",
-                "/model_entry_data.dart.ftl", "/network_utils.dart.ftl", "/page_data.dart.ftl", "/pubspec.yaml.ftl",
+                "/model_entry_data.dart.ftl", "/network_common.dart.ftl", "/page_data.dart.ftl", "/pubspec.yaml.ftl",
                 "/reducer.dart.ftl", "/remote_wrap.dart.ftl", "/repository.dart.ftl", "/repository_db.dart.ftl",
                 "/settings_option.dart.ftl", "/settings_option_page.dart.ftl", "/spannable_grid.dart.ftl", "/state.dart.ftl",
                 "/store.dart.ftl", "/swipe_list_item.dart.ftl", "/test_view.dart.ftl", "/text_scale.dart.ftl",
@@ -188,7 +188,6 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     private void checkProjectStructure(PageModel pageModel) {
         if (!new File(selectGroup.getPath() + "/redux/").exists()||
                 !new File(selectGroup.getPath() + "/features/").exists() ||
-                !new File(selectGroup.getPath() + "/injection/").exists() ||
                 !new File(selectGroup.getPath() + "/trans/").exists() ||
                 !new File(selectGroup.getPath() + "/data/").exists()) {
             int result = Messages.showOkCancelDialog(project, "You must init the project first!"
@@ -412,10 +411,9 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
         Map<String, Object> rootMap = new HashMap<String, Object>();
         rootMap.put("ProjectName", moduleName);
-        generateFile(new File(selectGroup.getPath() + "/injection/dependency_injection.dart"), "dependency_injection.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getParent().getPath() + "/pubspec.yaml"), "pubspec.yaml.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/main.dart"), "main.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/utils/network_utils.dart"), "network_utils.dart.ftl", rootMap);
+        generateFile(new File(selectGroup.getPath() + "/data/network_common.dart"), "network_common.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/utils/progress_dialog.dart"), "progress_dialog.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/utils/toast_utils.dart"), "toast_utils.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/data/model/remote_wrap.dart"), "remote_wrap.dart.ftl", rootMap);
