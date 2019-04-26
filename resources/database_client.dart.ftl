@@ -28,7 +28,7 @@ class DatabaseClient {
 
   Future<Database> create() async {
     Directory path = await getApplicationDocumentsDirectory();
-    String dbPath = join(path.path, "charging_db.db");
+    String dbPath = join(path.path, "${(ProjectName)?lower_case}_db.db");
 
     return openDatabase(dbPath, version: 9, onUpgrade: (d, o, n) {
     }, onOpen: (d) {

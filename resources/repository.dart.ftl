@@ -14,9 +14,7 @@ class ${ModelEntryName}Repository {
     }).then((d) {
       var results = new NetworkCommon().decodeResp(d);
 
-      return results
-          .map<${ModelEntryName}>((${(ModelEntryName)?lower_case}) => new ${ModelEntryName}.fromJson(${(ModelEntryName)?lower_case}))
-          .toList();
+      return results;
     });
   }
 

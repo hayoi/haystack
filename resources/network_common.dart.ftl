@@ -27,6 +27,8 @@ class NetworkCommon {
     final String msg = contactsContainer['msg'];
     final int code = contactsContainer['code'];
     final results = contactsContainer['data'];
+    /// decode your data from remote server here.
+
     if (code != 0) {
       throw new Exception("statusCode:$code, msg: $msg");
     }
@@ -41,8 +43,8 @@ class NetworkCommon {
     dio.options.receiveTimeout = 3000;
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
-      // Do something before request is sent
-      // set the token
+      /// Do something before request is sent
+      /// set the token
       SharedPreferences prefs = await SharedPreferences.getInstance();
       options.headers["Authorization"] = "Bearer ${r"${prefs.getString('token')}"}";
 
@@ -52,13 +54,18 @@ class NetworkCommon {
       return options; //continue
     }, onResponse: (Response response) async {
       // Do something with response data
+      final int statusCode = response.statusCode;
+      if (statusCode == 200) {
+        if (response.request.path == "login/") {
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      if (response.request.path == "login/") {
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-        final int statusCode = response.statusCode;
-
-        if (statusCode == 200) {
+          /// login complete, save the token
+          /// response data:
+          /// {
+          ///   "code": 0,
+          ///   "data": Object,
+          ///   "msg": "OK"
+          ///  }
           final String jsonBody = response.data;
           final JsonDecoder _decoder = new JsonDecoder();
           final resultContainer = _decoder.convert(jsonBody);
@@ -69,6 +76,32 @@ class NetworkCommon {
             prefs.setInt("expired", results["expired"]);
           }
         }
+      } else if(statusCode == 401){
+        /// token expired, re-login or refresh token
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        var username = prefs.getString("username");
+        var password = prefs.getString("password");
+        FormData formData = new FormData.from({
+          "username": username,
+          "password": password,
+        });
+        new Dio().post("login/", data: formData).then((resp){
+          final String jsonBody = response.data;
+          final JsonDecoder _decoder = new JsonDecoder();
+          final resultContainer = _decoder.convert(jsonBody);
+          final int code = resultContainer['code'];
+          if (code == 0) {
+            final Map results = resultContainer['data'];
+            prefs.setString("token", results["token"]);
+            prefs.setInt("expired", results["expired"]);
+
+            RequestOptions ro = response.request;
+            ro.headers["Authorization"] = "Bearer ${prefs.getString('token')}";
+            return ro;
+          } else {
+            throw Exception("Exception in Relogin");
+          }
+        });
       }
 
       print("Response From:${r"${response.request.method}"},${r"${response.request.baseUrl}"}${r"${response.request.path}"}");
