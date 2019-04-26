@@ -108,9 +108,7 @@ class _TextScaleFactorItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const Text('Text size'),
-                    new Text(
-                      '${options.textScaleFactor.label}',
-                    ),
+                    new Text(options.textScaleFactor.label),
                   ],
                 ),
               ])),
@@ -177,7 +175,7 @@ class _PlatformItem extends StatelessWidget {
                   children: <Widget>[
                     const Text('Platform mechanics'),
                     new Text(
-                      '${_platformLabel(options.platform)}',
+                      _platformLabel(options.platform),
                       style: Theme.of(context).primaryTextTheme.body1,
                     ),
                   ],

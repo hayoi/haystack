@@ -44,10 +44,10 @@ class NetworkCommon {
       // Do something before request is sent
       // set the token
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      options.headers["Authorization"] = "Bearer ${prefs.getString('token')}";
+      options.headers["Authorization"] = "Bearer ${r"${prefs.getString('token')}"}";
 
-      print("Pre request: ${options.method} ${options.baseUrl}${options.path}");
-      print("Pre request ${options.headers.toString()}");
+      print("Pre request:${r"${options.method}"},${r"${options.baseUrl}"}${r"${options.path}"}");
+      print("Pre request:${r"${options.headers.toString()}"}");
 
       return options; //continue
     }, onResponse: (Response response) async {
@@ -71,8 +71,8 @@ class NetworkCommon {
         }
       }
 
-      print("Response From: ${response.request.method} ${response.request.baseUrl}${response.request.path}");
-      print("Response From: ${response.toString()}");
+      print("Response From:${r"${response.request.method}"},${r"${response.request.baseUrl}"}${r"${response.request.path}"}");
+      print("Response From:${r"${response.toString()}"}");
       return response; // continue
     }, onError: (DioError e) {
       // Do something with response error

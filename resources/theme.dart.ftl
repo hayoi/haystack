@@ -34,7 +34,7 @@ class AppTheme {
   }
 
   ThemeData _buildDarkTheme() {
-    const Color primaryColor = const Color(0xFF3B3B48);3C3F41
+    const Color primaryColor = const Color(0xFF3B3B48);
     final ThemeData base = new ThemeData.dark();
     return base.copyWith(
       primaryColor: primaryColor,

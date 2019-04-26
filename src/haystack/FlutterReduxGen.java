@@ -110,6 +110,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         if (new File(resources + "version").exists()) {
             String cacheVersion = usingBufferedReader(resources + "version").replace("\n", "");
             if (!version.equals(cacheVersion)) {
+                mkFile(new File(resources + "version"), version);
                 for (String name : fileNames) {
                     cacheResources(resources, name);
                 }
@@ -419,7 +420,6 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         generateFile(new File(selectGroup.getPath() + "/data/model/remote_wrap.dart"), "remote_wrap.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/data/model/choice_data.dart"), "choice_data.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/data/model/page_data.dart"), "page_data.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/trans/translations.dart"), "translations.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/trans/translations.dart"), "translations.dart.ftl", rootMap);
 
         generateFile(new File(selectGroup.getPath() + "/redux/store.dart"), "store.dart.ftl", rootMap);
