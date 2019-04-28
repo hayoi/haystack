@@ -1,19 +1,19 @@
 <idea-plugin>
   <id>com.github.hayoi.haystack</id>
   <name>Flutter App Template Generator</name>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
   <vendor email="haystack1206@gmail.com" url="https://github.com/hayoi/haystack">hayoi</vendor>
 
   <description>
     <![CDATA[
     A plugin help to generate Flutter project template with your model entities.
     <ul>
-    <li>Using Redux to manage state and update UI</li>
-    <li>json to dart entities class, support int, bool, String, double, Datetime</li>
-    <li>generate restful api base on your json entities</li>
-    <li>generate database module</li>
-    <li>generate basic page with BottomNavigatorBar, Draw, AppBar TopTabBar, ListView(bind model entry from restful api or Database</li>
-    <li>generate CustomScrollView page with FixedExtentLit, Grid, BoxAdapter</li>
+    <li>Using Redux to manage state and update UI.</li>
+    <li>json to dart entities class, support int, bool, String, double, Datetime.</li>
+    <li>generate restful api base on your json entities.</li>
+    <li>generate database module.</li>
+    <li>generate some pages with BottomNavigatorBar, Draw, AppBar TopTabBar, ListView(bind model entry from restful api or Database), Login, if you want.</li>
+    <li>generate CustomScrollView pages with FixedExtentLit, Grid, BoxAdapter as you wish</li>
     </ul>
     <head>Usage:</head>
     <ul>
