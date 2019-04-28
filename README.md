@@ -31,3 +31,5 @@ Haystack is an AS/Intellij IDEA plugin to rapid construct a Flutter app architec
 ```
 You can run the project  
 ![app](https://upload-images.jianshu.io/upload_images/2398000-86558a04dfee614e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+[example](https://github.com/hayoi/redux_example)
