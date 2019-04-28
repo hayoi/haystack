@@ -96,10 +96,10 @@ class NetworkCommon {
             prefs.setInt("expired", results["expired"]);
 
             RequestOptions ro = response.request;
-            ro.headers["Authorization"] = "Bearer ${prefs.getString('token')}";
+            ro.headers["Authorization"] = "Bearer ${r"${prefs.getString('token')}"}";
             return ro;
           } else {
-            throw Exception("Exception in Relogin");
+            throw Exception("Exception in re-login");
           }
         });
       }
