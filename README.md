@@ -1,4 +1,4 @@
-Haystack is an AS/Intellij IDEA plugin to rapid construct a Flutter app architecture. It consists of the follow feature.
+Haystack is an AS/Intellij IDEA plugin to rapid construct a Flutter app architecture. It consists of the follow features.
   - Using Redux to manage state and update UI.
   - json to dart entities class, support int, bool, String, double, Datetime.
   - Generate restful api base on your json entities
