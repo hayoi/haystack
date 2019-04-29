@@ -28,6 +28,9 @@ public class ModelTableDialog extends JDialog implements ClassesListDelegate.OnC
     private JTable fieldsTable;
     private JTable table1;
     private JLabel claasesListLabel;
+    private JPanel bottom;
+    private JPanel field;
+    private JPanel classT;
 
     private FieldsTableDelegate fieldsTableDelegate;
     private ClassesListDelegate classesListDelegate;
@@ -96,9 +99,13 @@ public class ModelTableDialog extends JDialog implements ClassesListDelegate.OnC
                 Iterator<FieldModel> iterator = classModel.getFields().iterator();
                 while (iterator.hasNext()) {
                     FieldModel field = iterator.next();
-                    if (!field.isEnabled()) {
+                    if (!field.isEnabled() && !field.isUnique()) {
                         iterator.remove();
                     } else {
+                        if (field.isUnique()) {
+                            classModel.setUniqueField(field.getName());
+                            classModel.setUniqueFieldType(field.getType());
+                        }
                         if (!field.getType().equals("int") && !field.getType().equals("double") && !field.getType().equals("String") && !field.getType().equals("bool")) {
                             field.setDefaultValue("null");
                         }

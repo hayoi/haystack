@@ -42,16 +42,16 @@ class ${ModelEntryName}Repository {
     });
   }
 
-  Future<int> delete${ModelEntryName}(int id) {
-    return new NetworkCommon().dio.delete("${(ModelEntryName)?lower_case}/", queryParameters: {"id": id}).then((d) {
+  Future<int> delete${ModelEntryName}(${clsUNNameType} ${clsUNName}) {
+    return new NetworkCommon().dio.delete("${(ModelEntryName)?lower_case}/", queryParameters: {"${clsUNName}": ${clsUNName}}).then((d) {
       var results = new NetworkCommon().decodeResp(d);
 
-      return id;
+      return 0;
     });
   }
 
-  Future<${ModelEntryName}> get${ModelEntryName}(int id) {
-    return new NetworkCommon().dio.get("${(ModelEntryName)?lower_case}/", queryParameters: {"id": id}).then((d) {
+  Future<${ModelEntryName}> get${ModelEntryName}(${clsUNNameType} ${clsUNName}) {
+    return new NetworkCommon().dio.get("${(ModelEntryName)?lower_case}/", queryParameters: {"${clsUNName}": ${clsUNName}}).then((d) {
       var results = new NetworkCommon().decodeResp(d);
 
       return new ${ModelEntryName}.fromJson(results);

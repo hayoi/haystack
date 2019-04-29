@@ -187,7 +187,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     }
 
     private void checkProjectStructure(PageModel pageModel) {
-        if (!new File(selectGroup.getPath() + "/redux/").exists()||
+        if (!new File(selectGroup.getPath() + "/redux/").exists() ||
                 !new File(selectGroup.getPath() + "/features/").exists() ||
                 !new File(selectGroup.getPath() + "/trans/").exists() ||
                 !new File(selectGroup.getPath() + "/data/").exists()) {
@@ -271,10 +271,26 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         }
         if (!pageModel.isUIOnly) {
             for (ClassModel classModel : pageModel.classModels) {
+                Map<String, Object> map = new HashMap<String, Object>(rootMap);
+                if (classModel.getName().equals(pageModel.modelName)) {
+                    map.put("genDatabase", classModel.isGenDBModule());
+
+                    if (classModel.getUniqueField() != null) {
+                        map.put("clsUNName", classModel.getUniqueField());
+                        map.put("clsUNNameType", classModel.getUniqueFieldType());
+                    }
+                }
+                generateModelEntry(classModel, map);
+            }
+            for (ClassModel classModel : pageModel.classModels) {
                 if (classModel.getName().equals(pageModel.modelName)) {
                     rootMap.put("genDatabase", classModel.isGenDBModule());
+
+                    if (classModel.getUniqueField() != null) {
+                        rootMap.put("clsUNName", classModel.getUniqueField());
+                        rootMap.put("clsUNNameType", classModel.getUniqueFieldType());
+                    }
                 }
-                generateModelEntry(classModel, rootMap);
             }
 
             generateRepository(rootMap);

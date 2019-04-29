@@ -23,16 +23,11 @@ class NetworkCommon {
       throw new Exception("statusCode: $statusCode");
     }
 
-    final contactsContainer = _decoder.convert(jsonBody);
-    final String msg = contactsContainer['msg'];
-    final int code = contactsContainer['code'];
-    final results = contactsContainer['data'];
-    /// decode your data from remote server here.
-
-    if (code != 0) {
-      throw new Exception("statusCode:$code, msg: $msg");
+    if (jsonBody is String) {
+      return _decoder.convert(jsonBody);
+    } else {
+      return jsonBody;
     }
-    return results;
   }
 
   Dio get dio {

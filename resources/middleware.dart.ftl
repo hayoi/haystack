@@ -55,11 +55,11 @@ Middleware<AppState> _createLogin(
 Middleware<AppState> _createGet${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    if (action.id == null) {
+    if (action.${clsUNName} == null) {
       idEmpty(next, action);
     } else {
       running(next, action);
-      repository.get${ModelEntryName}(action.id).then((item) {
+      repository.get${ModelEntryName}(action.${clsUNName}).then((item) {
         next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
         completed(next, action);
       }).catchError((error) {
@@ -85,7 +85,7 @@ Middleware<AppState> _createGet${ModelEntryName}s(
     }
     repository
         .get${ModelEntryName}sList(
-            "id",
+            "sorting",
             store.state.${(ModelEntryName)?lower_case}State.page.currPage,
             store.state.${(ModelEntryName)?lower_case}State.page.pageSize)
         .then((map) {
@@ -151,8 +151,8 @@ Middleware<AppState> _createDelete${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
     running(next, action);
-    repository.delete${ModelEntryName}(action.${(ModelEntryName)?lower_case}.id).then((item) {
-      next(Remove${ModelEntryName}Action(id: action.${(ModelEntryName)?lower_case}.id));
+    repository.delete${ModelEntryName}(action.${(ModelEntryName)?lower_case}.${clsUNName}).then((item) {
+      next(Remove${ModelEntryName}Action(${clsUNName}: action.${(ModelEntryName)?lower_case}.${clsUNName}));
       completed(next, action);
     }).catchError((error) {
       catchError(next, action, error);

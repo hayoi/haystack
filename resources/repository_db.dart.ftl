@@ -23,15 +23,15 @@ class ${ModelEntryName}RepositoryDB {
     try {
       var count = 0;
       Database db = await DatabaseClient().db;
-      if (${(ModelEntryName)?lower_case}.id != null) {
+      if (${(ModelEntryName)?lower_case}.${clsUNName} != null) {
         count = Sqflite.firstIntValue(await db
-            .rawQuery("SELECT COUNT(*) FROM ${(ModelEntryName)?lower_case} WHERE id = ?", [${(ModelEntryName)?lower_case}.id]));
+            .rawQuery("SELECT COUNT(*) FROM ${(ModelEntryName)?lower_case} WHERE ${clsUNName} = ?", [${(ModelEntryName)?lower_case}.${clsUNName}]));
       }
       if (count == 0) {
-        ${(ModelEntryName)?lower_case}.id = await db.insert("${(ModelEntryName)?lower_case}", ${(ModelEntryName)?lower_case}.toMap());
+        await db.insert("${(ModelEntryName)?lower_case}", ${(ModelEntryName)?lower_case}.toMap());
       } else {
         await db.update("${(ModelEntryName)?lower_case}", ${(ModelEntryName)?lower_case}.toMap(),
-            where: "id = ?", whereArgs: [${(ModelEntryName)?lower_case}.id]);
+            where: "${clsUNName} = ?", whereArgs: [${(ModelEntryName)?lower_case}.${clsUNName}]);
       }
     } catch (e) {
       print(e.toString());
@@ -39,15 +39,15 @@ class ${ModelEntryName}RepositoryDB {
     return ${(ModelEntryName)?lower_case};
   }
 
-  Future<int> delete${ModelEntryName}(int id) async {
+  Future<int> delete${ModelEntryName}(${clsUNNameType} ${clsUNName}) async {
     Database db = await DatabaseClient().db;
-    return db.delete("${(ModelEntryName)?lower_case}", where: "id = ?", whereArgs: [id]);
+    return db.delete("${(ModelEntryName)?lower_case}", where: "${clsUNName} = ?", whereArgs: [${clsUNName}]);
   }
 
-  Future<${ModelEntryName}> get${ModelEntryName}(int id) async {
+  Future<${ModelEntryName}> get${ModelEntryName}(${clsUNNameType} ${clsUNName}) async {
     Database db = await DatabaseClient().db;
     List<Map> results =
-        await db.query("${(ModelEntryName)?lower_case}", where: "id = ?", whereArgs: [id]);
+        await db.query("${(ModelEntryName)?lower_case}", where: "${clsUNName} = ?", whereArgs: [${clsUNName}]);
     ${ModelEntryName} ${(ModelEntryName)?lower_case} = ${ModelEntryName}.fromMap(results[0]);
     return ${(ModelEntryName)?lower_case};
   }
@@ -55,12 +55,13 @@ class ${ModelEntryName}RepositoryDB {
   Future<${ModelEntryName}> update${ModelEntryName}(${ModelEntryName} ${(ModelEntryName)?lower_case}) async {
     Database db = await DatabaseClient().db;
     var count = Sqflite.firstIntValue(await db
-        .rawQuery("SELECT COUNT(*) FROM ${(ModelEntryName)?lower_case} WHERE id = ?", [${(ModelEntryName)?lower_case}.id]));
+        .rawQuery("SELECT COUNT(*) FROM ${(ModelEntryName)?lower_case} WHERE ${clsUNName} = ?", [${(ModelEntryName)?lower_case}.${clsUNName}]));
     if (count == 0) {
-      ${(ModelEntryName)?lower_case}.id = await db.insert("${(ModelEntryName)?lower_case}", ${(ModelEntryName)?lower_case}.toMap());
+      await db.insert("${(ModelEntryName)?lower_case}", ${(ModelEntryName)?lower_case}.toMap());
+      //${(ModelEntryName)?lower_case}.${clsUNName} =
     } else {
       await db.update("${(ModelEntryName)?lower_case}", ${(ModelEntryName)?lower_case}.toMap(),
-          where: "id = ?", whereArgs: [${(ModelEntryName)?lower_case}.id]);
+          where: "${clsUNName} = ?", whereArgs: [${(ModelEntryName)?lower_case}.${clsUNName}]);
     }
     return ${(ModelEntryName)?lower_case};
   }

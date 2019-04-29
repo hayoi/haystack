@@ -8,7 +8,7 @@ public class FieldModel {
     private boolean optional;
     private String originalValue;
     private boolean enabled;
-    private boolean mutable;
+    private boolean isUnique;
     private String defaultValue;
 
     public FieldModel(String jsonName, String name, String type, String originalValue) {
@@ -68,12 +68,12 @@ public class FieldModel {
         this.enabled = enabled;
     }
 
-    public boolean isMutable() {
-        return mutable;
+    public boolean isUnique() {
+        return isUnique;
     }
 
-    public void setMutable(boolean mutable) {
-        this.mutable = mutable;
+    public void setUnique(boolean unique) {
+        this.isUnique = unique;
     }
 
     public String getDefaultValue() {

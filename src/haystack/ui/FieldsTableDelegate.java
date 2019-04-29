@@ -31,8 +31,9 @@ public class FieldsTableDelegate {
 
         TableColumn column = fieldsTable.getColumnModel().getColumn(0);
         column.setPreferredWidth(30);
+        fieldsTable.getColumnModel().getColumn(1).setPreferredWidth(30);
 
-        TableColumn modifierColumn = fieldsTable.getColumnModel().getColumn(2);
+        TableColumn modifierColumn = fieldsTable.getColumnModel().getColumn(3);
         ComboBox<String> modifierCombobox = new ComboBox<>();
         List<String> typeList = languageResolver.getSupportTypeList();
         for (int i = 0; i < typeList.size(); i++) {
@@ -43,7 +44,7 @@ public class FieldsTableDelegate {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 1; i < columns.length; i++) {
+        for (int i = 2; i < columns.length; i++) {
             fieldsTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
@@ -52,13 +53,18 @@ public class FieldsTableDelegate {
         return fieldsData;
     }
 
-
     class FieldsTableModel extends AbstractTableModel {
 
         private List<FieldModel> items;
+        private FieldModel radioSelection = null;
 
         public FieldsTableModel(List<FieldModel> items) {
             this.items = items;
+            for (FieldModel field : items) {
+                if (field.isUnique()){
+                    radioSelection = field;
+                }
+            }
         }
 
         @Override
@@ -77,10 +83,12 @@ public class FieldsTableDelegate {
                 case 0:
                     return Boolean.class;
                 case 1:
-                    return String.class;
+                    return Boolean.class;
                 case 2:
                     return String.class;
                 case 3:
+                    return String.class;
+                case 4:
                     return String.class;
             }
             return super.getColumnClass(columnIndex);
@@ -93,10 +101,12 @@ public class FieldsTableDelegate {
                 case 0:
                     return fieldData.isEnabled();
                 case 1:
-                    return fieldData.getName();
+                    return fieldData.isUnique();
                 case 2:
-                    return fieldData.getType();
+                    return fieldData.getName();
                 case 3:
+                    return fieldData.getType();
+                case 4:
                     return fieldData.getDefaultValue();
             }
             return null;
@@ -110,12 +120,25 @@ public class FieldsTableDelegate {
                     fieldData.setEnabled((Boolean) aValue);
                     break;
                 case 1:
-                    fieldData.setName((String) aValue);
+                    Boolean a = (Boolean) aValue;
+                    fieldData.setUnique(a);
+                    if (a) {
+                        radioSelection = fieldData;
+                        for (FieldModel field : items) {
+                            if (field != fieldData) {
+                                field.setUnique(false);
+                            }
+                        }
+                        fireTableDataChanged();
+                    }
                     break;
                 case 2:
-                    fieldData.setType((String) aValue);
+                    fieldData.setName((String) aValue);
                     break;
                 case 3:
+                    fieldData.setType((String) aValue);
+                    break;
+                case 4:
                     fieldData.setDefaultValue((String) aValue);
                     break;
             }
@@ -123,7 +146,7 @@ public class FieldsTableDelegate {
 
         @Override
         public boolean isCellEditable(int row, int col) {
-            return col != 5;
+            return true;
         }
 
         @Override

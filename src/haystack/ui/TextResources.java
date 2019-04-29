@@ -72,7 +72,7 @@ public class TextResources {
     }
 
     public String[] getFieldsTableColumns() {
-        return new String[]{"Enabled", "Field name", "type", "Default value"};
+        return new String[]{"Enabled", "Unique", "Field name", "type", "Default value"};
     }
 
     public String getFieldsDialogTitle() {

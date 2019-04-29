@@ -18,7 +18,7 @@ ${ModelEntryName}State _${(ModelEntryName)?lower_case}Status(${ModelEntryName}St
 
 ${ModelEntryName}State _sync${ModelEntryName}s(${ModelEntryName}State state, Sync${ModelEntryName}sAction action) {
   for (var ${(ModelEntryName)?lower_case} in action.${(ModelEntryName)?lower_case}s) {
-    state.${(ModelEntryName)?lower_case}s.update(${(ModelEntryName)?lower_case}.id.toString(), (v) => ${(ModelEntryName)?lower_case}, ifAbsent: () => ${(ModelEntryName)?lower_case});
+    state.${(ModelEntryName)?lower_case}s.update(${(ModelEntryName)?lower_case}.${clsUNName}.toString(), (v) => ${(ModelEntryName)?lower_case}, ifAbsent: () => ${(ModelEntryName)?lower_case});
   }
   state.page.currPage = action.page.currPage;
   state.page.pageSize = action.page.pageSize;
@@ -28,7 +28,7 @@ ${ModelEntryName}State _sync${ModelEntryName}s(${ModelEntryName}State state, Syn
 }
 
 ${ModelEntryName}State _sync${ModelEntryName}(${ModelEntryName}State state, Sync${ModelEntryName}Action action) {
-  state.${(ModelEntryName)?lower_case}s.update(action.${(ModelEntryName)?lower_case}.id.toString(), (u) => action.${(ModelEntryName)?lower_case},
+  state.${(ModelEntryName)?lower_case}s.update(action.${(ModelEntryName)?lower_case}.${clsUNName}.toString(), (u) => action.${(ModelEntryName)?lower_case},
       ifAbsent: () => action.${(ModelEntryName)?lower_case});
   return state.copyWith(${(ModelEntryName)?lower_case}s: state.${(ModelEntryName)?lower_case}s, ${(ModelEntryName)?lower_case}: action.${(ModelEntryName)?lower_case});
 }
@@ -40,5 +40,5 @@ ${ModelEntryName}State _syncProfile(${ModelEntryName}State state, SyncProfileAct
 </#if>
 
 ${ModelEntryName}State _remove${ModelEntryName}(${ModelEntryName}State state, Remove${ModelEntryName}Action action) {
-  return state.copyWith(${(ModelEntryName)?lower_case}s: state.${(ModelEntryName)?lower_case}s..remove(action.id.toString()));
+  return state.copyWith(${(ModelEntryName)?lower_case}s: state.${(ModelEntryName)?lower_case}s..remove(action.${clsUNName}.toString()));
 }

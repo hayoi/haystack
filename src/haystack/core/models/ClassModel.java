@@ -7,13 +7,32 @@ public class ClassModel {
 
     private String packageName;
     private String name;
+
+    private String uniqueField;
+
+    private String uniqueFieldType;
     private boolean genApi;
     private List<FieldModel> fields;
-
     public ClassModel(String name) {
         this.name = name;
         fields = new ArrayList<>();
         genApi = false;
+    }
+
+    public String getUniqueField() {
+        return uniqueField;
+    }
+
+    public void setUniqueField(String uniqueField) {
+        this.uniqueField = uniqueField;
+    }
+
+    public String getUniqueFieldType() {
+        return uniqueFieldType;
+    }
+
+    public void setUniqueFieldType(String uniqueFieldType) {
+        this.uniqueFieldType = uniqueFieldType;
     }
 
     public String getPackageName() {

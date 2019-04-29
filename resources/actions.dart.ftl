@@ -12,9 +12,9 @@ class Get${ModelEntryName}sAction {
 
 class Get${ModelEntryName}Action {
   final String actionName = "Get${ModelEntryName}Action";
-  final int id;
+  final ${clsUNNameType} ${clsUNName};
 
-  Get${ModelEntryName}Action({@required this.id});
+  Get${ModelEntryName}Action({@required this.${clsUNName}});
 }
 
 class ${ModelEntryName}StatusAction {
@@ -71,9 +71,9 @@ class Delete${ModelEntryName}Action {
 
 class Remove${ModelEntryName}Action {
   final String actionName = "Remove${ModelEntryName}Action";
-  final int id;
+  final ${clsUNNameType} ${clsUNName};
 
-  Remove${ModelEntryName}Action({@required this.id});
+  Remove${ModelEntryName}Action({@required this.${clsUNName}});
 }
 
 <#if ModelEntryName=="User">
