@@ -223,7 +223,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         fileSaver.setListener(fileName -> {
             int ok = Messages.showOkCancelDialog(
                     textResources.getReplaceDialogMessage(fileName),
-                    textResources.getReplaceDialogTitle(),
+                    textResources.getReplaceDialogTitle(), "OK", "NO",
                     UIUtil.getQuestionIcon());
             return ok == 0;
         });
