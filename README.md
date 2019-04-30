@@ -60,6 +60,18 @@ Haystack is an AS/Intellij IDEA plugin to rapid construct a Flutter app architec
         next(SyncPhotosAction(page: Page(), photos: map));
       }
 ```
+10. bind data to UI
+  home_view.dart
+  ```
+class _PhotoListItem extends ListTile {
+  _PhotoListItem({Photo photo, GestureTapCallback onTap})
+      : super(
+            title: Text(photo.id),
+            subtitle: Text(photo.views==null?"0":photo.views.toString()),
+            leading: CircleAvatar(child: Image.network(photo.urls.thumb)),
+            onTap: onTap);
+}
+  ```
 You can run the project  
 ![app](https://raw.githubusercontent.com/hayoi/haystack/master/image/app.png)
 
