@@ -29,6 +29,37 @@ Haystack is an AS/Intellij IDEA plugin to rapid construct a Flutter app architec
     };
   }
 ```
+9. configure server and decode data from server.
+  network_common.dart
+```
+    Dio dio = new Dio();
+    // Set default configs
+    dio.options.baseUrl = 'https://unsplash.com/';
+```
+  photo_repository.dart
+```
+  Future<List<Photo>> getPhotosList(String sorting, int page, int limit) {
+    return new NetworkCommon().dio.get("napi/photos").then((d) {
+      var results = new NetworkCommon().decodeResp(d);
+      List<Photo> list =
+      results.map<Photo>((item) => new Photo.fromJson(item)).toList();
+      return list;
+    });
+  }
+  ```
+  photo_middleware.dart
+```
+    repository
+        .getPhotosList(
+            "sorting",
+            store.state.photoState.page.currPage,
+            store.state.photoState.page.pageSize)
+        .then((map) {
+      if (map.isNotEmpty) {
+
+        next(SyncPhotosAction(page: Page(), photos: map));
+      }
+```
 You can run the project  
 ![app](https://raw.githubusercontent.com/hayoi/haystack/master/image/app.png)
 
