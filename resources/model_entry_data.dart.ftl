@@ -3,6 +3,11 @@ import 'package:intl/intl.dart';
 <#if genDatabase>
 import 'package:sqflite/sqflite.dart';
 </#if>
+<#list Fields as item>
+<#if item.originalValue == "Object">
+import 'package:${ProjectName}/data/model/${item.jsonName}_data.dart';
+</#if>
+</#list>
 
 class ${ModelEntryName} {
   <#list Fields as item>
@@ -22,7 +27,9 @@ class ${ModelEntryName} {
   ${ModelEntryName}.fromJson(Map<String, dynamic>  map) :
         <#list Fields as item>
         <#if item.originalValue == "Object">
-        ${item.name} = ${item.type}.fromMap(map['${item.jsonName}'])<#if item_has_next>,<#else>;</#if>
+        ${item.name} = map['${item.jsonName}'] == null
+            ? null
+            : ${item.type}.fromJson(map['${item.jsonName}'])<#if item_has_next>,<#else>;</#if>
         <#elseif item.type == "List<int>">
         ${item.name} = map['${item.jsonName}'] == null
             ? []
@@ -78,7 +85,7 @@ class ${ModelEntryName} {
     db.execute("""
             CREATE TABLE IF NOT EXISTS ${(ModelEntryName)?lower_case} (
               <#list Fields as item>
-              <#if item.name == "${clsUNName}">
+              <#if item.name == "${clsUNName!}">
               ${item.jsonName} <#if item.type == "int">INTEGER<#elseif item.type == "String">TEXT<#elseif item.type == "Float">REAL<#elseif item.type == "bool">INTEGER<#elseif item.type == "DateTime">TEXT</#if> PRIMARY KEY<#if item_has_next>,<#else> </#if>
               <#elseif item.originalValue != "Object">
               ${item.jsonName} <#if item.type == "int">INTEGER<#elseif item.type == "String">TEXT<#elseif item.type == "Float">REAL<#elseif item.type == "bool">INTEGER<#elseif item.type == "DateTime">TEXT</#if><#if item_has_next>,<#else> </#if>
@@ -88,7 +95,7 @@ class ${ModelEntryName} {
 
   ${ModelEntryName}.fromMap(Map<String, dynamic>  map) :
         <#list Fields as item>
-        <#if (item.type == "int" || item.type == "String")>
+        <#if (item.type == "int" || item.type == "String" || item.type == "double")>
         ${item.name} = map['${item.jsonName}']<#if item_has_next>,<#else>;</#if>
         <#elseif item.type?starts_with("List")>
         ${item.name} = json.decode(map['${item.jsonName}'])<#if item_has_next>,<#else>;</#if>
@@ -102,7 +109,7 @@ class ${ModelEntryName} {
 
   Map<String, dynamic> toMap() => {
         <#list Fields as item>
-        <#if (item.type == "int" || item.type == "String")>
+        <#if (item.type == "int" || item.type == "String" || item.type == "double")>
         '${item.jsonName}': ${item.name},
         <#elseif item.type?starts_with("List")>
         '${item.jsonName}': ${item.name}.toString(),

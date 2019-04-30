@@ -25,8 +25,15 @@
     ]]>
   </description>
 
-  <!--<change-notes>-->
-  <!--</change-notes>-->
+  <change-notes>
+    <![CDATA[
+    <head>1.0.8:</head>
+    <ul>
+      <li>add unique property in class field.</li>
+      <li>bug fix</li>
+    </ul>
+    ]]>
+  </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
   <idea-version since-build="173.0"/>

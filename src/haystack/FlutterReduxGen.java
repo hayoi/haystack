@@ -192,7 +192,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
                 !new File(selectGroup.getPath() + "/trans/").exists() ||
                 !new File(selectGroup.getPath() + "/data/").exists()) {
             int result = Messages.showOkCancelDialog(project, "You must init the project first!"
-                    , "Init Project", "OK", "NO", Messages.getWarningIcon());
+                    , "Init Project", "OK", "NO", Messages.getQuestionIcon());
             if (result == Messages.OK) {
                 initTemplate();
                 genStructure(pageModel);
@@ -271,18 +271,6 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         }
         if (!pageModel.isUIOnly) {
             for (ClassModel classModel : pageModel.classModels) {
-                Map<String, Object> map = new HashMap<String, Object>(rootMap);
-                if (classModel.getName().equals(pageModel.modelName)) {
-                    map.put("genDatabase", classModel.isGenDBModule());
-
-                    if (classModel.getUniqueField() != null) {
-                        map.put("clsUNName", classModel.getUniqueField());
-                        map.put("clsUNNameType", classModel.getUniqueFieldType());
-                    }
-                }
-                generateModelEntry(classModel, map);
-            }
-            for (ClassModel classModel : pageModel.classModels) {
                 if (classModel.getName().equals(pageModel.modelName)) {
                     rootMap.put("genDatabase", classModel.isGenDBModule());
 
@@ -291,6 +279,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
                         rootMap.put("clsUNNameType", classModel.getUniqueFieldType());
                     }
                 }
+                generateModelEntry(classModel, rootMap);
             }
 
             generateRepository(rootMap);

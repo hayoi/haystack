@@ -12,7 +12,7 @@ class ${PageName}ViewModel {
   final ActionReport get${ModelEntryName}sReport;
   </#if>
   <#if viewModelGet>
-  final Function(${clsUNNameType}) get${ModelEntryName};
+  final Function(<#if clsUNNameType??>${ModelEntryName}<#else></#if>) get${ModelEntryName};
   final ActionReport get${ModelEntryName}Report;
   </#if>
   <#if viewModelCreate>
@@ -72,8 +72,8 @@ class ${PageName}ViewModel {
       get${ModelEntryName}sReport: store.state.${(ModelEntryName)?lower_case}State.status["Get${ModelEntryName}sAction"],
       </#if>
       <#if viewModelGet>
-      get${ModelEntryName}: (${clsUNName}) {
-        store.dispatch(Get${ModelEntryName}Action(${clsUNName}: ${clsUNName}));
+      get${ModelEntryName}: (<#if clsUNNameType??>${clsUNName!}<#else></#if>) {
+        store.dispatch(Get${ModelEntryName}Action(<#if clsUNNameType??>${clsUNName!}: ${clsUNName!}<#else></#if>));
       },
       get${ModelEntryName}Report: store.state.${(ModelEntryName)?lower_case}State.status["Get${ModelEntryName}Action"],
       </#if>

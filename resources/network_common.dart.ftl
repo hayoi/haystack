@@ -16,7 +16,7 @@ class NetworkCommon {
   dynamic decodeResp(d) {
     // ignore: cast_to_non_type
     var response = d as Response;
-    final String jsonBody = response.data;
+    final dynamic jsonBody = response.data;
     final statusCode = response.statusCode;
 
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
@@ -41,7 +41,10 @@ class NetworkCommon {
       /// Do something before request is sent
       /// set the token
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      options.headers["Authorization"] = "Bearer ${r"${prefs.getString('token')}"}";
+      String token = prefs.getString('token');
+      if (token != null) {
+        options.headers["Authorization"] = "Bearer " + token;
+      }
 
       print("Pre request:${r"${options.method}"},${r"${options.baseUrl}"}${r"${options.path}"}");
       print("Pre request:${r"${options.headers.toString()}"}");

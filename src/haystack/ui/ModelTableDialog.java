@@ -1,5 +1,7 @@
 package haystack.ui;
 
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import haystack.core.LanguageResolver;
 import haystack.core.models.ClassModel;
 import haystack.core.models.FieldModel;
@@ -90,7 +92,7 @@ public class ModelTableDialog extends JDialog implements ClassesListDelegate.OnC
 
     private void onOK() {
         if (callbacks != null) {
-
+            boolean unique = false;
             for (ClassModel classModel : classModelList) {
                 String className = classNames.get(classModel.getName());
                 if (className != null) {
@@ -105,6 +107,7 @@ public class ModelTableDialog extends JDialog implements ClassesListDelegate.OnC
                         if (field.isUnique()) {
                             classModel.setUniqueField(field.getName());
                             classModel.setUniqueFieldType(field.getType());
+                            unique = true;
                         }
                         if (!field.getType().equals("int") && !field.getType().equals("double") && !field.getType().equals("String") && !field.getType().equals("bool")) {
                             field.setDefaultValue("null");
@@ -115,6 +118,10 @@ public class ModelTableDialog extends JDialog implements ClassesListDelegate.OnC
                         }
                     }
                 }
+            }
+            if (!unique){
+                Messages.showMessageDialog(pageModel.modelName+" class must have a unique field！", "Error", Messages.getErrorIcon());
+                return;
             }
             pageModel.classModels = classModelList;
             callbacks.onModelsReady(pageModel);
