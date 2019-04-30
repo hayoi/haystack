@@ -7,7 +7,7 @@ Haystack is an AS/Intellij IDEA plugin to rapid construct a Flutter app architec
   - Generate CustomScrollView widgets with FixedExtentLit, Grid, BoxAdapter as you wish.
 
 ## Usage
-1. Install the plugin.
+1. Search “Flutter App Template Generator” in Plugin Market and install the plugin.
 2. Create a Flutter project with AS or Intellij IEDA.
 3. Right tap the lib folder in AS project structure, select "New" -> "Generate App Template".
 4. Click the "Init project" to init the project(Just init project once only).
