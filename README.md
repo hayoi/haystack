@@ -13,12 +13,12 @@ Haystack is an AS/Intellij IDEA plugin to rapid construct a Flutter app architec
 4. Click the "Init project" to init the project(Just init project once only).
 5. Enter the information of your page and tap "OK".  
 ![step 5](https://raw.githubusercontent.com/hayoi/haystack/master/image/init_page.jpg)
-6. Configure class field and generate.  
+6. Configure class field and tap ”Generate“.(the model class must has a unique field)
 ![step 6](https://raw.githubusercontent.com/hayoi/haystack/master/image/model.png)
 7. the plugin will generate code  
 ![code](https://raw.githubusercontent.com/hayoi/haystack/master/image/structure.png)
 8. Add your page to the routes in the main.dart  
-```
+```dart
   Map<String, WidgetBuilder> _routes() {
     return <String, WidgetBuilder>{
       "/settings": (_) => SettingsOptionsPage(
@@ -31,13 +31,13 @@ Haystack is an AS/Intellij IDEA plugin to rapid construct a Flutter app architec
 ```
 9. configure server and decode data from server.
   network_common.dart
-```
+```dart
     Dio dio = new Dio();
     // Set default configs
     dio.options.baseUrl = 'https://unsplash.com/';
 ```
   photo_repository.dart
-```
+```dart
   Future<List<Photo>> getPhotosList(String sorting, int page, int limit) {
     return new NetworkCommon().dio.get("napi/photos").then((d) {
       var results = new NetworkCommon().decodeResp(d);
@@ -48,7 +48,7 @@ Haystack is an AS/Intellij IDEA plugin to rapid construct a Flutter app architec
   }
   ```
   photo_middleware.dart
-```
+```dart
     repository
         .getPhotosList(
             "sorting",
@@ -62,7 +62,7 @@ Haystack is an AS/Intellij IDEA plugin to rapid construct a Flutter app architec
 ```
 10. bind data to UI
   home_view.dart
-  ```
+  ```dart
 class _PhotoListItem extends ListTile {
   _PhotoListItem({Photo photo, GestureTapCallback onTap})
       : super(
