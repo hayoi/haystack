@@ -15,18 +15,21 @@ class NetworkCommon {
 
   dynamic decodeResp(d) {
     // ignore: cast_to_non_type
-    var response = d as Response;
-    final dynamic jsonBody = response.data;
-    final statusCode = response.statusCode;
+    if (d is Response) {
+      final dynamic jsonBody = d.data;
+      final statusCode = d.statusCode;
 
-    if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw new Exception("statusCode: $statusCode");
-    }
+      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+        throw new Exception("statusCode: $statusCode");
+      }
 
-    if (jsonBody is String) {
-      return _decoder.convert(jsonBody);
+      if (jsonBody is String) {
+        return _decoder.convert(jsonBody);
+      } else {
+        return jsonBody;
+      }
     } else {
-      return jsonBody;
+      throw d;
     }
   }
 
@@ -34,8 +37,8 @@ class NetworkCommon {
     Dio dio = new Dio();
     // Set default configs
     dio.options.baseUrl = 'http://192.168.1.186:5000/';
-    dio.options.connectTimeout = 5000; //5s
-    dio.options.receiveTimeout = 3000;
+    dio.options.connectTimeout = 50000; //5s
+    dio.options.receiveTimeout = 30000;
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       /// Do something before request is sent

@@ -12,7 +12,7 @@ class ${PageName}ViewModel {
   final ActionReport get${ModelEntryName}sReport;
   </#if>
   <#if viewModelGet>
-  final Function(<#if clsUNNameType??>${ModelEntryName}<#else></#if>) get${ModelEntryName};
+  final Function(${clsUNNameType!}) get${ModelEntryName};
   final ActionReport get${ModelEntryName}Report;
   </#if>
   <#if viewModelCreate>
