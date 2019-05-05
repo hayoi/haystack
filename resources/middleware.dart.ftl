@@ -41,6 +41,7 @@ List<Middleware<AppState>> create${ModelEntryName}Middleware([
 Middleware<AppState> _createLogin(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
+    if (checkActionRunning(store, action)) return;
     running(next, action);
     repository.login(action.l).then((item) {
       next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
@@ -55,6 +56,7 @@ Middleware<AppState> _createLogin(
 Middleware<AppState> _createGet${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
+    if (checkActionRunning(store, action)) return;
     if (action.${clsUNName} == null) {
       idEmpty(next, action);
     } else {
@@ -72,6 +74,7 @@ Middleware<AppState> _createGet${ModelEntryName}(
 Middleware<AppState> _createGet${ModelEntryName}s(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
+    if (checkActionRunning(store, action)) return;
     running(next, action);
     if (action.isRefresh) {
       store.state.${(ModelEntryName)?lower_case}State.page.currPage = 1;
@@ -124,6 +127,7 @@ Middleware<AppState> _createGet${ModelEntryName}s(
 Middleware<AppState> _createCreate${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
+    if (checkActionRunning(store, action)) return;
     running(next, action);
     repository.create${ModelEntryName}(action.${(ModelEntryName)?lower_case}).then((item) {
       next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
@@ -137,6 +141,7 @@ Middleware<AppState> _createCreate${ModelEntryName}(
 Middleware<AppState> _createUpdate${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
+    if (checkActionRunning(store, action)) return;
     running(next, action);
     repository.update${ModelEntryName}(action.${(ModelEntryName)?lower_case}).then((item) {
       next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
@@ -150,6 +155,7 @@ Middleware<AppState> _createUpdate${ModelEntryName}(
 Middleware<AppState> _createDelete${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
+    if (checkActionRunning(store, action)) return;
     running(next, action);
     repository.delete${ModelEntryName}(action.${(ModelEntryName)?lower_case}.${clsUNName}).then((item) {
       next(Remove${ModelEntryName}Action(${clsUNName}: action.${(ModelEntryName)?lower_case}.${clsUNName}));
@@ -158,6 +164,14 @@ Middleware<AppState> _createDelete${ModelEntryName}(
       catchError(next, action, error);
     });
   };
+}
+
+bool checkActionRunning(Store<AppState> store, action) {
+  if (store.state.photoState.status[action.actionName]?.status ==
+      ActionStatus.running) {
+    return true; // do nothing if there is a same action running.
+  }
+  return false;
 }
 
 void catchError(NextDispatcher next, action, error) {

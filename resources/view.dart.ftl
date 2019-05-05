@@ -43,7 +43,7 @@ class ${PageName}ViewContent extends StatefulWidget {
   _${PageName}ViewContentState createState() => _${PageName}ViewContentState();
 }
 
-<#if FabInAppBar>
+<#if FabInAppBar || GenerateCustomScrollView>
 const double _fabHalfSize = 28.0;
 
 </#if>
@@ -62,6 +62,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   List pages = ["Home","Notice","Mine"];
   </#if>
   <#if GenerateCustomScrollView>
+  final double _appBarHeight = 256.0;
   final double _appBarHeight = 256.0;
   </#if>
   <#if viewModelCreate>
