@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.github.hayoi.haystack</id>
   <name>Flutter App Template Generator</name>
-  <version>1.0.8</version>
+  <version>1.0.9</version>
   <vendor email="haystack1206@gmail.com" url="https://github.com/hayoi/haystack">hayoi</vendor>
 
   <description>
@@ -27,6 +27,11 @@
 
   <change-notes>
     <![CDATA[
+    <head>1.0.9:</head>
+    <ul>
+      <li>throw exception when http request fail</li>
+      <li>bug fix</li>
+    </ul>
     <head>1.0.8:</head>
     <ul>
       <li>add unique property in class field.</li>
