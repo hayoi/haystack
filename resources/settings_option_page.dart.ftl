@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:${ProjectName}/features/settings/settings_option.dart';
 import 'package:${ProjectName}/features/settings/text_scale.dart';
 import 'package:${ProjectName}/features/settings/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const double _kItemHeight = 48.0;
 
@@ -70,6 +71,9 @@ class _ThemeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return new _BooleanItem('Dark Theme', isDark, (bool value) {
+      SharedPreferences.getInstance().then((prefs) {
+        prefs.setBool("isDark", value);
+      });
       if (value) {
         AppTheme.configure(ThemeName.DARK);
       } else {
