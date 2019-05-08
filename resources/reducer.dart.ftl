@@ -6,6 +6,9 @@ final ${(ModelEntryName)?lower_case}Reducer = combineReducers<${ModelEntryName}S
   TypedReducer<${ModelEntryName}State, ${ModelEntryName}StatusAction>(_${(ModelEntryName)?lower_case}Status),
   TypedReducer<${ModelEntryName}State, Sync${ModelEntryName}sAction>(_sync${ModelEntryName}s),
   TypedReducer<${ModelEntryName}State, Sync${ModelEntryName}Action>(_sync${ModelEntryName}),
+  <#if ModelEntryName == "User">
+  TypedReducer<UserState, SyncProfileAction>(_syncProfile),
+  </#if>
   TypedReducer<${ModelEntryName}State, Remove${ModelEntryName}Action>(_remove${ModelEntryName}),
 ]);
 

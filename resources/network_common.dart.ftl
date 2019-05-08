@@ -110,7 +110,7 @@ class NetworkCommon {
       return response; // continue
     }, onError: (DioError e) {
       // Do something with response error
-      return DioError; //continue
+      return e; //continue
     }));
     return dio;
   }
