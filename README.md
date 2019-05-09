@@ -75,4 +75,5 @@ class _PhotoListItem extends ListTile {
 You can run the project  
 ![app](https://raw.githubusercontent.com/hayoi/haystack/master/image/app.png)
 
-[example](https://github.com/hayoi/redux_example)
+1. [Create first app](https://github.com/hayoi/haystack/wiki/Create-First-App)
+2. [Photo Viewer](https://github.com/hayoi/photo)
