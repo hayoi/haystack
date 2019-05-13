@@ -3,7 +3,6 @@ import 'package:${ProjectName}/redux/${(ModelEntryName)?lower_case}/${(ModelEntr
 import 'package:${ProjectName}/redux/${(ModelEntryName)?lower_case}/${(ModelEntryName)?lower_case}_state.dart';
 
 final ${(ModelEntryName)?lower_case}Reducer = combineReducers<${ModelEntryName}State>([
-  TypedReducer<${ModelEntryName}State, ${ModelEntryName}StatusAction>(_${(ModelEntryName)?lower_case}Status),
   TypedReducer<${ModelEntryName}State, Sync${ModelEntryName}sAction>(_sync${ModelEntryName}s),
   TypedReducer<${ModelEntryName}State, Sync${ModelEntryName}Action>(_sync${ModelEntryName}),
   <#if ModelEntryName == "User">
@@ -11,13 +10,6 @@ final ${(ModelEntryName)?lower_case}Reducer = combineReducers<${ModelEntryName}S
   </#if>
   TypedReducer<${ModelEntryName}State, Remove${ModelEntryName}Action>(_remove${ModelEntryName}),
 ]);
-
-${ModelEntryName}State _${(ModelEntryName)?lower_case}Status(${ModelEntryName}State state, ${ModelEntryName}StatusAction action) {
-  var status = state.status ?? Map();
-  status.update(action.report.actionName, (v) => action.report,
-      ifAbsent: () => action.report);
-  return state.copyWith(status: status);
-}
 
 ${ModelEntryName}State _sync${ModelEntryName}s(${ModelEntryName}State state, Sync${ModelEntryName}sAction action) {
   for (var ${(ModelEntryName)?lower_case} in action.${(ModelEntryName)?lower_case}s) {

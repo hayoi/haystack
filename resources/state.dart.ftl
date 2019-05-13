@@ -9,7 +9,6 @@ class ${ModelEntryName}State {
   </#if>
   final Map<String, ${ModelEntryName}> ${(ModelEntryName)?lower_case}s;
   final ${ModelEntryName} ${(ModelEntryName)?lower_case};
-  final Map<String, ActionReport> status;
   final Page page;
 
   ${ModelEntryName}State({
@@ -18,7 +17,6 @@ class ${ModelEntryName}State {
     </#if>
     @required this.${(ModelEntryName)?lower_case}s,
     @required this.${(ModelEntryName)?lower_case},
-    @required this.status,
     @required this.page,
   });
 
@@ -28,7 +26,6 @@ class ${ModelEntryName}State {
     </#if>
     Map<String, ${ModelEntryName}> ${(ModelEntryName)?lower_case}s,
     ${ModelEntryName} ${(ModelEntryName)?lower_case},
-    Map<String, ActionReport> status,
     Page page,
   }) {
     return ${ModelEntryName}State(
@@ -37,7 +34,6 @@ class ${ModelEntryName}State {
       </#if>
       ${(ModelEntryName)?lower_case}s: ${(ModelEntryName)?lower_case}s ?? this.${(ModelEntryName)?lower_case}s ?? Map(),
       ${(ModelEntryName)?lower_case}: ${(ModelEntryName)?lower_case} ?? this.${(ModelEntryName)?lower_case},
-      status: status ?? this.status,
       page: page ?? this.page,
     );
   }

@@ -1,35 +1,31 @@
+import 'dart:async';
 import 'package:redux/redux.dart';
 import 'package:${ProjectName}/data/model/${(ModelEntryName)?lower_case}_data.dart';
 import 'package:${ProjectName}/redux/action_report.dart';
 import 'package:${ProjectName}/redux/app/app_state.dart';
+import 'package:${ProjectName}/features/action_callback.dart';
 import 'package:${ProjectName}/redux/${(ModelEntryName)?lower_case}/${(ModelEntryName)?lower_case}_actions.dart';
 
 class ${PageName}ViewModel {
   final ${ModelEntryName} ${(ModelEntryName)?lower_case};
   <#if viewModelQuery || GenerateListView>
   final List<${ModelEntryName}> ${(ModelEntryName)?lower_case}s;
-  final Function(bool) get${ModelEntryName}s;
-  final ActionReport get${ModelEntryName}sReport;
+  final Function(bool, ActionCallback) get${ModelEntryName}s;
   </#if>
   <#if viewModelGet>
-  final Function(${clsUNNameType!}) get${ModelEntryName};
-  final ActionReport get${ModelEntryName}Report;
+  final Function(${clsUNNameType!}, ActionCallback) get${ModelEntryName};
   </#if>
   <#if viewModelCreate>
-  final Function(${ModelEntryName}) create${ModelEntryName};
-  final ActionReport create${ModelEntryName}Report;
+  final Function(${ModelEntryName}, ActionCallback) create${ModelEntryName};
   </#if>
   <#if viewModelUpdate>
-  final Function(${ModelEntryName}) update${ModelEntryName};
-  final ActionReport update${ModelEntryName}Report;
+  final Function(${ModelEntryName}, ActionCallback) update${ModelEntryName};
   </#if>
   <#if viewModelDelete>
-  final Function(${ModelEntryName}) delete${ModelEntryName};
-  final ActionReport delete${ModelEntryName}Report;
+  final Function(${ModelEntryName}, ActionCallback) delete${ModelEntryName};
   </#if>
   <#if PageType == "LOGIN">
-  final Function(Login) login;
-  final ActionReport loginReport;
+  final Function(Login, ActionCallback) login;
   </#if>
 
   ${PageName}ViewModel({
@@ -37,27 +33,21 @@ class ${PageName}ViewModel {
     <#if viewModelQuery || GenerateListView>
     this.${(ModelEntryName)?lower_case}s,
     this.get${ModelEntryName}s,
-    this.get${ModelEntryName}sReport,
     </#if>
     <#if viewModelGet>
     this.get${ModelEntryName},
-    this.get${ModelEntryName}Report,
     </#if>
     <#if viewModelCreate>
     this.create${ModelEntryName},
-    this.create${ModelEntryName}Report,
     </#if>
     <#if viewModelUpdate>
     this.update${ModelEntryName},
-    this.update${ModelEntryName}Report,
     </#if>
     <#if viewModelDelete>
     this.delete${ModelEntryName},
-    this.delete${ModelEntryName}Report,
     </#if>
     <#if PageType == "LOGIN">
     this.login,
-    this.loginReport,
     </#if>
   });
 
@@ -66,40 +56,58 @@ class ${PageName}ViewModel {
       ${(ModelEntryName)?lower_case}: store.state.${(ModelEntryName)?lower_case}State.${(ModelEntryName)?lower_case},
       <#if viewModelQuery || GenerateListView>
       ${(ModelEntryName)?lower_case}s: store.state.${(ModelEntryName)?lower_case}State.${(ModelEntryName)?lower_case}s.values.toList() ?? [],
-      get${ModelEntryName}s: (isRefresh) {
-        store.dispatch(Get${ModelEntryName}sAction(isRefresh: isRefresh));
+      get${ModelEntryName}s: (isRefresh, callback) {
+        final Completer<ActionReport> completer = Completer<ActionReport>();
+        store.dispatch(Get${ModelEntryName}sAction(isRefresh: isRefresh, completer: completer));
+        completer.future.then((status) {
+          callback(status);
+        }).catchError((error) => callback(error));
       },
-      get${ModelEntryName}sReport: store.state.${(ModelEntryName)?lower_case}State.status["Get${ModelEntryName}sAction"],
       </#if>
       <#if viewModelGet>
-      get${ModelEntryName}: (<#if clsUNNameType??>${clsUNName!}<#else></#if>) {
-        store.dispatch(Get${ModelEntryName}Action(<#if clsUNNameType??>${clsUNName!}: ${clsUNName!}<#else></#if>));
+      get${ModelEntryName}: (<#if clsUNNameType??>${clsUNName!}, callback<#else>callback</#if>) {
+        final Completer<ActionReport> completer = Completer<ActionReport>();
+        store.dispatch(Get${ModelEntryName}Action(<#if clsUNNameType??>${clsUNName!}: ${clsUNName!}, completer: completer<#else>completer: completer</#if>));
+        completer.future.then((status) {
+          callback(status);
+        }).catchError((error) => callback(error));
       },
-      get${ModelEntryName}Report: store.state.${(ModelEntryName)?lower_case}State.status["Get${ModelEntryName}Action"],
       </#if>
       <#if viewModelCreate>
-      create${ModelEntryName}: (${(ModelEntryName)?lower_case}) {
-        store.dispatch(Create${ModelEntryName}Action(${(ModelEntryName)?lower_case}: ${(ModelEntryName)?lower_case}));
+      create${ModelEntryName}: (${(ModelEntryName)?lower_case}, callback) {
+        final Completer<ActionReport> completer = Completer<ActionReport>();
+        store.dispatch(Create${ModelEntryName}Action(${(ModelEntryName)?lower_case}: ${(ModelEntryName)?lower_case}, completer: completer));
+        completer.future.then((status) {
+          callback(status);
+        }).catchError((error) => callback(error));
       },
-      create${ModelEntryName}Report: store.state.${(ModelEntryName)?lower_case}State.status["Create${ModelEntryName}Action"],
       </#if>
       <#if viewModelUpdate>
-      update${ModelEntryName}: (${(ModelEntryName)?lower_case}) {
-        store.dispatch(Update${ModelEntryName}Action(${(ModelEntryName)?lower_case}: ${(ModelEntryName)?lower_case}));
+      update${ModelEntryName}: (${(ModelEntryName)?lower_case}, callback) {
+        final Completer<ActionReport> completer = Completer<ActionReport>();
+        store.dispatch(Update${ModelEntryName}Action(${(ModelEntryName)?lower_case}: ${(ModelEntryName)?lower_case}, completer: completer));
+        completer.future.then((status) {
+          callback(status);
+        }).catchError((error) => callback(error));
       },
-      update${ModelEntryName}Report: store.state.${(ModelEntryName)?lower_case}State.status["Update${ModelEntryName}Action"],
       </#if>
       <#if viewModelDelete>
-      delete${ModelEntryName}: (${(ModelEntryName)?lower_case}) {
-        store.dispatch(Delete${ModelEntryName}Action(${(ModelEntryName)?lower_case}: ${(ModelEntryName)?lower_case}));
+      delete${ModelEntryName}: (${(ModelEntryName)?lower_case}, callback) {
+        final Completer<ActionReport> completer = Completer<ActionReport>();
+        store.dispatch(Delete${ModelEntryName}Action(${(ModelEntryName)?lower_case}: ${(ModelEntryName)?lower_case}, completer: completer));
+        completer.future.then((status) {
+          callback(status);
+        }).catchError((error) => callback(error));
       },
-      delete${ModelEntryName}Report: store.state.${(ModelEntryName)?lower_case}State.status["Delete${ModelEntryName}Action"],
       </#if>
       <#if PageType == "LOGIN">
-      login: (l) {
-        store.dispatch(${ModelEntryName}LoginAction(l: l));
+      login: (l, callback) {
+        final Completer<ActionReport> completer = Completer<ActionReport>();
+        store.dispatch(${ModelEntryName}LoginAction(l: l, completer: completer));
+        completer.future.then((status) {
+          callback(status);
+        }).catchError((error) => callback(error));
       },
-      loginReport: store.state.userState.status["UserLoginAction"],
       </#if>
     );
   }

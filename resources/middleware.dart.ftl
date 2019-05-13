@@ -41,13 +41,12 @@ List<Middleware<AppState>> create${ModelEntryName}Middleware([
 Middleware<AppState> _createLogin(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    if (checkActionRunning(store, action)) return;
-    running(next, action);
+    running(action);
     repository.login(action.l).then((item) {
       next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
-      completed(next, action);
+      completed(action);
     }).catchError((error) {
-      catchError(next, action, error);
+      catchError(action, error);
     });
   };
 }
@@ -56,16 +55,15 @@ Middleware<AppState> _createLogin(
 Middleware<AppState> _createGet${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    if (checkActionRunning(store, action)) return;
     if (action.${clsUNName} == null) {
-      idEmpty(next, action);
+      idEmpty(action);
     } else {
-      running(next, action);
+      running(action);
       repository.get${ModelEntryName}(action.${clsUNName}).then((item) {
         next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
-        completed(next, action);
+        completed(action);
       }).catchError((error) {
-        catchError(next, action, error);
+        catchError(action, error);
       });
     }
   };
@@ -74,15 +72,14 @@ Middleware<AppState> _createGet${ModelEntryName}(
 Middleware<AppState> _createGet${ModelEntryName}s(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    if (checkActionRunning(store, action)) return;
-    running(next, action);
+    running(action);
     if (action.isRefresh) {
       store.state.${(ModelEntryName)?lower_case}State.page.currPage = 1;
       store.state.${(ModelEntryName)?lower_case}State.${(ModelEntryName)?lower_case}s.clear();
     } else {
       var p = ++store.state.${(ModelEntryName)?lower_case}State.page.currPage;
       if (p > ++store.state.${(ModelEntryName)?lower_case}State.page.totalPage) {
-        noMoreItem(next, action);
+        noMoreItem(action);
         return;
       }
     }
@@ -102,9 +99,9 @@ Middleware<AppState> _createGet${ModelEntryName}s(
             l.map<${ModelEntryName}>((item) => new ${ModelEntryName}.fromJson(item)).toList();
         next(Sync${ModelEntryName}sAction(page: page, ${(ModelEntryName)?lower_case}s: list));
       }
-      completed(next, action);
+      completed(action);
     }).catchError((error) {
-      catchError(next, action, error);
+      catchError(action, error);
     });
 //    repositoryDB
 //        .get${ModelEntryName}sList(
@@ -116,10 +113,10 @@ Middleware<AppState> _createGet${ModelEntryName}s(
 //      if (map.isNotEmpty) {
 //        var page = Page(currPage: store.state.${(ModelEntryName)?lower_case}State.page.currPage + 1);
 //        next(Sync${ModelEntryName}sAction(page: page, ${(ModelEntryName)?lower_case}s: map));
-//        completed(next, action);
+//        completed(action);
 //      }
 //    }).catchError((error) {
-//      catchError(next, action, error);
+//      catchError(action, error);
 //    });
   };
 }
@@ -127,13 +124,12 @@ Middleware<AppState> _createGet${ModelEntryName}s(
 Middleware<AppState> _createCreate${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    if (checkActionRunning(store, action)) return;
-    running(next, action);
+    running(action);
     repository.create${ModelEntryName}(action.${(ModelEntryName)?lower_case}).then((item) {
       next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
-      completed(next, action);
+      completed(action);
     }).catchError((error) {
-      catchError(next, action, error);
+      catchError(action, error);
     });
   };
 }
@@ -141,13 +137,12 @@ Middleware<AppState> _createCreate${ModelEntryName}(
 Middleware<AppState> _createUpdate${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    if (checkActionRunning(store, action)) return;
-    running(next, action);
+    running(action);
     repository.update${ModelEntryName}(action.${(ModelEntryName)?lower_case}).then((item) {
       next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
-      completed(next, action);
+      completed(action);
     }).catchError((error) {
-      catchError(next, action, error);
+      catchError(action, error);
     });
   };
 }
@@ -155,61 +150,12 @@ Middleware<AppState> _createUpdate${ModelEntryName}(
 Middleware<AppState> _createDelete${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    if (checkActionRunning(store, action)) return;
-    running(next, action);
+    running(action);
     repository.delete${ModelEntryName}(action.${(ModelEntryName)?lower_case}.${clsUNName}).then((item) {
       next(Remove${ModelEntryName}Action(${clsUNName}: action.${(ModelEntryName)?lower_case}.${clsUNName}));
-      completed(next, action);
+      completed(action);
     }).catchError((error) {
-      catchError(next, action, error);
+      catchError(action, error);
     });
   };
-}
-
-bool checkActionRunning(Store<AppState> store, action) {
-  if (store.state.photoState.status[action.actionName]?.status ==
-      ActionStatus.running) {
-    return true; // do nothing if there is a same action running.
-  }
-  return false;
-}
-
-void catchError(NextDispatcher next, action, error) {
-  next(${ModelEntryName}StatusAction(
-      report: ActionReport(
-          actionName: action.actionName,
-          status: ActionStatus.error,
-          msg: "${r"${action.actionName}"} is error;${r"${error.toString()}"}")));
-}
-
-void completed(NextDispatcher next, action) {
-  next(${ModelEntryName}StatusAction(
-      report: ActionReport(
-          actionName: action.actionName,
-          status: ActionStatus.complete,
-          msg: "${r"${action.actionName}"} is completed")));
-}
-
-void noMoreItem(NextDispatcher next, action) {
-  next(${ModelEntryName}StatusAction(
-      report: ActionReport(
-          actionName: action.actionName,
-          status: ActionStatus.complete,
-          msg: "no more items")));
-}
-
-void running(NextDispatcher next, action) {
-  next(${ModelEntryName}StatusAction(
-      report: ActionReport(
-          actionName: action.actionName,
-          status: ActionStatus.running,
-          msg: "${r"${action.actionName}"} is running")));
-}
-
-void idEmpty(NextDispatcher next, action) {
-  next(${ModelEntryName}StatusAction(
-      report: ActionReport(
-          actionName: action.actionName,
-          status: ActionStatus.error,
-          msg: "Id is empty")));
 }

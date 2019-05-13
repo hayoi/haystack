@@ -103,7 +103,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
                 "/settings_option.dart.ftl", "/settings_option_page.dart.ftl", "/spannable_grid.dart.ftl", "/state.dart.ftl",
                 "/store.dart.ftl", "/swipe_list_item.dart.ftl", "/test_view.dart.ftl", "/text_scale.dart.ftl",
                 "/theme.dart.ftl", "/toast_utils.dart.ftl", "/translations.dart.ftl", "/view.dart.ftl",
-                "/view_model.dart.ftl", "/progress_dialog.dart.ftl", "/choice_data.dart.ftl"
+                "/view_model.dart.ftl", "/progress_dialog.dart.ftl", "/choice_data.dart.ftl", "/action_callback.dart.ftl"
         };
         String version = PluginManager.getPlugin(PluginId.getId("com.github.hayoi.haystack")).getVersion();
 
@@ -366,7 +366,6 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         param = "\n        " + rootMap.get("ModelEntryName").toString().toLowerCase() + "State: " + rootMap.get("ModelEntryName").toString() + "State(\n" +
                 "            " + rootMap.get("ModelEntryName").toString().toLowerCase() + ": null,\n" +
                 "            " + rootMap.get("ModelEntryName").toString().toLowerCase() + "s: Map(),\n" +
-                "            status: Map(),\n" +
                 "            page: Page(),),";
         if (!content.contains(param)) {
             sb.append(content.substring(poi2, poi3));
@@ -436,6 +435,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         generateFile(new File(selectGroup.getParent().getPath() + "/locale/i18n_zh.json"), "i18n_zh.json.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/data/db/database_client.dart"), "database_client.dart.ftl", rootMap);
 
+        generateFile(new File(selectGroup.getPath() + "/features/action_callback.dart"), "action_callback.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/features/settings/settings_option.dart"), "settings_option.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/features/settings/settings_option_page.dart"), "settings_option_page.dart.ftl", rootMap);
         generateFile(new File(selectGroup.getPath() + "/features/settings/theme.dart"), "theme.dart.ftl", rootMap);

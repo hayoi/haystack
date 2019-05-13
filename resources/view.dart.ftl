@@ -63,34 +63,23 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   </#if>
   <#if GenerateCustomScrollView>
   final double _appBarHeight = 256.0;
-  final double _appBarHeight = 256.0;
   </#if>
-  <#if viewModelCreate>
-  var cpr;
-  </#if>
-  <#if viewModelUpdate>
-  var upr;
-  </#if>
-  <#if viewModelDelete>
-  var dpr;
-  </#if>
-  <#if PageType == "LOGIN">
-  var lpr;
-  </#if>
+  var _status;
+  var _processBar;
 
   <#if PageType == "LOGIN">
   String _userName = "";
   String _password = "";
   FocusNode _focusUserName = FocusNode();
   FocusNode _focusPassword = FocusNode();
-  </#if>
 
+  </#if>
   @override
   void initState() {
     super.initState();
 	<#if GenerateListView>
     if (this.widget.viewModel.${(ModelEntryName)?lower_case}s.length == 0) {
-      this.widget.viewModel.get${ModelEntryName}s(true);
+      this.widget.viewModel.get${ModelEntryName}s(true, get${ModelEntryName}sCallback);
     }
 	</#if>
 	<#if GenerateBottomTabBar>
@@ -100,8 +89,57 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
     initLogin();
 	</#if>
   }
-  
+
+  <#if GenerateListView>
+  void get${ModelEntryName}sCallback(ActionReport report) {
+    setState(() {
+      _status = report.status;
+    });
+  }
+
+  </#if>
+  <#if viewModelCreate>
+  void create${ModelEntryName}Callback(ActionReport report) {
+    if (report.status == ActionStatus.running) {
+      showProcessBar("Creating...");
+    } else {
+      hideProcessBar();
+    }
+  }
+
+  </#if>
+  <#if viewModelUpdate>
+  void update${ModelEntryName}Callback(ActionReport report) {
+    if (report.status == ActionStatus.running) {
+      showProcessBar("Updating...");
+    } else {
+      hideProcessBar();
+    }
+  }
+
+  </#if>
+  <#if viewModelDelete>
+  void delete${ModelEntryName}Callback(ActionReport report) {
+    if (report.status == ActionStatus.running) {
+      showProcessBar("Deleting...");
+    } else {
+      hideProcessBar();
+    }
+  }
+
+  </#if>
   <#if PageType == "LOGIN">
+  void loginCallback(ActionReport report) {
+    if (report.status == ActionStatus.running) {
+      showProcessBar("Login...");
+    } else if (report.status == ActionStatus.error) {
+      hideProcessBar();
+    } else {
+      hideProcessBar();
+      Navigator.of(context).pushReplacementNamed("/home");
+    }
+  }
+
   Future initLogin() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     _userName = prefs.getString("username");
@@ -110,95 +148,11 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
         _password != null &&
         _password.isNotEmpty &&
         _userName.isNotEmpty) {
-      widget.viewModel.login(Login(_userName, _password));
+      widget.viewModel.login(Login(_userName, _password), loginCallback);
     }
   }
+
   </#if>
-
-
-  @override
-  void didUpdateWidget(${PageName}ViewContent oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    Future.delayed(Duration.zero, () {
-      <#if viewModelCreate>
-      if (this.widget.viewModel.create${ModelEntryName}Report?.status ==
-          ActionStatus.running) {
-        if (cpr == null) {
-          cpr = new ProgressDialog(context);
-        }
-        cpr.setMessage("Creating...");
-        cpr.show();
-      } else {
-        if (cpr != null && cpr.isShowing()) {
-          cpr.hide();
-          cpr = null;
-        }
-      }
-      </#if>
-      <#if viewModelUpdate>
-
-      if (this.widget.viewModel.update${ModelEntryName}Report?.status ==
-          ActionStatus.running) {
-        if (upr == null) {
-          upr = new ProgressDialog(context);
-        }
-        upr.setMessage("Updating...");
-        upr.show();
-      } else {
-        if (upr != null && upr.isShowing()) {
-          upr.hide();
-          upr = null;
-        }
-      }
-      </#if>
-      <#if viewModelDelete>
-
-      if (this.widget.viewModel.delete${ModelEntryName}Report?.status ==
-          ActionStatus.running) {
-        if (dpr == null) {
-          dpr = new ProgressDialog(context);
-        }
-        dpr.setMessage("Deleting...");
-        dpr.show();
-      } else {
-        if (dpr != null && dpr.isShowing()) {
-          dpr.hide();
-          dpr = null;
-        }
-      }
-      </#if>
-      <#if PageType == "LOGIN">
-      if (this.widget.viewModel.loginReport?.status ==
-          ActionStatus.running) {
-        if (lpr == null) {
-          lpr = new ProgressDialog(context);
-        }
-        lpr.setMessage("Login...");
-        lpr.show();
-      } else if (this.widget.viewModel.loginReport?.status ==
-          ActionStatus.error) {
-        if (lpr != null && lpr.isShowing()) {
-          lpr.hide();
-          lpr = null;
-        }
-        showError(this.widget.viewModel.loginReport?.msg.toString());
-      } else if (this.widget.viewModel.loginReport?.status ==
-          ActionStatus.complete) {
-        if (lpr != null && lpr.isShowing()) {
-          lpr.hide();
-          lpr = null;
-        }
-        Navigator.of(context).pushReplacementNamed("/home");
-      } else {
-        if (lpr != null && lpr.isShowing()) {
-          lpr.hide();
-          lpr = null;
-        }
-        Navigator.of(context).pushReplacementNamed("/home");
-      }
-      </#if>
-    });
-  }
 
   void showError(String error) {
     final snackBar = SnackBar(content: Text(error));
@@ -301,15 +255,13 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
 	</#if>
   }
   <#if GenerateListView>
-
   bool _onNotification(ScrollNotification notification) {
     if (notification is ScrollUpdateNotification) {
 
       if (_scrollController.mostRecentlyUpdatedPosition.maxScrollExtent > _scrollController.offset &&
           _scrollController.mostRecentlyUpdatedPosition.maxScrollExtent - _scrollController.offset <= 50) {
         // load more
-        if (this.widget.viewModel.get${ModelEntryName}sReport?.status == ActionStatus.complete ||
-            this.widget.viewModel.get${ModelEntryName}sReport?.status == ActionStatus.error) {
+        if (this._status == ActionStatus.running) {
           // have next page
           _loadMoreData();
           setState(() {});
@@ -321,13 +273,13 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   }
 
   Future<Null> _loadMoreData() {
-    widget.viewModel.get${ModelEntryName}s(false);
+    widget.viewModel.get${ModelEntryName}s(false, get${ModelEntryName}sCallback);
     return null;
   }
 
   Future<Null> _handleRefresh() async {
     _refreshIndicatorKey.currentState.show();
-    widget.viewModel.get${ModelEntryName}s(true);
+    widget.viewModel.get${ModelEntryName}s(true, get${ModelEntryName}sCallback);
     return null;
   }
 
@@ -361,8 +313,8 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
       ),
     );
   }
-  <#if viewModelDelete>
 
+  <#if viewModelDelete>
   void _handleArchive(${ModelEntryName} item) {}
 
   void _handleDelete(${ModelEntryName} item) {
@@ -380,17 +332,17 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
               FlatButton(
                   child: const Text('Delete'),
                   onPressed: () {
-                    this.widget.viewModel.delete${ModelEntryName}(item);
+                    this.widget.viewModel.delete${ModelEntryName}(item, delete${ModelEntryName}Callback);
                     Navigator.pop(context);
                   })
             ],
           ),
     );
   }
+
   </#if>
-  
   Widget _getLoadMoreWidget() {
-    if (this.widget.viewModel.get${ModelEntryName}sReport?.status == ActionStatus.running) {
+    if (this._status == ActionStatus.running) {
       return Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0),
           child: CircularProgressIndicator());
@@ -398,9 +350,9 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
       return SizedBox();
     }
   }
+
   </#if>
   <#if GenerateBottomTabBar>
-  
   void onTap(int index) {
     pageController.animateToPage(index,
         duration: const Duration(milliseconds: 300),
@@ -412,9 +364,9 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
       this.page = page;
     });
   }
+
   </#if>
   <#if PageType == "LOGIN">
-
   Widget loginForm() {
 	return Center(
       child: Padding(
@@ -484,7 +436,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
                       return;
                     }
 
-                    widget.viewModel.login(Login(_userName, _password));
+                    widget.viewModel.login(Login(_userName, _password), loginCallback);
                   },
                   color: Colors.lightBlueAccent,
                   child: Text('Log In', style: TextStyle(color: Colors.white)),
@@ -503,10 +455,9 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
       ),
     );
   }
+
   </#if>
-
   <#if GenerateCustomScrollView>
-
   Stack buildCustomScrollView() {
     var imagePath = "assets/images/flower2.png";
     return Stack(children: <Widget>[
@@ -629,9 +580,9 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
       )
     ]);
   }
+
   </#if>
   <#if GenerateDrawer>
- 
   Drawer _buildDrawer() {
     var fontFamily = "Roboto";
     var accountEmail = Text(
@@ -690,6 +641,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
     // Then close the drawer
     Navigator.pop(context);
   }
+
   </#if>
   <#if (ActionBtnCount > 0)>
   List<Widget> _buildActionButton() {
@@ -744,8 +696,22 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
     // Causes the app to rebuild with the new _selectedChoice.
     setState(() {});
   }
-  </#if>
 
+  </#if>
+  void hideProcessBar() {
+    if (_processBar != null && _processBar.isShowing()) {
+      _processBar.hide();
+      _processBar = null;
+    }
+  }
+
+  void showProcessBar(String msg) {
+    if (_processBar == null) {
+      _processBar = new ProgressDialog(context);
+    }
+    _processBar.setMessage(msg);
+    _processBar.show();
+  }
 }
 <#if GenerateActionButton>
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 class ActionReport {
   String actionName;
   ActionStatus status;
@@ -22,4 +24,56 @@ class ActionReport {
   }
 }
 
-enum ActionStatus { running, complete, error }
+enum ActionStatus { running, complete, complete_no_more, error }
+
+class Action {
+  final String actionName;
+  final Completer<ActionReport> completer;
+
+  Action(this.completer, this.actionName);
+}
+
+void catchError(action, error) {
+  if (action.completer != null) {
+    action.completer.complete(ActionReport(
+        actionName: action.actionName,
+        status: ActionStatus.error,
+        msg: "${r"${action.actionName}"} is error;${r"${error.toString()}"}"));
+  }
+}
+
+void completed(action) {
+  if (action.completer != null) {
+    action.completer.complete(ActionReport(
+        actionName: action.actionName,
+        status: ActionStatus.complete,
+        msg: "${r"${action.actionName}"} is completed"));
+  }
+}
+
+void noMoreItem(action) {
+  if (action.completer != null) {
+    action.completer.complete(ActionReport(
+        actionName: action.actionName,
+        status: ActionStatus.complete,
+        msg: "no more items"));
+  }
+}
+
+void running(action) {
+  if (action.completer != null) {
+    action.completer.complete(ActionReport(
+        actionName: action.actionName,
+        status: ActionStatus.running,
+        msg: "${r"${action.actionName}"} is running"));
+  }
+}
+
+void idEmpty(action) {
+  if (action.completer != null) {
+    action.completer.complete(ActionReport(
+        actionName: action.actionName,
+        status: ActionStatus.error,
+        msg: "Id is empty"));
+  }
+}
