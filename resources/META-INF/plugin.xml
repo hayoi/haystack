@@ -22,11 +22,19 @@
     <li>First, click "Init Project" button to init.</li>
     <li>Second, configure your page info: page name, model json and so on. click the "OK" to generate code.</li>
     </ul>
+    <head>Edit template file for your project:</head><br>
+    The ftl files is locate in the path:<br>
+    Your PC home path/.haystack_template_cache/
     ]]>
   </description>
 
   <change-notes>
     <![CDATA[
+    <head>1.1.0:</head>
+    <ul>
+      <li>Action callback replace Action report</li>
+      <li>bug fix</li>
+    </ul>
     <head>1.0.9:</head>
     <ul>
       <li>throw exception when http request fail</li>
