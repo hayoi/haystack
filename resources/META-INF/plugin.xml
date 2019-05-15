@@ -1,11 +1,11 @@
 <idea-plugin>
-  <id>com.github.hayoi.haystack</id>
-  <name>Flutter App Template Generator</name>
-  <version>1.1.0</version>
-  <vendor email="haystack1206@gmail.com" url="https://github.com/hayoi/haystack">hayoi</vendor>
+    <id>com.github.hayoi.haystack</id>
+    <name>Flutter App Template Generator</name>
+    <version>1.1.0</version>
+    <vendor email="haystack1206@gmail.com" url="https://github.com/hayoi/haystack">hayoi</vendor>
 
-  <description>
-    <![CDATA[
+    <description>
+        <![CDATA[
     A plugin help to generate Flutter project template with your model entities.
     <ul>
     <li>Using Redux to manage state and update UI.</li>
@@ -26,10 +26,10 @@
     The ftl files is locate in the path:<br>
     Your PC home path/.haystack_template_cache/
     ]]>
-  </description>
+    </description>
 
-  <change-notes>
-    <![CDATA[
+    <change-notes>
+        <![CDATA[
     <head>1.1.0:</head>
     <ul>
       <li>Action callback replace Action report</li>
@@ -46,27 +46,37 @@
       <li>bug fix</li>
     </ul>
     ]]>
-  </change-notes>
+    </change-notes>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="173.0"/>
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="173.0"/>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
 
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
 
-  <actions>
-    <!-- Add your actions here -->
-    <action id="flutter_redux_gen" class="haystack.FlutterReduxGen" text="Generate App Template"
-            description="Flutter Redux Generator">
-      <add-to-group group-id="NewGroup" anchor="first"/>
-    </action>
-  </actions>
+    <actions>
+        <!-- Add your actions here -->
+        <group id="haystack.FlutterReduxGen" text="Generate App Template" description="Generate App Template"  popup="true"
+               class="com.intellij.ide.actions.NonTrivialActionGroup">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+            <action id="haystack.flutter_redux_gen" class="haystack.FlutterReduxGen" text="Generate App Template"
+                    description="Flutter Redux Generator">
+            </action>
+            <action id="haystack.CreateAction" class="haystack.CreateAction" text="Create Action"
+                    description="Create Action">
+            </action>
+        </group>
+        <!--    <action id="flutter_redux_gen" class="haystack.FlutterReduxGen" text="Generate App Template"-->
+        <!--            description="Flutter Redux Generator">-->
+        <!--      <add-to-group group-id="NewGroup" anchor="first"/>-->
+        <!--    </action>-->
+    </actions>
 
 </idea-plugin>

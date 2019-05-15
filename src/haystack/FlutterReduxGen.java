@@ -47,6 +47,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     private Point lastDialogLocation;
     private LanguageResolver languageResolver;
     private VirtualFile selectGroup;
+    private String sourcePath;
     private TextResources textResources;
     private Configuration cfg;
     private Project project;
@@ -74,6 +75,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
         project = event.getProject();
         if (project == null) return;
+        sourcePath = project.getBasePath()+"/lib";
         DataContext dataContext = event.getDataContext();
         selectGroup = DataKeys.VIRTUAL_FILE.getData(dataContext);
         final Module module = DataKeys.MODULE.getData(dataContext);
@@ -187,10 +189,10 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     }
 
     private void checkProjectStructure(PageModel pageModel) {
-        if (!new File(selectGroup.getPath() + "/redux/").exists() ||
-                !new File(selectGroup.getPath() + "/features/").exists() ||
-                !new File(selectGroup.getPath() + "/trans/").exists() ||
-                !new File(selectGroup.getPath() + "/data/").exists()) {
+        if (!new File(sourcePath + "/redux/").exists() ||
+                !new File(sourcePath + "/features/").exists() ||
+                !new File(sourcePath + "/trans/").exists() ||
+                !new File(sourcePath + "/data/").exists()) {
             int result = Messages.showOkCancelDialog(project, "You must init the project first!"
                     , "Init Project", "OK", "NO", Messages.getQuestionIcon());
             if (result == Messages.OK) {
@@ -289,7 +291,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     }
 
     private void generateRedux(Map<String, Object> rootMap) {
-        String path = selectGroup.getPath() + "/redux";
+        String path = sourcePath + "/redux";
         generateFile(new File(path + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_actions.dart"), "actions.dart.ftl", rootMap);
         generateFile(new File(path + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_middleware.dart"), "middleware.dart.ftl", rootMap);
         generateFile(new File(path + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_reducer.dart"), "reducer.dart.ftl", rootMap);
@@ -301,7 +303,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     }
 
     private void writeStore(Map<String, Object> rootMap) {
-        String path = selectGroup.getPath() + "/redux/store.dart";
+        String path = sourcePath + "/redux/store.dart";
         String content = usingBufferedReader(path);
         StringBuilder sb = new StringBuilder();
         String param = "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() + "/redux/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_middleware.dart';\n";
@@ -322,7 +324,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     }
 
     private void writeAppReducer(Map<String, Object> rootMap) {
-        String path = selectGroup.getPath() + "/redux/app/app_reducer.dart";
+        String path = sourcePath + "/redux/app/app_reducer.dart";
         String content = usingBufferedReader(path);
         StringBuilder sb = new StringBuilder();
         String param = "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() + "/redux/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_reducer.dart';\n";
@@ -342,7 +344,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     }
 
     private void writeAppState(Map<String, Object> rootMap) {
-        String path = selectGroup.getPath() + "/redux/app/app_state.dart";
+        String path = sourcePath + "/redux/app/app_state.dart";
         String content = usingBufferedReader(path);
         String param = "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() + "/redux/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_state.dart';\n";
         StringBuilder sb = new StringBuilder();
@@ -416,47 +418,47 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
         Map<String, Object> rootMap = new HashMap<String, Object>();
         rootMap.put("ProjectName", moduleName);
-        generateFile(new File(selectGroup.getParent().getPath() + "/pubspec.yaml"), "pubspec.yaml.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/main.dart"), "main.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/data/network_common.dart"), "network_common.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/utils/progress_dialog.dart"), "progress_dialog.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/utils/toast_utils.dart"), "toast_utils.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/data/model/remote_wrap.dart"), "remote_wrap.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/data/model/choice_data.dart"), "choice_data.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/data/model/page_data.dart"), "page_data.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/trans/translations.dart"), "translations.dart.ftl", rootMap);
+        generateFile(new File(project.getBasePath() + "/pubspec.yaml"), "pubspec.yaml.ftl", rootMap);
+        generateFile(new File(sourcePath + "/main.dart"), "main.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/data/network_common.dart"), "network_common.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/utils/progress_dialog.dart"), "progress_dialog.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/utils/toast_utils.dart"), "toast_utils.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/data/model/remote_wrap.dart"), "remote_wrap.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/data/model/choice_data.dart"), "choice_data.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/data/model/page_data.dart"), "page_data.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/trans/translations.dart"), "translations.dart.ftl", rootMap);
 
-        generateFile(new File(selectGroup.getPath() + "/redux/store.dart"), "store.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/redux/action_report.dart"), "action_report.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/redux/app/app_reducer.dart"), "app_reducer.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/redux/app/app_state.dart"), "app_state.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/redux/store.dart"), "store.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/redux/action_report.dart"), "action_report.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/redux/app/app_reducer.dart"), "app_reducer.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/redux/app/app_state.dart"), "app_state.dart.ftl", rootMap);
 
-        generateFile(new File(selectGroup.getParent().getPath() + "/locale/i18n_en.json"), "i18n_en.json.ftl", rootMap);
-        generateFile(new File(selectGroup.getParent().getPath() + "/locale/i18n_zh.json"), "i18n_zh.json.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/data/db/database_client.dart"), "database_client.dart.ftl", rootMap);
+        generateFile(new File(project.getBasePath() + "/locale/i18n_en.json"), "i18n_en.json.ftl", rootMap);
+        generateFile(new File(project.getBasePath() + "/locale/i18n_zh.json"), "i18n_zh.json.ftl", rootMap);
+        generateFile(new File(sourcePath + "/data/db/database_client.dart"), "database_client.dart.ftl", rootMap);
 
-        generateFile(new File(selectGroup.getPath() + "/features/action_callback.dart"), "action_callback.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/features/settings/settings_option.dart"), "settings_option.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/features/settings/settings_option_page.dart"), "settings_option_page.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/features/settings/theme.dart"), "theme.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/features/settings/text_scale.dart"), "text_scale.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/features/action_callback.dart"), "action_callback.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/features/settings/settings_option.dart"), "settings_option.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/features/settings/settings_option_page.dart"), "settings_option_page.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/features/settings/theme.dart"), "theme.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/features/settings/text_scale.dart"), "text_scale.dart.ftl", rootMap);
 
-        generateFile(new File(selectGroup.getPath() + "/features/widget/date_picker_widget.dart"), "date_picker_widget.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/features/widget/spannable_grid.dart"), "spannable_grid.dart.ftl", rootMap);
-        generateFile(new File(selectGroup.getPath() + "/features/widget/swipe_list_item.dart"), "swipe_list_item.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/features/widget/date_picker_widget.dart"), "date_picker_widget.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/features/widget/spannable_grid.dart"), "spannable_grid.dart.ftl", rootMap);
+        generateFile(new File(sourcePath + "/features/widget/swipe_list_item.dart"), "swipe_list_item.dart.ftl", rootMap);
 
         Messages.showMessageDialog(project, "Project init completed！", "Initialize", Messages.getInformationIcon());
     }
 
     private void generateFeature(Map<String, Object> rootMap, boolean isCustomWidget) {
-        String path = selectGroup.getPath() + "/features/" + (isCustomWidget ? "customize/" : "") + rootMap.get("PageName").toString().toLowerCase() + "/"
+        String path = sourcePath + "/features/" + (isCustomWidget ? "customize/" : "") + rootMap.get("PageName").toString().toLowerCase() + "/"
                 + rootMap.get("PageName").toString().toLowerCase();
         generateFile(new File(path + "_view_model.dart"), "view_model.dart.ftl", rootMap);
         generateFile(new File(path + "_view.dart"), "view.dart.ftl", rootMap);
     }
 
     private void generateRepository(Map<String, Object> rootMap) {
-        String path = selectGroup.getPath() + "/data";
+        String path = sourcePath + "/data";
 
         boolean db = (boolean) rootMap.get("genDatabase");
         if ((db)) {
@@ -519,7 +521,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         subMap.put("genDatabase", classModel.isGenDBModule());
         subMap.put("Fields", classModel.getFields());
 
-        File f = new File(selectGroup.getPath() + "/data/model/" + classModel.getName().toLowerCase() + "_data.dart");
+        File f = new File(sourcePath + "/data/model/" + classModel.getName().toLowerCase() + "_data.dart");
         generateFile(f, "model_entry_data.dart.ftl", subMap);
         if (classModel.isGenDBModule()) {
             writeDatabaseClient(subMap);
@@ -527,7 +529,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     }
 
     private void writeDatabaseClient(Map<String, Object> rootMap) {
-        String path = selectGroup.getPath() + "/data/db/database_client.dart";
+        String path = sourcePath + "/data/db/database_client.dart";
         String content = usingBufferedReader(path);
         String param = "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() + "/data/model/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_data.dart';\n";
         StringBuilder sb = new StringBuilder();
