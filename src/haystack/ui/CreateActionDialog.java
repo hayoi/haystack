@@ -2,10 +2,13 @@ package haystack.ui;
 
 import com.intellij.openapi.ui.Messages;
 import haystack.core.models.ActionForm;
+import haystack.core.models.FieldModel;
 import haystack.core.models.PageModel;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateActionDialog extends JDialog {
     private JPanel contentPane;
@@ -42,27 +45,51 @@ public class CreateActionDialog extends JDialog {
     private void onOK() {
         // add your code here
         ActionForm actionForm = new ActionForm();
-        if (textActionName.getText().trim().length() == 0){
-            Messages.showMessageDialog( "Please input Action Name", "Error", Messages.getErrorIcon());
+        if (textActionName.getText().trim().length() == 0) {
+            Messages.showMessageDialog("Please input Action Name", "Error", Messages.getErrorIcon());
         } else {
             actionForm.setActionName(textActionName.getText().trim());
         }
 
-        if (textParameters.getText().trim().length() != 0){
+        if (textParameters.getText().trim().length() != 0) {
             String[] ps = textParameters.getText().trim().split(",");
-            for (String s : ps){
-                
+            List<FieldModel> fields = new ArrayList<>();
+            for (String s : ps) {
+                String strim = s.trim();
+                if (strim.length() > 0) {
+                    int spaceIndex = strim.indexOf(" ");
+                    if (spaceIndex > 0) {
+                        String type = strim.substring(0, spaceIndex);
+                        String vari = strim.substring(spaceIndex).trim();
+                        FieldModel field = new FieldModel(vari, vari, type, "");
+                        fields.add(field);
+                    } else {
+                        Messages.showMessageDialog("Unvalid String, define parameters like 'String p1, int p2'", "Error", Messages.getErrorIcon());
+                        return;
+                    }
+                }
             }
+            actionForm.setParameters(fields);
         }
 
-        if (textActionName.getText().trim().length() == 0){
-            Messages.showMessageDialog( "Please input Action Name", "Error", Messages.getErrorIcon());
-        } else {
+        if (textVariable.getText().trim().length() > 0) {
+            String stateParam = textVariable.getText().trim();
+            int spaceIndex = stateParam.lastIndexOf(" ");
+            if (spaceIndex > 0) {
+                String type = stateParam.substring(0, spaceIndex).trim();
+                String vari = stateParam.substring(spaceIndex).trim();
+                FieldModel field = new FieldModel(vari, vari, type, "");
+                actionForm.setStateVariable(field);
+            } else {
+                Messages.showMessageDialog("Unvalid String, define variable like 'Map<String, User> map' or 'int i'", "Error", Messages.getErrorIcon());
+                return;
+            }
 
         }
 
-
-
+        if (mListener != null){
+            mListener.onActionReady(actionForm);
+        }
         dispose();
     }
 
@@ -75,7 +102,6 @@ public class CreateActionDialog extends JDialog {
         CreateActionDialog dialog = new CreateActionDialog(new ActionFormCallbacks() {
             @Override
             public void onActionReady(ActionForm actionForm) {
-
             }
         });
         dialog.pack();

@@ -7,7 +7,7 @@
     </constraints>
     <properties>
       <name value="Create Action"/>
-      <preferredSize width="551" height="317"/>
+      <preferredSize width="581" height="317"/>
     </properties>
     <border type="none"/>
     <children>

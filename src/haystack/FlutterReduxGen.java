@@ -19,6 +19,7 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.impl.file.PsiDirectoryFactory;
 import com.intellij.util.ui.UIUtil;
 import freemarker.template.*;
+import gherkin.lexer.Fi;
 import haystack.core.FileSaver;
 import haystack.core.LanguageResolver;
 import haystack.core.models.ClassModel;
@@ -75,7 +76,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
         project = event.getProject();
         if (project == null) return;
-        sourcePath = project.getBasePath()+"/lib";
+        sourcePath = project.getBasePath() + "/lib";
         DataContext dataContext = event.getDataContext();
         selectGroup = DataKeys.VIRTUAL_FILE.getData(dataContext);
         final Module module = DataKeys.MODULE.getData(dataContext);
@@ -110,15 +111,15 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         String version = PluginManager.getPlugin(PluginId.getId("com.github.hayoi.haystack")).getVersion();
 
         if (new File(resources + "version").exists()) {
-            String cacheVersion = usingBufferedReader(resources + "version").replace("\n", "");
+            String cacheVersion = FileUtil.usingBufferedReader(resources + "version").replace("\n", "");
             if (!version.equals(cacheVersion)) {
-                mkFile(new File(resources + "version"), version);
+                FileUtil.mkFile(new File(resources + "version"), version);
                 for (String name : fileNames) {
                     cacheResources(resources, name);
                 }
             }
         } else {
-            mkFile(new File(resources + "version"), version);
+            FileUtil.mkFile(new File(resources + "version"), version);
             for (String name : fileNames) {
                 cacheResources(resources, name);
             }
@@ -292,10 +293,10 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
     private void generateRedux(Map<String, Object> rootMap) {
         String path = sourcePath + "/redux";
-        generateFile(new File(path + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_actions.dart"), "actions.dart.ftl", rootMap);
-        generateFile(new File(path + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_middleware.dart"), "middleware.dart.ftl", rootMap);
-        generateFile(new File(path + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_reducer.dart"), "reducer.dart.ftl", rootMap);
-        generateFile(new File(path + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_state.dart"), "state.dart.ftl", rootMap);
+        FileUtil.generateFile(new File(path + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_actions.dart"), "actions.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(path + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_middleware.dart"), "middleware.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(path + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_reducer.dart"), "reducer.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(path + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_state.dart"), "state.dart.ftl", rootMap, cfg);
 
         writeAppState(rootMap);
         writeAppReducer(rootMap);
@@ -304,7 +305,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
     private void writeStore(Map<String, Object> rootMap) {
         String path = sourcePath + "/redux/store.dart";
-        String content = usingBufferedReader(path);
+        String content = FileUtil.usingBufferedReader(path);
         StringBuilder sb = new StringBuilder();
         String param = "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() + "/redux/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_middleware.dart';\n";
         if (!content.contains(param)) {
@@ -319,13 +320,13 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
             sb.append(content.substring(poi1));
 
-            writeToFile(path, sb.toString());
+            FileUtil.writeToFile(path, sb.toString(), false);
         }
     }
 
     private void writeAppReducer(Map<String, Object> rootMap) {
         String path = sourcePath + "/redux/app/app_reducer.dart";
-        String content = usingBufferedReader(path);
+        String content = FileUtil.usingBufferedReader(path);
         StringBuilder sb = new StringBuilder();
         String param = "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() + "/redux/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_reducer.dart';\n";
         if (!content.contains(param)) {
@@ -339,13 +340,13 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
             sb.append(content.substring(poi1));
 
-            writeToFile(path, sb.toString());
+            FileUtil.writeToFile(path, sb.toString(), false);
         }
     }
 
     private void writeAppState(Map<String, Object> rootMap) {
         String path = sourcePath + "/redux/app/app_state.dart";
-        String content = usingBufferedReader(path);
+        String content = FileUtil.usingBufferedReader(path);
         String param = "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() + "/redux/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_state.dart';\n";
         StringBuilder sb = new StringBuilder();
         if (!content.contains(param)) {
@@ -374,78 +375,44 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
             sb.append(param);
             sb.append(content.substring(poi3));
 
-            writeToFile(path, sb.toString());
+            FileUtil.writeToFile(path, sb.toString(), false);
         }
     }
 
-    private static String usingBufferedReader(String filePath) {
-        StringBuilder contentBuilder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-
-            String sCurrentLine;
-            while ((sCurrentLine = br.readLine()) != null) {
-                contentBuilder.append(sCurrentLine).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return contentBuilder.toString();
-    }
-
-    public void insert(String filename, long offset, String content) {
-        try {
-            RandomAccessFile r = new RandomAccessFile(new File(filename), "rw");
-            RandomAccessFile rtemp = new RandomAccessFile(new File(filename + "~"), "rw");
-            long fileSize = r.length();
-            FileChannel sourceChannel = r.getChannel();
-            FileChannel targetChannel = rtemp.getChannel();
-            sourceChannel.transferTo(offset, (fileSize - offset), targetChannel);
-            sourceChannel.truncate(offset);
-            r.seek(offset);
-            r.writeUTF(content);
-            long newOffset = r.getFilePointer();
-            targetChannel.position(0L);
-            sourceChannel.transferFrom(targetChannel, newOffset, (fileSize - offset));
-            sourceChannel.close();
-            targetChannel.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private void initTemplate() {
         final String moduleName = FileIndexFacade.getInstance(project).getModuleForFile(directory.getVirtualFile()).getName();
 
         Map<String, Object> rootMap = new HashMap<String, Object>();
         rootMap.put("ProjectName", moduleName);
-        generateFile(new File(project.getBasePath() + "/pubspec.yaml"), "pubspec.yaml.ftl", rootMap);
-        generateFile(new File(sourcePath + "/main.dart"), "main.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/data/network_common.dart"), "network_common.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/utils/progress_dialog.dart"), "progress_dialog.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/utils/toast_utils.dart"), "toast_utils.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/data/model/remote_wrap.dart"), "remote_wrap.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/data/model/choice_data.dart"), "choice_data.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/data/model/page_data.dart"), "page_data.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/trans/translations.dart"), "translations.dart.ftl", rootMap);
+        FileUtil.generateFile(new File(project.getBasePath() + "/pubspec.yaml"), "pubspec.yaml.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/main.dart"), "main.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/data/network_common.dart"), "network_common.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/utils/progress_dialog.dart"), "progress_dialog.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/utils/toast_utils.dart"), "toast_utils.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/data/model/remote_wrap.dart"), "remote_wrap.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/data/model/choice_data.dart"), "choice_data.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/data/model/page_data.dart"), "page_data.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/trans/translations.dart"), "translations.dart.ftl", rootMap, cfg);
 
-        generateFile(new File(sourcePath + "/redux/store.dart"), "store.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/redux/action_report.dart"), "action_report.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/redux/app/app_reducer.dart"), "app_reducer.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/redux/app/app_state.dart"), "app_state.dart.ftl", rootMap);
+        FileUtil.generateFile(new File(sourcePath + "/redux/store.dart"), "store.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/redux/action_report.dart"), "action_report.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/redux/app/app_reducer.dart"), "app_reducer.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/redux/app/app_state.dart"), "app_state.dart.ftl", rootMap, cfg);
 
-        generateFile(new File(project.getBasePath() + "/locale/i18n_en.json"), "i18n_en.json.ftl", rootMap);
-        generateFile(new File(project.getBasePath() + "/locale/i18n_zh.json"), "i18n_zh.json.ftl", rootMap);
-        generateFile(new File(sourcePath + "/data/db/database_client.dart"), "database_client.dart.ftl", rootMap);
+        FileUtil.generateFile(new File(project.getBasePath() + "/locale/i18n_en.json"), "i18n_en.json.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(project.getBasePath() + "/locale/i18n_zh.json"), "i18n_zh.json.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/data/db/database_client.dart"), "database_client.dart.ftl", rootMap, cfg);
 
-        generateFile(new File(sourcePath + "/features/action_callback.dart"), "action_callback.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/features/settings/settings_option.dart"), "settings_option.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/features/settings/settings_option_page.dart"), "settings_option_page.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/features/settings/theme.dart"), "theme.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/features/settings/text_scale.dart"), "text_scale.dart.ftl", rootMap);
+        FileUtil.generateFile(new File(sourcePath + "/features/action_callback.dart"), "action_callback.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/settings/settings_option.dart"), "settings_option.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/settings/settings_option_page.dart"), "settings_option_page.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/settings/theme.dart"), "theme.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/settings/text_scale.dart"), "text_scale.dart.ftl", rootMap, cfg);
 
-        generateFile(new File(sourcePath + "/features/widget/date_picker_widget.dart"), "date_picker_widget.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/features/widget/spannable_grid.dart"), "spannable_grid.dart.ftl", rootMap);
-        generateFile(new File(sourcePath + "/features/widget/swipe_list_item.dart"), "swipe_list_item.dart.ftl", rootMap);
+        FileUtil.generateFile(new File(sourcePath + "/features/widget/date_picker_widget.dart"), "date_picker_widget.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/widget/spannable_grid.dart"), "spannable_grid.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/widget/swipe_list_item.dart"), "swipe_list_item.dart.ftl", rootMap, cfg);
 
         Messages.showMessageDialog(project, "Project init completed！", "Initialize", Messages.getInformationIcon());
     }
@@ -453,8 +420,8 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     private void generateFeature(Map<String, Object> rootMap, boolean isCustomWidget) {
         String path = sourcePath + "/features/" + (isCustomWidget ? "customize/" : "") + rootMap.get("PageName").toString().toLowerCase() + "/"
                 + rootMap.get("PageName").toString().toLowerCase();
-        generateFile(new File(path + "_view_model.dart"), "view_model.dart.ftl", rootMap);
-        generateFile(new File(path + "_view.dart"), "view.dart.ftl", rootMap);
+        FileUtil.generateFile(new File(path + "_view_model.dart"), "view_model.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(path + "_view.dart"), "view.dart.ftl", rootMap, cfg);
     }
 
     private void generateRepository(Map<String, Object> rootMap) {
@@ -462,56 +429,11 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
         boolean db = (boolean) rootMap.get("genDatabase");
         if ((db)) {
-            generateFile(new File(path + "/db/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_repository_db.dart"), "repository_db.dart.ftl", rootMap);
+            FileUtil.generateFile(new File(path + "/db/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_repository_db.dart"), "repository_db.dart.ftl", rootMap, cfg);
         }
-        generateFile(new File(path + "/remote/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_repository.dart"), "repository.dart.ftl", rootMap);
+        FileUtil.generateFile(new File(path + "/remote/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_repository.dart"), "repository.dart.ftl", rootMap, cfg);
     }
 
-    private void generateFile(File file, String template, Map entryModel) {
-        if (file.exists()) {
-            String path = file.getPath();
-            String fileName = path.substring(path.lastIndexOf("\\") + 1);
-            int result = Messages.showOkCancelDialog(project, fileName + " already exist. Do you want to recover it?"
-                    , "Recover File", "OK", "NO", Messages.getWarningIcon());
-            if (result == Messages.OK) {
-                mkFile(file, template, entryModel);
-            }
-        } else {
-            mkFile(file, template, entryModel);
-        }
-    }
-
-    private void mkFile(File file, String content) {
-        String folder = file.getParentFile().getPath();
-        FileUtil.createDir(folder);
-        /* Get the template (uses cache internally) */
-        try {
-            Writer out = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
-            out.write(content);
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void mkFile(File file, String template, Map entryModel) {
-        String folder = file.getParentFile().getPath();
-        FileUtil.createDir(folder);
-        /* Get the template (uses cache internally) */
-        Template temp = null;
-        try {
-            temp = cfg.getTemplate(template);
-            /* Merge data-model with template */
-
-            Writer out = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
-            temp.process(entryModel, out);
-            out.flush();
-            out.close();
-        } catch (IOException | TemplateException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void generateModelEntry(ClassModel classModel, Map map) {
 
@@ -522,7 +444,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         subMap.put("Fields", classModel.getFields());
 
         File f = new File(sourcePath + "/data/model/" + classModel.getName().toLowerCase() + "_data.dart");
-        generateFile(f, "model_entry_data.dart.ftl", subMap);
+        FileUtil.generateFile(f, "model_entry_data.dart.ftl", subMap, cfg);
         if (classModel.isGenDBModule()) {
             writeDatabaseClient(subMap);
         }
@@ -530,7 +452,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
     private void writeDatabaseClient(Map<String, Object> rootMap) {
         String path = sourcePath + "/data/db/database_client.dart";
-        String content = usingBufferedReader(path);
+        String content = FileUtil.usingBufferedReader(path);
         String param = "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() + "/data/model/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_data.dart';\n";
         StringBuilder sb = new StringBuilder();
         if (!content.contains(param)) {
@@ -550,19 +472,8 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
             sb.append(param);
             sb.append(content.substring(poi2));
 
-            writeToFile(path, sb.toString());
+            FileUtil.writeToFile(path, sb.toString(), false);
         }
     }
 
-    private void writeToFile(String path, String content) {
-        try {
-            File file = new File(path);
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(content);
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
