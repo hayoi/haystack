@@ -63,4 +63,9 @@ public class StringUtils {
         return  name;
 
     }
+    public static String upercaseFirst(String name) {
+        name = name.substring(0, 1).toUpperCase() + name.substring(1);
+        return  name;
+
+    }
 }

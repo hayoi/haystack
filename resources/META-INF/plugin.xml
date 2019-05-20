@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.hayoi.haystack</id>
     <name>Flutter App Template Generator</name>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <vendor email="haystack1206@gmail.com" url="https://github.com/hayoi/haystack">hayoi</vendor>
 
     <description>
@@ -30,20 +30,24 @@
 
     <change-notes>
         <![CDATA[
+    <head>1.2.0:</head>
+    <ul>
+      <li>New feature tool: Create Action</li>
+    </ul>
     <head>1.1.0:</head>
     <ul>
       <li>Action callback replace Action report</li>
-      <li>bug fix</li>
+      <li>Bug fix</li>
     </ul>
     <head>1.0.9:</head>
     <ul>
-      <li>throw exception when http request fail</li>
-      <li>bug fix</li>
+      <li>Throw exception when http request fail</li>
+      <li>Bug fix</li>
     </ul>
     <head>1.0.8:</head>
     <ul>
-      <li>add unique property in class field.</li>
-      <li>bug fix</li>
+      <li>Add unique property in class field.</li>
+      <li>Bug fix</li>
     </ul>
     ]]>
     </change-notes>
