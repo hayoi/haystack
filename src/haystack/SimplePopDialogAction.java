@@ -8,14 +8,19 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import haystack.core.models.MyAction;
+import haystack.core.models.MyCode;
+import haystack.core.models.Widget;
 import org.jetbrains.annotations.NotNull;
 
 public class SimplePopDialogAction extends AnAction {
     private Document document;
     private int mCursor;
     private Project project;
-    public SimplePopDialogAction(String text, String description) {
+    private MyAction mAction;
+    public SimplePopDialogAction(String text, String description, MyAction action) {
         super(text, description, null);
+        mAction = action;
     }
 
     @Override
@@ -26,10 +31,23 @@ public class SimplePopDialogAction extends AnAction {
         document = editor.getDocument();
         mCursor = editor.getCaretModel().getOffset();
 
-        switch (this.getTemplatePresentation().getText()) {
-            case DynamicActionGroup.BUTTON:
-                insertButton();
-                break;
+        if (mAction.getWidgets().size()>1){
+            String[] ws = new String[mAction.getWidgets().size()];
+            for (int i = 0; i < mAction.getWidgets().size(); i++) {
+                ws[i] = mAction.getWidgets().get(i).getName();
+            }
+            final int index = Messages.showDialog(mAction.getDescription(), mAction.getTitle(), ws,
+                    0, Messages.getQuestionIcon());
+
+            Widget widget = mAction.getWidgets().get(index);
+            for (MyCode code : widget.getTexts()){
+                if (code.getInsertAfter() == null){
+                    // insert the code to the position of cursor
+                    insertString(mCursor, code.getText());
+                } else {
+
+                }
+            }
         }
     }
 
@@ -57,12 +75,7 @@ public class SimplePopDialogAction extends AnAction {
                         ")");
                 break;
             case 2:
-                insertString(mCursor, "FlatButton(\n" +
-                        "  child: const Text('FLAT BUTTON', semanticsLabel: 'FLAT BUTTON 1'),\n" +
-                        "  onPressed: () {\n" +
-                        "    // Perform some action\n" +
-                        "  },\n" +
-                        ")");
+                insertString(mCursor, "");
                 break;
             case 3:
                 insertString(mCursor, "FlatButton.icon(\n" +

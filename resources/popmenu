@@ -1,0 +1,87 @@
+[
+    {
+        "title":"Button",
+        "description":"insert a button",
+        "widgets":[
+            {
+                "name":"RAISED",
+                "texts":[
+                    {
+                        "text":"RaisedButton(\n  child: const Text('RAISED BUTTON', semanticsLabel: 'RAISED BUTTON 1'),\n  onPressed: () {\n   // Perform some action\n  },\n)"
+                    }
+                ]
+            },
+            {
+                "name":"RAISED ICON",
+                "texts":[
+                    {
+                        "text":"RaisedButton.icon(\n icon: const Icon(Icons.add, size: 18.0),\n  label: const Text('RAISED BUTTON', semanticsLabel: 'RAISED BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
+                    }
+                ]
+            },
+            {
+                "name":"FLAT",
+                "texts":[
+                    {
+                        "text":"FlatButton(\n  child: const Text('FLAT BUTTON', semanticsLabel: 'FLAT BUTTON 1'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
+                    }
+                ]
+            },
+            {
+                "name":"FLAT ICON",
+                "texts":[
+                    {
+                        "text":"FlatButton.icon(\n  icon: const Icon(Icons.add_circle_outline, size: 18.0),\n  label: const Text('FLAT BUTTON', semanticsLabel: 'FLAT BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n },\n)"
+                    }
+                ]
+            },
+            {
+                "name":"OUTLINE",
+                "texts":[
+                    {
+                        "text":"OutlineButton(\n  child: const Text('OUTLINE BUTTON', semanticsLabel: 'OUTLINE BUTTON 1'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
+                    }
+                ]
+            },
+            {
+                "name":"OUTLINE ICON",
+                "texts":[
+                    {
+                        "text":"utlineButton.icon(\n  icon: const Icon(Icons.add, size: 18.0),\n  label: const Text('OUTLINE BUTTON', semanticsLabel: 'OUTLINE BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
+                    }
+                ]
+            },
+            {
+                "name":"Cupertino",
+                "texts":[
+                    {
+                        "text":"CupertinoButton(\n  child: const Text('Cupertino Button'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
+                    }
+                ]
+            },
+            {
+                "name":"Cupertino BG",
+                "texts":[
+                    {
+                        "text":"CupertinoButton.filled(\n  child: const Text('With Background'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "title":"TextField",
+        "description":"insert a textfield",
+        "widgets":[
+            {
+                "name":"RAISED",
+                "texts":[
+                    {
+                        "insertAfter":"",
+                        "text":""
+                    }
+                ]
+            }
+        ]
+    }
+]
