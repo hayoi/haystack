@@ -77,10 +77,10 @@
                     description="Create Action">
             </action>
         </group>
-        <!--    <action id="flutter_redux_gen" class="haystack.FlutterReduxGen" text="Generate App Template"-->
-        <!--            description="Flutter Redux Generator">-->
-        <!--      <add-to-group group-id="NewGroup" anchor="first"/>-->
-        <!--    </action>-->
+        <group id="haystack.flutter_UI" class="haystack.DynamicActionGroup" popup="true"
+               text="Flutter UI" description="create flutter widgets">
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </group>
     </actions>
 
 </idea-plugin>
