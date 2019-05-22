@@ -7,6 +7,7 @@
                 "name":"RAISED",
                 "texts":[
                     {
+						"insertAtCursor":true,
                         "text":"RaisedButton(\n  child: const Text('RAISED BUTTON', semanticsLabel: 'RAISED BUTTON 1'),\n  onPressed: () {\n   // Perform some action\n  },\n)"
                     }
                 ]
@@ -15,6 +16,7 @@
                 "name":"RAISED ICON",
                 "texts":[
                     {
+						"insertAtCursor":true,
                         "text":"RaisedButton.icon(\n icon: const Icon(Icons.add, size: 18.0),\n  label: const Text('RAISED BUTTON', semanticsLabel: 'RAISED BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
                     }
                 ]
@@ -23,6 +25,7 @@
                 "name":"FLAT",
                 "texts":[
                     {
+						"insertAtCursor":true,
                         "text":"FlatButton(\n  child: const Text('FLAT BUTTON', semanticsLabel: 'FLAT BUTTON 1'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
                     }
                 ]
@@ -31,6 +34,7 @@
                 "name":"FLAT ICON",
                 "texts":[
                     {
+						"insertAtCursor":true,
                         "text":"FlatButton.icon(\n  icon: const Icon(Icons.add_circle_outline, size: 18.0),\n  label: const Text('FLAT BUTTON', semanticsLabel: 'FLAT BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n },\n)"
                     }
                 ]
@@ -39,6 +43,7 @@
                 "name":"OUTLINE",
                 "texts":[
                     {
+						"insertAtCursor":true,
                         "text":"OutlineButton(\n  child: const Text('OUTLINE BUTTON', semanticsLabel: 'OUTLINE BUTTON 1'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
                     }
                 ]
@@ -47,6 +52,7 @@
                 "name":"OUTLINE ICON",
                 "texts":[
                     {
+						"insertAtCursor":true,
                         "text":"utlineButton.icon(\n  icon: const Icon(Icons.add, size: 18.0),\n  label: const Text('OUTLINE BUTTON', semanticsLabel: 'OUTLINE BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
                     }
                 ]
@@ -55,6 +61,7 @@
                 "name":"Cupertino",
                 "texts":[
                     {
+						"insertAtCursor":true,
                         "text":"CupertinoButton(\n  child: const Text('Cupertino Button'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
                     }
                 ]
@@ -63,6 +70,7 @@
                 "name":"Cupertino BG",
                 "texts":[
                     {
+						"insertAtCursor":true,
                         "text":"CupertinoButton.filled(\n  child: const Text('With Background'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
                     }
                 ]
@@ -74,11 +82,83 @@
         "description":"insert a textfield",
         "widgets":[
             {
-                "name":"RAISED",
+                "name":"TextField underline",
                 "texts":[
                     {
-                        "insertAfter":"",
-                        "text":""
+						"insertAtCursor":true,
+                        "text":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                    }
+                ]
+            },
+            {
+                "name":"TextField outline",
+                "texts":[
+                    {
+						"insertAtCursor":true,
+                        "text":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: OutlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                    }
+                ]
+            },
+            {
+                "name":"TextFormField underline",
+                "texts":[
+                    {
+						"insertAtCursor":true,
+                        "text":"TextFormField(\n                  textCapitalization: TextCapitalization.words,\n                  decoration: const InputDecoration(\n                    border: UnderlineInputBorder(),\n                    filled: true,\n                    icon: Icon(Icons.person),\n                    hintText: 'What do people call you?',\n                    labelText: 'Name *',\n                  ),\n                  onSaved: (String value) {},\n                  validator: (String value) {\n                    _formWasEdited = true;\n                    if (value.isEmpty)\n                      return 'Name is required.';\n                    final RegExp nameExp = RegExp(r'^[A-Za-z ]+$');\n                    if (!nameExp.hasMatch(value))\n                      return 'Please enter only alphabetical characters.';\n                    return null;\n                  },)"
+                    }
+                ]
+            },
+            {
+                "name":"CuperTextField",
+                "texts":[
+                    {
+						"insertAtCursor":true,
+                        "text":"CupertinoTextField(\n      prefix: Icon(\n        CupertinoIcons.mail_solid,\n        color: CupertinoColors.lightBackgroundGray,\n        size: 28.0,\n      ),\n      padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 12.0),\n      clearButtonMode: OverlayVisibilityMode.editing,\n      keyboardType: TextInputType.emailAddress,\n      autocorrect: false,\n      decoration: BoxDecoration(\n        border: Border(bottom: BorderSide(width: 0.0, color: CupertinoColors.inactiveGray)),\n      ),\n      placeholder: 'Email',)"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "title":"Slider",
+        "description":"insert a Slider",
+        "widgets":[
+            {
+                "name":"Slider continuous",
+                "texts":[
+                    {
+						"insertAfter":"class ",
+                        "text":"  double _value = 0.0;"
+                    },
+                    {
+						"insertAtCursor":true,
+                        "text":"    Slider(\n      value: _value,\n      min: 0.0,\n      max: 100.0,\n      onChanged: (double value) {\n        setState(() {\n          _value = value;\n        });\n      },\n    )"
+                    }
+                ]
+            },
+            {
+                "name":"Slider discrete",
+                "texts":[
+                    {
+						"insertAtCursor":true,
+                        "text":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                    },
+                    {
+						"insertAtCursor":true,
+                        "text":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                    }
+                ]
+            },
+            {
+                "name":"Cuper Slider continuous",
+                "texts":[
+                    {
+						"insertAtCursor":true,
+                        "text":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                    },
+                    {
+						"insertAtCursor":true,
+                        "text":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
                     }
                 ]
             }

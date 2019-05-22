@@ -13,11 +13,16 @@ import haystack.core.models.MyCode;
 import haystack.core.models.Widget;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class SimplePopDialogAction extends AnAction {
     private Document document;
     private int mCursor;
     private Project project;
     private MyAction mAction;
+
     public SimplePopDialogAction(String text, String description, MyAction action) {
         super(text, description, null);
         mAction = action;
@@ -31,7 +36,7 @@ public class SimplePopDialogAction extends AnAction {
         document = editor.getDocument();
         mCursor = editor.getCaretModel().getOffset();
 
-        if (mAction.getWidgets().size()>1){
+        if (mAction.getWidgets().size() > 1) {
             String[] ws = new String[mAction.getWidgets().size()];
             for (int i = 0; i < mAction.getWidgets().size(); i++) {
                 ws[i] = mAction.getWidgets().get(i).getName();
@@ -40,89 +45,46 @@ public class SimplePopDialogAction extends AnAction {
                     0, Messages.getQuestionIcon());
 
             Widget widget = mAction.getWidgets().get(index);
-            for (MyCode code : widget.getTexts()){
-                if (code.getInsertAfter() == null){
+            for (MyCode code : widget.getTexts()) {
+                if (code.isInsertAtCursor()) {
                     // insert the code to the position of cursor
                     insertString(mCursor, code.getText());
-                } else {
+                } else if (code.getInsertAfter() != null && code.getInsertAfter().trim().length() > 0) {
+                    int offset = indexesOf(document.getText(), code.getInsertAfter());
+                    int lineNumber = document.getLineNumber(offset);
 
+
+                    System.out.println(offset + "  " + lineNumber);
                 }
             }
+        } else if (mAction.getWidgets().size() == 1) {
+
         }
     }
 
-    private void insertButton() {
-        final int result = Messages.showDialog("Select a button style", "Button",
-                new String[]{"RAISED", "RAISED ICON", "FLAT", "FLAT ICON", "OUTLINE", "OUTLINE ICON", "Cupertino", "Cupertino BG"},
-                0, Messages.getQuestionIcon());
-
-        switch (result) {
-            case 0:
-                insertString(mCursor,"RaisedButton(\n" +
-                        "  child: const Text('RAISED BUTTON', semanticsLabel: 'RAISED BUTTON 1'),\n" +
-                        "  onPressed: () {\n" +
-                        "   // Perform some action\n" +
-                        "  },\n" +
-                        ")");
-                break;
-            case 1:
-                insertString(mCursor,"RaisedButton.icon(\n" +
-                        " icon: const Icon(Icons.add, size: 18.0),\n" +
-                        "  label: const Text('RAISED BUTTON', semanticsLabel: 'RAISED BUTTON 2'),\n" +
-                        "  onPressed: () {\n" +
-                        "    // Perform some action\n" +
-                        "  },\n" +
-                        ")");
-                break;
-            case 2:
-                insertString(mCursor, "");
-                break;
-            case 3:
-                insertString(mCursor, "FlatButton.icon(\n" +
-                        "  icon: const Icon(Icons.add_circle_outline, size: 18.0),\n" +
-                        "  label: const Text('FLAT BUTTON', semanticsLabel: 'FLAT BUTTON 2'),\n" +
-                        "  onPressed: () {\n" +
-                        "    // Perform some action\n" +
-                        " },\n" +
-                        ")");
-                break;
-            case 4:
-                insertString(mCursor,"OutlineButton(\n" +
-                        "  child: const Text('OUTLINE BUTTON', semanticsLabel: 'OUTLINE BUTTON 1'),\n" +
-                        "  onPressed: () {\n" +
-                        "    // Perform some action\n" +
-                        "  },\n" +
-                        ")");
-                break;
-            case 5:
-                insertString(mCursor,"OutlineButton.icon(\n" +
-                        "  icon: const Icon(Icons.add, size: 18.0),\n" +
-                        "  label: const Text('OUTLINE BUTTON', semanticsLabel: 'OUTLINE BUTTON 2'),\n" +
-                        "  onPressed: () {\n" +
-                        "    // Perform some action\n" +
-                        "  },\n" +
-                        ")");
-                break;
-            case 6:
-                insertString(mCursor,"CupertinoButton(\n" +
-                        "  child: const Text('Cupertino Button'),\n" +
-                        "  onPressed: () {\n" +
-                        "    // Perform some action\n" +
-                        "  },\n" +
-                        ")");
-                break;
-            case 7:
-                insertString(mCursor,"CupertinoButton.filled(\n" +
-                        "  child: const Text('With Background'),\n" +
-                        "  onPressed: () {\n" +
-                        "    // Perform some action\n" +
-                        "  },\n" +
-                        ")");
-                break;
-        }
-    }
-
-    private void insertString(int cursor, String text){
+    private void insertString(int cursor, String text) {
         WriteCommandAction.runWriteCommandAction(project, () -> document.insertString(cursor, text));
+    }
+
+    private int indexesOf(String text, String flag) {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        int index = text.indexOf(flag);
+        while (index >= 0 && index <= mCursor) {
+            int line = document.getLineNumber(index);
+            String lineStr = getLineString(document,line);
+            if (lineStr.trim().startsWith(flag)) {
+                list.add(index);
+            }
+            index = text.indexOf(flag, index + 1);
+        }
+        if (list.size() > 0) {
+            return list.get(list.size() - 1);
+        } else {
+            return -1;
+        }
+    }
+
+    private String getLineString(Document document, int line) {
+        return document.getText().substring(document.getLineStartOffset(line), document.getLineEndOffset(line));
     }
 }
