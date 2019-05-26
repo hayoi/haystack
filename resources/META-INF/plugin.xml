@@ -36,7 +36,7 @@
     </ul>
     <head>1.1.0:</head>
     <ul>
-      <li>Action callback replace Action report</li>
+      <li>Action callback type Action report</li>
       <li>Bug fix</li>
     </ul>
     <head>1.0.9:</head>
@@ -60,6 +60,8 @@
     <!-- uncomment to enable plugin in all products
     <depends>com.intellij.modules.lang</depends>
     -->
+
+    <depends>Dart</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->

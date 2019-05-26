@@ -1,18 +1,16 @@
 package haystack.core.models;
 
 public class MyCode {
-    private String insertAfter;
-    private String replace;
-    private boolean insertAtCursor;
-    private String insertBefore;
+    private String functionName;
+    private String type;
     private String text;
 
-    public String getInsertAfter() {
-        return insertAfter;
+    public String getFunctionName() {
+        return functionName;
     }
 
-    public void setInsertAfter(String insertAfter) {
-        this.insertAfter = insertAfter;
+    public void setFunctionName(String functionName) {
+        this.functionName = functionName;
     }
 
     public String getText() {
@@ -23,27 +21,12 @@ public class MyCode {
         this.text = text;
     }
 
-    public String getReplace() {
-        return replace;
+    public String getType() {
+        return type;
     }
 
-    public void setReplace(String replace) {
-        this.replace = replace;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getInsertBefore() {
-        return insertBefore;
-    }
-
-    public void setInsertBefore(String insertBefore) {
-        this.insertBefore = insertBefore;
-    }
-
-    public boolean isInsertAtCursor() {
-        return insertAtCursor;
-    }
-
-    public void setInsertAtCursor(boolean insertAtCursor) {
-        this.insertAtCursor = insertAtCursor;
-    }
 }
