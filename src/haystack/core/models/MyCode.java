@@ -3,7 +3,7 @@ package haystack.core.models;
 public class MyCode {
     private String functionName;
     private String type;
-    private String text;
+    private String code;
 
     public String getFunctionName() {
         return functionName;
@@ -13,12 +13,12 @@ public class MyCode {
         this.functionName = functionName;
     }
 
-    public String getText() {
-        return text;
+    public String getCode() {
+        return code;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getType() {

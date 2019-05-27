@@ -8,7 +8,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"RaisedButton(\n  child: const Text('RAISED BUTTON', semanticsLabel: 'RAISED BUTTON 1'),\n  onPressed: () {\n   // Perform some action\n  },\n)"
+                        "code":"RaisedButton(\n  child: const Text('RAISED BUTTON', semanticsLabel: 'RAISED BUTTON 1'),\n  onPressed: () {\n   // Perform some action\n  },\n)"
                     }
                 ]
             },
@@ -17,7 +17,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"RaisedButton.icon(\n icon: const Icon(Icons.add, size: 18.0),\n  label: const Text('RAISED BUTTON', semanticsLabel: 'RAISED BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
+                        "code":"RaisedButton.icon(\n icon: const Icon(Icons.add, size: 18.0),\n  label: const Text('RAISED BUTTON', semanticsLabel: 'RAISED BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
                     }
                 ]
             },
@@ -26,7 +26,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"FlatButton(\n  child: const Text('FLAT BUTTON', semanticsLabel: 'FLAT BUTTON 1'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
+                        "code":"FlatButton(\n  child: const Text('FLAT BUTTON', semanticsLabel: 'FLAT BUTTON 1'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
                     }
                 ]
             },
@@ -35,7 +35,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"FlatButton.icon(\n  icon: const Icon(Icons.add_circle_outline, size: 18.0),\n  label: const Text('FLAT BUTTON', semanticsLabel: 'FLAT BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n },\n)"
+                        "code":"FlatButton.icon(\n  icon: const Icon(Icons.add_circle_outline, size: 18.0),\n  label: const Text('FLAT BUTTON', semanticsLabel: 'FLAT BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n },\n)"
                     }
                 ]
             },
@@ -44,7 +44,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"OutlineButton(\n  child: const Text('OUTLINE BUTTON', semanticsLabel: 'OUTLINE BUTTON 1'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
+                        "code":"OutlineButton(\n  child: const Text('OUTLINE BUTTON', semanticsLabel: 'OUTLINE BUTTON 1'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
                     }
                 ]
             },
@@ -53,7 +53,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"utlineButton.icon(\n  icon: const Icon(Icons.add, size: 18.0),\n  label: const Text('OUTLINE BUTTON', semanticsLabel: 'OUTLINE BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
+                        "code":"utlineButton.icon(\n  icon: const Icon(Icons.add, size: 18.0),\n  label: const Text('OUTLINE BUTTON', semanticsLabel: 'OUTLINE BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
                     }
                 ]
             },
@@ -62,7 +62,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"CupertinoButton(\n  child: const Text('Cupertino Button'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
+                        "code":"CupertinoButton(\n  child: const Text('Cupertino Button'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
                     }
                 ]
             },
@@ -71,7 +71,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"CupertinoButton.filled(\n  child: const Text('With Background'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
+                        "code":"CupertinoButton.filled(\n  child: const Text('With Background'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
                     }
                 ]
             }
@@ -86,7 +86,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                        "code":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
                     }
                 ]
             },
@@ -95,7 +95,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: OutlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                        "code":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: OutlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
                     }
                 ]
             },
@@ -104,7 +104,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"TextFormField(\n                  textCapitalization: TextCapitalization.words,\n                  decoration: const InputDecoration(\n                    border: UnderlineInputBorder(),\n                    filled: true,\n                    icon: Icon(Icons.person),\n                    hintText: 'What do people call you?',\n                    labelText: 'Name *',\n                  ),\n                  onSaved: (String value) {},\n                  validator: (String value) {\n                    _formWasEdited = true;\n                    if (value.isEmpty)\n                      return 'Name is required.';\n                    final RegExp nameExp = RegExp(r'^[A-Za-z ]+$');\n                    if (!nameExp.hasMatch(value))\n                      return 'Please enter only alphabetical characters.';\n                    return null;\n                  },)"
+                        "code":"TextFormField(\n                  textCapitalization: TextCapitalization.words,\n                  decoration: const InputDecoration(\n                    border: UnderlineInputBorder(),\n                    filled: true,\n                    icon: Icon(Icons.person),\n                    hintText: 'What do people call you?',\n                    labelText: 'Name *',\n                  ),\n                  onSaved: (String value) {},\n                  validator: (String value) {\n                    _formWasEdited = true;\n                    if (value.isEmpty)\n                      return 'Name is required.';\n                    final RegExp nameExp = RegExp(r'^[A-Za-z ]+$');\n                    if (!nameExp.hasMatch(value))\n                      return 'Please enter only alphabetical characters.';\n                    return null;\n                  },)"
                     }
                 ]
             },
@@ -113,7 +113,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"CupertinoTextField(\n      prefix: Icon(\n        CupertinoIcons.mail_solid,\n        color: CupertinoColors.lightBackgroundGray,\n        size: 28.0,\n      ),\n      padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 12.0),\n      clearButtonMode: OverlayVisibilityMode.editing,\n      keyboardType: TextInputType.emailAddress,\n      autocorrect: false,\n      decoration: BoxDecoration(\n        border: Border(bottom: BorderSide(width: 0.0, color: CupertinoColors.inactiveGray)),\n      ),\n      placeholder: 'Email',)"
+                        "code":"CupertinoTextField(\n      prefix: Icon(\n        CupertinoIcons.mail_solid,\n        color: CupertinoColors.lightBackgroundGray,\n        size: 28.0,\n      ),\n      padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 12.0),\n      clearButtonMode: OverlayVisibilityMode.editing,\n      keyboardType: TextInputType.emailAddress,\n      autocorrect: false,\n      decoration: BoxDecoration(\n        border: Border(bottom: BorderSide(width: 0.0, color: CupertinoColors.inactiveGray)),\n      ),\n      placeholder: 'Email',)"
                     }
                 ]
             }
@@ -127,20 +127,20 @@
                 "name":"Slider continuous",
                 "texts":[
                     {
-						"type":"field ",
-                        "text":"double _value = 0.0;"
+						"type":"field",
+                        "code":"double _value = 0.0;"
                     },
                     {
                         "type":"function",
-                        "text":"void myFunction(){\n  int i = 0;\n  }"
+                        "code":"void myFunction(){\n  int i = 0;\n  }"
                     },
                     {
                         "type":"class",
-                        "text":"class a{\n int i = 0;\n void f(){}\n}"
+                        "code":"class a{\n int i = 0;\n void f(){}\n}"
                     },
                     {
 						"type":"block",
-                        "text":"    Slider(\n      value: _value,\n      min: 0.0,\n      max: 100.0,\n      onChanged: (double value) {\n        setState(() {\n          _value = value;\n        });\n      },\n    )"
+                        "code":"    Slider(\n      value: _value,\n      min: 0.0,\n      max: 100.0,\n      onChanged: (double value) {\n        setState(() {\n          _value = value;\n        });\n      },\n    )"
                     }
                 ]
             },
@@ -149,11 +149,11 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                        "code":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
                     },
                     {
 						"type":"block",
-                        "text":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                        "code":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
                     }
                 ]
             },
@@ -162,11 +162,11 @@
                 "texts":[
                     {
 						"type":"block",
-                        "text":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                        "code":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
                     },
                     {
 						"type":"block",
-                        "text":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                        "code":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
                     }
                 ]
             }

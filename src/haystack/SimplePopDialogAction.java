@@ -7,23 +7,17 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.psi.*;
-import com.jetbrains.lang.dart.util.DartElementGenerator;
 import haystack.core.models.MyAction;
 import haystack.core.models.MyCode;
 import haystack.core.models.Widget;
-import haystack.resolver.DartFileType;
 import haystack.util.DartHelper;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SimplePopDialogAction extends AnAction {
     private Document document;
@@ -64,10 +58,10 @@ public class SimplePopDialogAction extends AnAction {
 
                 if (code.getType().equals("block")) {
                     if (code.getFunctionName() == null) {
-//                        insertString(mCursor, code.getText());
+//                        insertString(mCursor, code.getCode());
                         PsiElement blockElement =
                                 DartHelper.createBlockFromText(project,
-                                        code.getText());
+                                        code.getCode());
                         WriteCommandAction.runWriteCommandAction(project, () -> {
                             cursorElement.getParent().addBefore(blockElement, cursorElement);
                         });
@@ -77,7 +71,7 @@ public class SimplePopDialogAction extends AnAction {
                     }
                 } else if (code.getType().equals("field")) {
                     DartClassMembers field =
-                            DartHelper.createFieldFromText(project, code.getText());
+                            DartHelper.createFieldFromText(project, code.getCode());
                     DartClassDefinition cursorClass = PsiTreeUtil.getParentOfType(cursorElement,
                             DartClassDefinition.class);
                     PsiElement element = PsiTreeUtil.findChildOfType(cursorClass,
@@ -99,20 +93,17 @@ public class SimplePopDialogAction extends AnAction {
                 } else if (code.getType().equals("function")) {
                     DartMethodDeclaration containingMethod =
                             PsiTreeUtil.getParentOfType(cursorElement, DartMethodDeclaration.class);
-//                    PsiElement func = DartHelper.createMethodFromText(project, code.getText());
+                    PsiElement func = DartHelper.createMethodFromText(project, code.getCode());
                     WriteCommandAction.runWriteCommandAction(project, () -> {
-                        //TODO
-//                        containingMethod.getParent().addAfter(func, containingMethod);
+                        containingMethod.getParent().addAfter(func, containingMethod);
                     });
 
                 } else if (code.getType().equals("class")) {
-                    PsiMethod containingMethod =
-                            PsiTreeUtil.getParentOfType(cursorElement, PsiMethod.class);
-                    assert containingMethod != null;
-                    PsiClass containingClass = containingMethod.getContainingClass();
+                    DartClassDefinition containingClass = PsiTreeUtil.getParentOfType(cursorElement,
+                            DartClassDefinition.class);
                     assert containingClass != null;
 
-                    PsiElement func = DartHelper.createClassFromText(project, code.getText());
+                    PsiElement func = DartHelper.createClassFromText(project, code.getCode());
                     WriteCommandAction.runWriteCommandAction(project, () -> {
                         containingClass.getParent().addAfter(func, containingClass);
                     });

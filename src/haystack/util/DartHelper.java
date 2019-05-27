@@ -1,14 +1,10 @@
 package haystack.util;
 
-import com.intellij.codeInsight.generation.PsiMethodMember;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiMethod;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.psi.*;
-
-import java.util.List;
 
 import static com.jetbrains.lang.dart.util.DartElementGenerator.createDummyFile;
 
@@ -28,10 +24,11 @@ public class DartHelper {
     }
 
     public static PsiElement createMethodFromText(Project myProject, String text) {
-        PsiFile file = createDummyFile(myProject, "class dummy{" + text + "}");
+        PsiFile file = createDummyFile(myProject, "class dummy{\n" + text + "}");
         PsiElement child = file.getFirstChild();
         if (child instanceof DartClassDefinition) {
-            DartClassMembers members = PsiTreeUtil.getChildOfType(child, DartClassMembers.class);
+            DartClassBody body = PsiTreeUtil.getChildOfType(child, DartClassBody.class);
+            DartClassMembers members = PsiTreeUtil.getChildOfType(body, DartClassMembers.class);
             return members.getFirstChild();
         } else {
             return null;
