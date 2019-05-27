@@ -53,7 +53,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "code":"utlineButton.icon(\n  icon: const Icon(Icons.add, size: 18.0),\n  label: const Text('OUTLINE BUTTON', semanticsLabel: 'OUTLINE BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
+                        "code":"OutlineButton.icon(\n  icon: const Icon(Icons.add, size: 18.0),\n  label: const Text('OUTLINE BUTTON', semanticsLabel: 'OUTLINE BUTTON 2'),\n  onPressed: () {\n    // Perform some action\n  },\n)"
                     }
                 ]
             },
@@ -86,7 +86,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "code":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                        "code":"TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
                     }
                 ]
             },
@@ -148,12 +148,12 @@
                 "name":"Slider discrete",
                 "texts":[
                     {
-						"type":"block",
-                        "code":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+						"type":"field",
+                        "code":"double _discreteValue = 20.0;"
                     },
                     {
 						"type":"block",
-                        "code":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                        "code":"    Slider(\n      value: _discreteValue,\n      min: 0.0,\n      max: 200.0,\n      divisions: 5,\n      label: '${_discreteValue.round()}',\n      onChanged: (double value) {\n        setState(() {\n          _discreteValue = value;\n        });\n      },\n    )"
                     }
                 ]
             },
@@ -161,13 +161,209 @@
                 "name":"Cuper Slider continuous",
                 "texts":[
                     {
-						"type":"block",
-                        "code":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+						"type":"field",
+                        "code":"double _value = 0.0;"
                     },
                     {
 						"type":"block",
-                        "code":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: UnderlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                        "code":"    CupertinoSlider(\n      value: _value,\n      min: 0.0,\n      max: 100.0,\n      onChanged: (double value) {\n        setState(() {\n          _value = value;\n        });\n      },\n    )"
                     }
+                ]
+            },
+            {
+                "name":"Cuper Slider discrete",
+                "texts":[
+                    {
+						"type":"field",
+                        "code":"double _discreteValue = 20.0;"
+                    },
+                    {
+						"type":"block",
+                        "code":"    CupertinoSlider(\n      value: _discreteValue,\n      min: 0.0,\n      max: 100.0,\n      divisions: 5,\n      onChanged: (double value) {\n        setState(() {\n          _discreteValue = value;\n        });\n      },\n    )"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "title":"Switch",
+        "description":"insert a Switch",
+        "widgets":[
+            {
+                "name":"Switch",
+                "texts":[
+                    {
+						"type":"field",
+                        "code":"bool _switchValue = true;"
+                    },
+                    {
+						"type":"block",
+                        "code":"    Switch.adaptive(\n      value: _switchValue,\n      onChanged: (bool value) {\n        setState(() {\n          _switchValue = value;\n        });\n      },\n    )"
+                    }
+                ]
+            },
+            {
+                "name":"Switch disable",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"Switch.adaptive(value: true, onChanged: null)"
+                    }
+                ]
+            },
+            {
+                "name":"Cuper Switch",
+                "texts":[
+                    {
+						"type":"field",
+                        "code":"bool _switchValue = true;"
+                    },
+                    {
+						"type":"block",
+                        "code":"CupertinoSwitch(\n  value: _switchValue,\n  onChanged: (bool value) {\n  setState(() {\n  _switchValue = value;\n  });\n  },\n  )"
+                    }
+                ]
+            },
+            {
+                "name":"Cuper Switch disable",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"  CupertinoSwitch(\n  value: false,\n  onChanged: null,\n  )"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "title":"Bottom sheet",
+        "description":"show bottom sheet",
+        "widgets":[
+            {
+                "name":"Bottom Sheet Model",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"  showModalBottomSheet<void>(context: context, builder: (BuildContext context) {\n  return Container(\n  child: Padding(\n  padding: const EdgeInsets.all(32.0),\n  child: Text('This is the modal bottom sheet. Tap anywhere to dismiss.',\n  textAlign: TextAlign.center,\n  style: TextStyle(\n  color: Theme.of(context).accentColor,\n  fontSize: 24.0,\n  ),\n  ),\n  ),\n  );\n  });"
+                    }
+                ]
+            },
+            {
+                "name":"Cupertino Action Sheet",
+                "texts":[
+                    {
+						"type":"function",
+                        "code":"  void showDemoActionSheet({BuildContext context, Widget child}) {\n    showCupertinoModalPopup<String>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((String value) {\n      if (value != null) {\n        setState(() {  });\n      }\n    });\n  }"
+                    },
+					{
+						"type":"block",
+						"code":"  showDemoActionSheet(\n  context: context,\n  child: CupertinoActionSheet(\n  title: const Text('Favorite Dessert'),\n  message: const Text('Please select the best dessert from the options below.'),\n  actions: <Widget>[\n  CupertinoActionSheetAction(\n  child: const Text('Profiteroles'),\n  onPressed: () {\n  Navigator.pop(context, 'Profiteroles');\n  },\n  ),\n  CupertinoActionSheetAction(\n  child: const Text('Cannolis'),\n  onPressed: () {\n  Navigator.pop(context, 'Cannolis');\n  },\n  ),\n  CupertinoActionSheetAction(\n  child: const Text('Trifle'),\n  onPressed: () {\n  Navigator.pop(context, 'Trifle');\n  },\n  ),\n  ],\n  cancelButton: CupertinoActionSheetAction(\n  child: const Text('Cancel'),\n  isDefaultAction: true,\n  onPressed: () {\n  Navigator.pop(context, 'Cancel');\n  },\n  ),\n  ),\n  );"
+					}
+                ]
+            }
+        ]
+    },
+    {
+        "title":"Dialog",
+        "description":"show Dialog",
+        "widgets":[
+            {
+                "name":"Alert",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"  showMaterialDialog<String>(\n  context: context,\n  child: AlertDialog(\n  content: Text(\n  'Discard draft?',\n  style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.caption.color),\n  ),\n  actions: <Widget>[\n  FlatButton(\n  child: const Text('CANCEL'),\n  onPressed: () { Navigator.pop(context, 'cancel'); },\n  ),\n  FlatButton(\n  child: const Text('DISCARD'),\n  onPressed: () { Navigator.pop(context, 'discard'); },\n  ),\n  ],\n  ),\n  );"
+                    },
+					{
+						"type":"function",
+						"code":"  void showMaterialDialog<T>({ BuildContext context, Widget child }) {\n    showDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    )\n    .then<void>((T value) { // The value passed to Navigator.pop() or null.\n      if (value != null) {\n        _scaffoldKey.currentState.showSnackBar(SnackBar(\n          content: Text('You selected: $value'),\n        ));\n      }\n    });\n  }"
+					}
+                ]
+            },
+            {
+                "name":"Alert with title",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"  showMaterialDialog<String>(\n  context: context,\n  child: AlertDialog(\n  title: const Text('Google'),\n  content: Text(\n  'Discard draft?',\n  style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.caption.color),\n  ),\n  actions: <Widget>[\n  FlatButton(\n  child: const Text('CANCEL'),\n  onPressed: () { Navigator.pop(context, 'cancel'); },\n  ),\n  FlatButton(\n  child: const Text('DISCARD'),\n  onPressed: () { Navigator.pop(context, 'discard'); },\n  ),\n  ],\n  ),\n  );"
+                    },
+					{
+						"type":"function",
+						"code":"  void showMaterialDialog<T>({ BuildContext context, Widget child }) {\n    showDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    )\n    .then<void>((T value) { // The value passed to Navigator.pop() or null.\n      if (value != null) {\n        _scaffoldKey.currentState.showSnackBar(SnackBar(\n          content: Text('You selected: $value'),\n        ));\n      }\n    });\n  }"
+					}
+                ]
+            },
+            {
+                "name":"Simple",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"  showMaterialDialog<String>(\n  context: context,\n  child: SimpleDialog(\n  title: const Text('Set backup account'),\n  children: <Widget>[\n  ListTile(\n  title: const Text('YELLOW'),\n  leading: CircleAvatar(child: Text('Y')),\n  onTap: (){\n  Navigator.pop(context, 'Y');\n  },\n  ),\n  ListTile(\n  title: const Text('RED'),\n  leading: CircleAvatar(child: Text('R')),\n  onTap: (){\n  Navigator.pop(context, 'Y');\n  },\n  ),\n  ],\n  ),\n  );"
+                    },
+					{
+						"type":"function",
+						"code":"  void showMaterialDialog<T>({ BuildContext context, Widget child }) {\n    showDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    )\n    .then<void>((T value) { // The value passed to Navigator.pop() or null.\n      if (value != null) {\n        _scaffoldKey.currentState.showSnackBar(SnackBar(\n          content: Text('You selected: $value'),\n        ));\n      }\n    });\n  }"
+					}
+                ]
+            },
+            {
+                "name":"Cupertino Alert",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"  showCuperDialog<String>(\n  context: context,\n  child: CupertinoAlertDialog(\n  title: const Text('Discard draft?'),\n  actions: <Widget>[\n  CupertinoDialogAction(\n  child: const Text('Discard'),\n  isDestructiveAction: true,\n  onPressed: () {\n  Navigator.pop(context, 'Discard');\n  },\n  ),\n  CupertinoDialogAction(\n  child: const Text('Cancel'),\n  isDefaultAction: true,\n  onPressed: () {\n  Navigator.pop(context, 'Cancel');\n  },\n  ),\n  ],\n  ),\n  );"
+                    },
+					{
+						"type":"function",
+						"code":"  void showCuperDialog<T>({BuildContext context, Widget child}) {\n    showCupertinoDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((T value) {\n      if (value != null) {\n      }\n    });\n  }"
+					}
+                ]
+            },
+            {
+                "name":"Cupertino Alert with title",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"  showCuperDialog<String>(\n  context: context,\n  child: CupertinoAlertDialog(\n  title: const Text('Agree?'),\n  content: const Text('xxxxxxxxxxxxxxxxxxxxx'),\n  actions: <Widget>[\n  CupertinoDialogAction(\n  child: const Text('Donot Allow'),\n  onPressed: () {\n  Navigator.pop(context, 'Disallow');\n  },\n  ),\n  CupertinoDialogAction(\n  child: const Text('Allow'),\n  onPressed: () {\n  Navigator.pop(context, 'Allow');\n  },\n  ),\n  ],\n  ),\n  );"
+                    },
+					{
+						"type":"function",
+						"code":"  void showCuperDialog<T>({BuildContext context, Widget child}) {\n    showCupertinoDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((T value) {\n      if (value != null) {\n      }\n    });\n  }"
+					}
+                ]
+            },
+            {
+                "name":"Alert with Buttons",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"showCuperDialog<String>(\ncontext: context,\nchild: const CupertinoDessertDialog(\ntitle: Text('Select Favorite Dessert'),\ncontent: Text('Please select your favorite type of dessert from the '\n'list below. Your selection will be used to customize the suggested '\n'list of eateries in your area.'),\n),\n);"
+                    },
+					{
+						"type":"function",
+						"code":"  void showCuperDialog<T>({BuildContext context, Widget child}) {\n    showCupertinoDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((T value) {\n      if (value != null) {\n      }\n    });\n  }"
+					},
+					{
+						"type":"class",
+						"code":"class CupertinoDessertDialog extends StatelessWidget {\n  const CupertinoDessertDialog({Key key, this.title, this.content}) : super(key: key);\n\n  final Widget title;\n  final Widget content;\n\n  @override\n  Widget build(BuildContext context) {\n    return CupertinoAlertDialog(\n      title: title,\n      content: content,\n      actions: <Widget>[\n        CupertinoDialogAction(\n          child: const Text('Banana Split'),\n          onPressed: () {\n            Navigator.pop(context, 'Banana Split');\n          },\n        ),\n        CupertinoDialogAction(\n          child: const Text('Oatmeal Cookie'),\n          onPressed: () {\n            Navigator.pop(context, 'Oatmeal Cookies');\n          },\n        ),\n        CupertinoDialogAction(\n          child: const Text('Chocolate Brownie'),\n          onPressed: () {\n            Navigator.pop(context, 'Chocolate Brownies');\n          },\n        ),\n        CupertinoDialogAction(\n          child: const Text('Cancel'),\n          isDestructiveAction: true,\n          onPressed: () {\n            Navigator.pop(context, 'Cancel');\n          },\n        ),\n      ],\n    );\n  }\n}"
+					}
+                ]
+            },
+            {
+                "name":"Alert Buttons Only",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"showCuperDialog<String>(\ncontext: context,\nchild: const CupertinoDessertDialog(),\n);"
+                    },
+					{
+						"type":"function",
+						"code":"  void showCuperDialog<T>({BuildContext context, Widget child}) {\n    showCupertinoDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((T value) {\n      if (value != null) {\n      }\n    });\n  }"
+					},
+					{
+						"type":"class",
+						"code":"class CupertinoDessertDialog extends StatelessWidget {\n  const CupertinoDessertDialog({Key key, this.title, this.content}) : super(key: key);\n\n  final Widget title;\n  final Widget content;\n\n  @override\n  Widget build(BuildContext context) {\n    return CupertinoAlertDialog(\n      title: title,\n      content: content,\n      actions: <Widget>[\n        CupertinoDialogAction(\n          child: const Text('Banana Split'),\n          onPressed: () {\n            Navigator.pop(context, 'Banana Split');\n          },\n        ),\n        CupertinoDialogAction(\n          child: const Text('Oatmeal Cookie'),\n          onPressed: () {\n            Navigator.pop(context, 'Oatmeal Cookies');\n          },\n        ),\n        CupertinoDialogAction(\n          child: const Text('Chocolate Brownie'),\n          onPressed: () {\n            Navigator.pop(context, 'Chocolate Brownies');\n          },\n        ),\n        CupertinoDialogAction(\n          child: const Text('Cancel'),\n          isDestructiveAction: true,\n          onPressed: () {\n            Navigator.pop(context, 'Cancel');\n          },\n        ),\n      ],\n    );\n  }\n}"
+					}
                 ]
             }
         ]
