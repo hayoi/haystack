@@ -8,6 +8,7 @@
         <![CDATA[
     A plugin help to generate Flutter project template with your model entities.
     <ul>
+    <li>Insert some Widget templates in your source file.</li>
     <li>Using Redux to manage state and update UI.</li>
     <li>json to dart entities class, support int, bool, String, double, Datetime.</li>
     <li>generate restful api base on your json entities.</li>
@@ -21,6 +22,7 @@
     <li>Right click the lib folder, select New --> Generate App Template.</li>
     <li>First, click "Init Project" button to init.</li>
     <li>Second, configure your page info: page name, model json and so on. click the "OK" to generate code.</li>
+    <li>New feature: Flutter UI. usage: right click in the editor, select Flutter UI and select the widget you want to add</li>
     </ul>
     <head>Edit template file for your project:</head><br>
     The ftl files is locate in the path:<br>
@@ -30,6 +32,10 @@
 
     <change-notes>
         <![CDATA[
+    <head>1.2.10:</head>
+    <ul>
+      <li>New feature tool: Flutter UI. quickly insert some Widget templates in your source file</li>
+    </ul>
     <head>1.2.0:</head>
     <ul>
       <li>New feature tool: Create Action</li>
