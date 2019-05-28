@@ -95,7 +95,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "code":"    TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: OutlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
+                        "code":"TextField(\n      maxLines: 1,\n      onChanged: (value) {},\n      style: TextStyle(fontSize: 15.0),\n      decoration: InputDecoration(\n          hintText: \"name\",\n          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),\n          border: OutlineInputBorder(\n              borderRadius: BorderRadius.circular(32.0)),\n          labelStyle: TextStyle(fontWeight: FontWeight.w700)),\n    )"
                     }
                 ]
             },
@@ -131,16 +131,8 @@
                         "code":"double _value = 0.0;"
                     },
                     {
-                        "type":"function",
-                        "code":"void myFunction(){\n  int i = 0;\n  }"
-                    },
-                    {
-                        "type":"class",
-                        "code":"class a{\n int i = 0;\n void f(){}\n}"
-                    },
-                    {
 						"type":"block",
-                        "code":"    Slider(\n      value: _value,\n      min: 0.0,\n      max: 100.0,\n      onChanged: (double value) {\n        setState(() {\n          _value = value;\n        });\n      },\n    )"
+                        "code":"Slider(\n      value: _value,\n      min: 0.0,\n      max: 100.0,\n      onChanged: (double value) {\n        setState(() {\n          _value = value;\n        });\n      },\n    )"
                     }
                 ]
             },
@@ -153,7 +145,7 @@
                     },
                     {
 						"type":"block",
-                        "code":"    Slider(\n      value: _discreteValue,\n      min: 0.0,\n      max: 200.0,\n      divisions: 5,\n      label: '${_discreteValue.round()}',\n      onChanged: (double value) {\n        setState(() {\n          _discreteValue = value;\n        });\n      },\n    )"
+                        "code":"Slider(\n      value: _discreteValue,\n      min: 0.0,\n      max: 200.0,\n      divisions: 5,\n      label: '${_discreteValue.round()}',\n      onChanged: (double value) {\n        setState(() {\n          _discreteValue = value;\n        });\n      },\n    )"
                     }
                 ]
             },
@@ -166,7 +158,7 @@
                     },
                     {
 						"type":"block",
-                        "code":"    CupertinoSlider(\n      value: _value,\n      min: 0.0,\n      max: 100.0,\n      onChanged: (double value) {\n        setState(() {\n          _value = value;\n        });\n      },\n    )"
+                        "code":"CupertinoSlider(\n      value: _value,\n      min: 0.0,\n      max: 100.0,\n      onChanged: (double value) {\n        setState(() {\n          _value = value;\n        });\n      },\n    )"
                     }
                 ]
             },
@@ -179,7 +171,7 @@
                     },
                     {
 						"type":"block",
-                        "code":"    CupertinoSlider(\n      value: _discreteValue,\n      min: 0.0,\n      max: 100.0,\n      divisions: 5,\n      onChanged: (double value) {\n        setState(() {\n          _discreteValue = value;\n        });\n      },\n    )"
+                        "code":"CupertinoSlider(\n      value: _discreteValue,\n      min: 0.0,\n      max: 100.0,\n      divisions: 5,\n      onChanged: (double value) {\n        setState(() {\n          _discreteValue = value;\n        });\n      },\n    )"
                     }
                 ]
             }
@@ -198,7 +190,7 @@
                     },
                     {
 						"type":"block",
-                        "code":"    Switch.adaptive(\n      value: _switchValue,\n      onChanged: (bool value) {\n        setState(() {\n          _switchValue = value;\n        });\n      },\n    )"
+                        "code":"Switch.adaptive(\n      value: _switchValue,\n      onChanged: (bool value) {\n        setState(() {\n          _switchValue = value;\n        });\n      },\n    )"
                     }
                 ]
             },
@@ -229,7 +221,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "code":"  CupertinoSwitch(\n  value: false,\n  onChanged: null,\n  )"
+                        "code":"CupertinoSwitch(\n  value: false,\n  onChanged: null,\n  )"
                     }
                 ]
             }
@@ -244,7 +236,7 @@
                 "texts":[
                     {
 						"type":"block",
-                        "code":"  showModalBottomSheet<void>(context: context, builder: (BuildContext context) {\n  return Container(\n  child: Padding(\n  padding: const EdgeInsets.all(32.0),\n  child: Text('This is the modal bottom sheet. Tap anywhere to dismiss.',\n  textAlign: TextAlign.center,\n  style: TextStyle(\n  color: Theme.of(context).accentColor,\n  fontSize: 24.0,\n  ),\n  ),\n  ),\n  );\n  });"
+                        "code":"showModalBottomSheet<void>(context: context, builder: (BuildContext context) {\n  return Container(\n  child: Padding(\n  padding: const EdgeInsets.all(32.0),\n  child: Text('This is the modal bottom sheet. Tap anywhere to dismiss.',\n  textAlign: TextAlign.center,\n  style: TextStyle(\n  color: Theme.of(context).accentColor,\n  fontSize: 24.0,\n  ),\n  ),\n  ),\n  );\n  });"
                     }
                 ]
             },
@@ -253,11 +245,11 @@
                 "texts":[
                     {
 						"type":"function",
-                        "code":"  void showDemoActionSheet({BuildContext context, Widget child}) {\n    showCupertinoModalPopup<String>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((String value) {\n      if (value != null) {\n        setState(() {  });\n      }\n    });\n  }"
+                        "code":"void showDemoActionSheet({BuildContext context, Widget child}) {\n    showCupertinoModalPopup<String>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((String value) {\n      if (value != null) {\n        setState(() {  });\n      }\n    });\n  }"
                     },
 					{
 						"type":"block",
-						"code":"  showDemoActionSheet(\n  context: context,\n  child: CupertinoActionSheet(\n  title: const Text('Favorite Dessert'),\n  message: const Text('Please select the best dessert from the options below.'),\n  actions: <Widget>[\n  CupertinoActionSheetAction(\n  child: const Text('Profiteroles'),\n  onPressed: () {\n  Navigator.pop(context, 'Profiteroles');\n  },\n  ),\n  CupertinoActionSheetAction(\n  child: const Text('Cannolis'),\n  onPressed: () {\n  Navigator.pop(context, 'Cannolis');\n  },\n  ),\n  CupertinoActionSheetAction(\n  child: const Text('Trifle'),\n  onPressed: () {\n  Navigator.pop(context, 'Trifle');\n  },\n  ),\n  ],\n  cancelButton: CupertinoActionSheetAction(\n  child: const Text('Cancel'),\n  isDefaultAction: true,\n  onPressed: () {\n  Navigator.pop(context, 'Cancel');\n  },\n  ),\n  ),\n  );"
+						"code":"showDemoActionSheet(\n  context: context,\n  child: CupertinoActionSheet(\n  title: const Text('Favorite Dessert'),\n  message: const Text('Please select the best dessert from the options below.'),\n  actions: <Widget>[\n  CupertinoActionSheetAction(\n  child: const Text('Profiteroles'),\n  onPressed: () {\n  Navigator.pop(context, 'Profiteroles');\n  },\n  ),\n  CupertinoActionSheetAction(\n  child: const Text('Cannolis'),\n  onPressed: () {\n  Navigator.pop(context, 'Cannolis');\n  },\n  ),\n  CupertinoActionSheetAction(\n  child: const Text('Trifle'),\n  onPressed: () {\n  Navigator.pop(context, 'Trifle');\n  },\n  ),\n  ],\n  cancelButton: CupertinoActionSheetAction(\n  child: const Text('Cancel'),\n  isDefaultAction: true,\n  onPressed: () {\n  Navigator.pop(context, 'Cancel');\n  },\n  ),\n  ),\n  );"
 					}
                 ]
             }
@@ -272,11 +264,11 @@
                 "texts":[
                     {
 						"type":"block",
-                        "code":"  showMaterialDialog<String>(\n  context: context,\n  child: AlertDialog(\n  content: Text(\n  'Discard draft?',\n  style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.caption.color),\n  ),\n  actions: <Widget>[\n  FlatButton(\n  child: const Text('CANCEL'),\n  onPressed: () { Navigator.pop(context, 'cancel'); },\n  ),\n  FlatButton(\n  child: const Text('DISCARD'),\n  onPressed: () { Navigator.pop(context, 'discard'); },\n  ),\n  ],\n  ),\n  );"
+                        "code":"showMaterialDialog<String>(\n  context: context,\n  child: AlertDialog(\n  content: Text(\n  'Discard draft?',\n  style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.caption.color),\n  ),\n  actions: <Widget>[\n  FlatButton(\n  child: const Text('CANCEL'),\n  onPressed: () { Navigator.pop(context, 'cancel'); },\n  ),\n  FlatButton(\n  child: const Text('DISCARD'),\n  onPressed: () { Navigator.pop(context, 'discard'); },\n  ),\n  ],\n  ),\n  );"
                     },
 					{
 						"type":"function",
-						"code":"  void showMaterialDialog<T>({ BuildContext context, Widget child }) {\n    showDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    )\n    .then<void>((T value) { // The value passed to Navigator.pop() or null.\n      if (value != null) {\n        _scaffoldKey.currentState.showSnackBar(SnackBar(\n          content: Text('You selected: $value'),\n        ));\n      }\n    });\n  }"
+						"code":"void showMaterialDialog<T>({ BuildContext context, Widget child }) {\n    showDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    )\n    .then<void>((T value) { // The value passed to Navigator.pop() or null.\n      if (value != null) {\n        _scaffoldKey.currentState.showSnackBar(SnackBar(\n          content: Text('You selected: $value'),\n        ));\n      }\n    });\n  }"
 					}
                 ]
             },
@@ -285,11 +277,11 @@
                 "texts":[
                     {
 						"type":"block",
-                        "code":"  showMaterialDialog<String>(\n  context: context,\n  child: AlertDialog(\n  title: const Text('Google'),\n  content: Text(\n  'Discard draft?',\n  style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.caption.color),\n  ),\n  actions: <Widget>[\n  FlatButton(\n  child: const Text('CANCEL'),\n  onPressed: () { Navigator.pop(context, 'cancel'); },\n  ),\n  FlatButton(\n  child: const Text('DISCARD'),\n  onPressed: () { Navigator.pop(context, 'discard'); },\n  ),\n  ],\n  ),\n  );"
+                        "code":"showMaterialDialog<String>(\n  context: context,\n  child: AlertDialog(\n  title: const Text('Google'),\n  content: Text(\n  'Discard draft?',\n  style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.caption.color),\n  ),\n  actions: <Widget>[\n  FlatButton(\n  child: const Text('CANCEL'),\n  onPressed: () { Navigator.pop(context, 'cancel'); },\n  ),\n  FlatButton(\n  child: const Text('DISCARD'),\n  onPressed: () { Navigator.pop(context, 'discard'); },\n  ),\n  ],\n  ),\n  );"
                     },
 					{
 						"type":"function",
-						"code":"  void showMaterialDialog<T>({ BuildContext context, Widget child }) {\n    showDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    )\n    .then<void>((T value) { // The value passed to Navigator.pop() or null.\n      if (value != null) {\n        _scaffoldKey.currentState.showSnackBar(SnackBar(\n          content: Text('You selected: $value'),\n        ));\n      }\n    });\n  }"
+						"code":"void showMaterialDialog<T>({ BuildContext context, Widget child }) {\n    showDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    )\n    .then<void>((T value) { // The value passed to Navigator.pop() or null.\n      if (value != null) {\n        _scaffoldKey.currentState.showSnackBar(SnackBar(\n          content: Text('You selected: $value'),\n        ));\n      }\n    });\n  }"
 					}
                 ]
             },
@@ -298,11 +290,11 @@
                 "texts":[
                     {
 						"type":"block",
-                        "code":"  showMaterialDialog<String>(\n  context: context,\n  child: SimpleDialog(\n  title: const Text('Set backup account'),\n  children: <Widget>[\n  ListTile(\n  title: const Text('YELLOW'),\n  leading: CircleAvatar(child: Text('Y')),\n  onTap: (){\n  Navigator.pop(context, 'Y');\n  },\n  ),\n  ListTile(\n  title: const Text('RED'),\n  leading: CircleAvatar(child: Text('R')),\n  onTap: (){\n  Navigator.pop(context, 'Y');\n  },\n  ),\n  ],\n  ),\n  );"
+                        "code":"showMaterialDialog<String>(\n  context: context,\n  child: SimpleDialog(\n  title: const Text('Set backup account'),\n  children: <Widget>[\n  ListTile(\n  title: const Text('YELLOW'),\n  leading: CircleAvatar(child: Text('Y')),\n  onTap: (){\n  Navigator.pop(context, 'Y');\n  },\n  ),\n  ListTile(\n  title: const Text('RED'),\n  leading: CircleAvatar(child: Text('R')),\n  onTap: (){\n  Navigator.pop(context, 'Y');\n  },\n  ),\n  ],\n  ),\n  );"
                     },
 					{
 						"type":"function",
-						"code":"  void showMaterialDialog<T>({ BuildContext context, Widget child }) {\n    showDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    )\n    .then<void>((T value) { // The value passed to Navigator.pop() or null.\n      if (value != null) {\n        _scaffoldKey.currentState.showSnackBar(SnackBar(\n          content: Text('You selected: $value'),\n        ));\n      }\n    });\n  }"
+						"code":"void showMaterialDialog<T>({ BuildContext context, Widget child }) {\n    showDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    )\n    .then<void>((T value) { // The value passed to Navigator.pop() or null.\n      if (value != null) {\n        _scaffoldKey.currentState.showSnackBar(SnackBar(\n          content: Text('You selected: $value'),\n        ));\n      }\n    });\n  }"
 					}
                 ]
             },
@@ -311,11 +303,11 @@
                 "texts":[
                     {
 						"type":"block",
-                        "code":"  showCuperDialog<String>(\n  context: context,\n  child: CupertinoAlertDialog(\n  title: const Text('Discard draft?'),\n  actions: <Widget>[\n  CupertinoDialogAction(\n  child: const Text('Discard'),\n  isDestructiveAction: true,\n  onPressed: () {\n  Navigator.pop(context, 'Discard');\n  },\n  ),\n  CupertinoDialogAction(\n  child: const Text('Cancel'),\n  isDefaultAction: true,\n  onPressed: () {\n  Navigator.pop(context, 'Cancel');\n  },\n  ),\n  ],\n  ),\n  );"
+                        "code":"showCuperDialog<String>(\n  context: context,\n  child: CupertinoAlertDialog(\n  title: const Text('Discard draft?'),\n  actions: <Widget>[\n  CupertinoDialogAction(\n  child: const Text('Discard'),\n  isDestructiveAction: true,\n  onPressed: () {\n  Navigator.pop(context, 'Discard');\n  },\n  ),\n  CupertinoDialogAction(\n  child: const Text('Cancel'),\n  isDefaultAction: true,\n  onPressed: () {\n  Navigator.pop(context, 'Cancel');\n  },\n  ),\n  ],\n  ),\n  );"
                     },
 					{
 						"type":"function",
-						"code":"  void showCuperDialog<T>({BuildContext context, Widget child}) {\n    showCupertinoDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((T value) {\n      if (value != null) {\n      }\n    });\n  }"
+						"code":"void showCuperDialog<T>({BuildContext context, Widget child}) {\n    showCupertinoDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((T value) {\n      if (value != null) {\n      }\n    });\n  }"
 					}
                 ]
             },
@@ -324,11 +316,11 @@
                 "texts":[
                     {
 						"type":"block",
-                        "code":"  showCuperDialog<String>(\n  context: context,\n  child: CupertinoAlertDialog(\n  title: const Text('Agree?'),\n  content: const Text('xxxxxxxxxxxxxxxxxxxxx'),\n  actions: <Widget>[\n  CupertinoDialogAction(\n  child: const Text('Donot Allow'),\n  onPressed: () {\n  Navigator.pop(context, 'Disallow');\n  },\n  ),\n  CupertinoDialogAction(\n  child: const Text('Allow'),\n  onPressed: () {\n  Navigator.pop(context, 'Allow');\n  },\n  ),\n  ],\n  ),\n  );"
+                        "code":"showCuperDialog<String>(\n  context: context,\n  child: CupertinoAlertDialog(\n  title: const Text('Agree?'),\n  content: const Text('xxxxxxxxxxxxxxxxxxxxx'),\n  actions: <Widget>[\n  CupertinoDialogAction(\n  child: const Text('Donot Allow'),\n  onPressed: () {\n  Navigator.pop(context, 'Disallow');\n  },\n  ),\n  CupertinoDialogAction(\n  child: const Text('Allow'),\n  onPressed: () {\n  Navigator.pop(context, 'Allow');\n  },\n  ),\n  ],\n  ),\n  );"
                     },
 					{
 						"type":"function",
-						"code":"  void showCuperDialog<T>({BuildContext context, Widget child}) {\n    showCupertinoDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((T value) {\n      if (value != null) {\n      }\n    });\n  }"
+						"code":"void showCuperDialog<T>({BuildContext context, Widget child}) {\n    showCupertinoDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((T value) {\n      if (value != null) {\n      }\n    });\n  }"
 					}
                 ]
             },
@@ -341,7 +333,7 @@
                     },
 					{
 						"type":"function",
-						"code":"  void showCuperDialog<T>({BuildContext context, Widget child}) {\n    showCupertinoDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((T value) {\n      if (value != null) {\n      }\n    });\n  }"
+						"code":"void showCuperDialog<T>({BuildContext context, Widget child}) {\n    showCupertinoDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((T value) {\n      if (value != null) {\n      }\n    });\n  }"
 					},
 					{
 						"type":"class",
@@ -358,11 +350,200 @@
                     },
 					{
 						"type":"function",
-						"code":"  void showCuperDialog<T>({BuildContext context, Widget child}) {\n    showCupertinoDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((T value) {\n      if (value != null) {\n      }\n    });\n  }"
+						"code":"void showCuperDialog<T>({BuildContext context, Widget child}) {\n    showCupertinoDialog<T>(\n      context: context,\n      builder: (BuildContext context) => child,\n    ).then((T value) {\n      if (value != null) {\n      }\n    });\n  }"
 					},
 					{
 						"type":"class",
 						"code":"class CupertinoDessertDialog extends StatelessWidget {\n  const CupertinoDessertDialog({Key key, this.title, this.content}) : super(key: key);\n\n  final Widget title;\n  final Widget content;\n\n  @override\n  Widget build(BuildContext context) {\n    return CupertinoAlertDialog(\n      title: title,\n      content: content,\n      actions: <Widget>[\n        CupertinoDialogAction(\n          child: const Text('Banana Split'),\n          onPressed: () {\n            Navigator.pop(context, 'Banana Split');\n          },\n        ),\n        CupertinoDialogAction(\n          child: const Text('Oatmeal Cookie'),\n          onPressed: () {\n            Navigator.pop(context, 'Oatmeal Cookies');\n          },\n        ),\n        CupertinoDialogAction(\n          child: const Text('Chocolate Brownie'),\n          onPressed: () {\n            Navigator.pop(context, 'Chocolate Brownies');\n          },\n        ),\n        CupertinoDialogAction(\n          child: const Text('Cancel'),\n          isDestructiveAction: true,\n          onPressed: () {\n            Navigator.pop(context, 'Cancel');\n          },\n        ),\n      ],\n    );\n  }\n}"
+					}
+                ]
+            }
+        ]
+    },
+    {
+        "title":"Picker",
+        "description":"Insert Picker",
+        "widgets":[
+            {
+                "name":"DateTime Picker",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"DateTimePicker(\n  labelText: 'From',\n  selectedDate: _selectDate,\n  selectedTime: _selectTime,\n  selectDate: (DateTime date) {\n  setState(() {\n  _selectDate = date;\n  });\n  },\n  selectTime: (TimeOfDay time) {\n  setState(() {\n  _selectTime = time;\n  });\n  },\n  )"
+                    },
+					{
+						"type":"field",
+						"code":"DateTime _selectDate = DateTime.now();\n  TimeOfDay _selectTime = const TimeOfDay(hour: 9, minute: 30);"
+					}
+                ]
+            },
+			{
+                "name":"DropdownButton",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"InputDecorator(\n  decoration: const InputDecoration(\n  labelText: 'Color',\n  hintText: 'Choose a Color',\n  contentPadding: EdgeInsets.zero,\n  ),\n  isEmpty: _color == null,\n  child: DropdownButton<String>(\n  value: _color,\n  onChanged: (String newValue) {\n  setState(() {\n  _color = newValue;\n  });\n  },\n  items: _allColors.map<DropdownMenuItem<String>>((String value) {\n  return DropdownMenuItem<String>(\n  value: value,\n  child: Text(value),\n  );\n  }).toList(),\n  ),\n  )"
+                    },
+					{
+						"type":"field",
+						"code":"final List<String> _allColors = <String>['Yellow', 'Red', 'Green', 'Blue'];\n  String _color = 'Red';"
+					}
+                ]
+            },
+			{
+                "name":"Cuper DatePicker",
+                "texts":[
+                    {
+						"type":"function",
+                        "code":"Widget _buildMenu(List<Widget> children) {\n    return Container(\n      decoration: BoxDecoration(\n        color: CupertinoTheme.of(context).scaffoldBackgroundColor,\n        border: const Border(\n          top: BorderSide(color: Color(0xFFBCBBC1), width: 0.0),\n          bottom: BorderSide(color: Color(0xFFBCBBC1), width: 0.0),\n        ),\n      ),\n      height: 44.0,\n      child: Padding(\n        padding: const EdgeInsets.symmetric(horizontal: 16.0),\n        child: SafeArea(\n          top: false,\n          bottom: false,\n          child: Row(\n            mainAxisAlignment: MainAxisAlignment.spaceBetween,\n            children: children,\n          ),\n        ),\n      ),\n    );\n  }"
+                    },
+                    {
+						"type":"function",
+                        "code":"Widget _buildBottomPicker(Widget picker) {\n    return Container(\n      height: _kPickerSheetHeight,\n      padding: const EdgeInsets.only(top: 6.0),\n      color: CupertinoColors.white,\n      child: DefaultTextStyle(\n        style: const TextStyle(\n          color: CupertinoColors.black,\n          fontSize: 22.0,\n        ),\n        child: GestureDetector(\n          // Blocks taps from propagating to the modal sheet and popping.\n          onTap: () { },\n          child: SafeArea(\n            top: false,\n            child: picker,\n          ),\n        ),\n      ),\n    );\n  }"
+                    },
+                    {
+						"type":"block",
+                        "code":"_buildDatePicker(context)"
+                    },
+					{
+						"type":"field",
+						"code":"DateTime _date = DateTime.now();\n  double _kPickerSheetHeight = 216.0;"
+					},
+					{
+						"type":"function",
+						"code":"Widget _buildDatePicker(BuildContext context) {\n    return GestureDetector(\n      onTap: () {\n        showCupertinoModalPopup<void>(\n          context: context,\n          builder: (BuildContext context) {\n            return _buildBottomPicker(\n              CupertinoDatePicker(\n                mode: CupertinoDatePickerMode.date,\n                initialDateTime: _date,\n                onDateTimeChanged: (DateTime newDateTime) {\n                  setState(() => _date = newDateTime);\n                },\n              ),\n            );\n          },\n        );\n      },\n      child: _buildMenu(\n        <Widget>[\n          const Text('Date'),\n          Text(\n            DateFormat.yMMMMd().format(_date),\n            style: const TextStyle(color: CupertinoColors.inactiveGray),\n          ),\n        ]\n      ),\n    );\n  }"
+					}
+                ]
+            },
+			{
+                "name":"Cuper ColorPicker",
+                "texts":[
+                    {
+						"type":"function",
+                        "code":"Widget _buildMenu(List<Widget> children) {\n    return Container(\n      decoration: BoxDecoration(\n        color: CupertinoTheme.of(context).scaffoldBackgroundColor,\n        border: const Border(\n          top: BorderSide(color: Color(0xFFBCBBC1), width: 0.0),\n          bottom: BorderSide(color: Color(0xFFBCBBC1), width: 0.0),\n        ),\n      ),\n      height: 44.0,\n      child: Padding(\n        padding: const EdgeInsets.symmetric(horizontal: 16.0),\n        child: SafeArea(\n          top: false,\n          bottom: false,\n          child: Row(\n            mainAxisAlignment: MainAxisAlignment.spaceBetween,\n            children: children,\n          ),\n        ),\n      ),\n    );\n  }"
+                    },
+                    {
+						"type":"function",
+                        "code":"Widget _buildBottomPicker(Widget picker) {\n    return Container(\n      height: _kPickerSheetHeight,\n      padding: const EdgeInsets.only(top: 6.0),\n      color: CupertinoColors.white,\n      child: DefaultTextStyle(\n        style: const TextStyle(\n          color: CupertinoColors.black,\n          fontSize: 22.0,\n        ),\n        child: GestureDetector(\n          // Blocks taps from propagating to the modal sheet and popping.\n          onTap: () { },\n          child: SafeArea(\n            top: false,\n            child: picker,\n          ),\n        ),\n      ),\n    );\n  }"
+                    },
+                    {
+						"type":"block",
+                        "code":"_buildColorPicker(context)"
+                    },
+					{
+						"type":"field",
+						"code":"int _selectedColorIndex = 0;\n  double _kPickerSheetHeight = 216.0;\n  double _kPickerItemHeight = 32.0;\n  List<String> coolColorNames = <String>['Sarcoline', 'Coquelicot', 'Smaragdine', 'Mikado', 'Glaucous', 'Wenge', 'Fulvous', 'Xanadu', 'Falu', 'Eburnean', 'Amaranth', 'Australien', 'Banan', 'Falu', 'Gingerline', 'Incarnadine', 'Labrador', 'Nattier',  'Pervenche', 'Sinoper', 'Verditer', 'Watchet', 'Zaffre',];"
+					},
+					{
+						"type":"function",
+						"code":"Widget _buildColorPicker(BuildContext context) {\n    final FixedExtentScrollController scrollController =\n        FixedExtentScrollController(initialItem: _selectedColorIndex);\n\n    return GestureDetector(\n      onTap: () async {\n        await showCupertinoModalPopup<void>(\n          context: context,\n          builder: (BuildContext context) {\n            return _buildBottomPicker(\n              CupertinoPicker(\n                scrollController: scrollController,\n                itemExtent: _kPickerItemHeight,\n                backgroundColor: CupertinoColors.white,\n                onSelectedItemChanged: (int index) {\n                  setState(() => _selectedColorIndex = index);\n                },\n                children: List<Widget>.generate(coolColorNames.length, (int index) {\n                  return Center(child:\n                  Text(coolColorNames[index]),\n                  );\n                }),\n              ),\n            );\n          },\n        );\n      },\n      child: _buildMenu(\n        <Widget>[\n          const Text('Favorite Color'),\n          Text(\n            coolColorNames[_selectedColorIndex],\n            style: const TextStyle(\n                color: CupertinoColors.inactiveGray\n            ),\n          ),\n        ],\n      ),\n    );\n  }"
+					}
+                ]
+            },
+			{
+                "name":"Cuper CountdownTimerPicker",
+                "texts":[
+                    {
+						"type":"function",
+                        "code":"Widget _buildMenu(List<Widget> children) {\n    return Container(\n      decoration: BoxDecoration(\n        color: CupertinoTheme.of(context).scaffoldBackgroundColor,\n        border: const Border(\n          top: BorderSide(color: Color(0xFFBCBBC1), width: 0.0),\n          bottom: BorderSide(color: Color(0xFFBCBBC1), width: 0.0),\n        ),\n      ),\n      height: 44.0,\n      child: Padding(\n        padding: const EdgeInsets.symmetric(horizontal: 16.0),\n        child: SafeArea(\n          top: false,\n          bottom: false,\n          child: Row(\n            mainAxisAlignment: MainAxisAlignment.spaceBetween,\n            children: children,\n          ),\n        ),\n      ),\n    );\n  }"
+                    },
+                    {
+						"type":"function",
+                        "code":"Widget _buildBottomPicker(Widget picker) {\n    return Container(\n      height: _kPickerSheetHeight,\n      padding: const EdgeInsets.only(top: 6.0),\n      color: CupertinoColors.white,\n      child: DefaultTextStyle(\n        style: const TextStyle(\n          color: CupertinoColors.black,\n          fontSize: 22.0,\n        ),\n        child: GestureDetector(\n          // Blocks taps from propagating to the modal sheet and popping.\n          onTap: () { },\n          child: SafeArea(\n            top: false,\n            child: picker,\n          ),\n        ),\n      ),\n    );\n  }"
+                    },
+                    {
+						"type":"block",
+                        "code":"_buildCountdownTimerPicker(context)"
+                    },
+					{
+						"type":"field",
+						"code":"Duration _timer = const Duration();\n  double _kPickerSheetHeight = 216.0;"
+					},
+					{
+						"type":"function",
+						"code":"Widget _buildCountdownTimerPicker(BuildContext context) {\n    return GestureDetector(\n      onTap: () {\n        showCupertinoModalPopup<void>(\n          context: context,\n          builder: (BuildContext context) {\n            return _buildBottomPicker(\n              CupertinoTimerPicker(\n                initialTimerDuration: _timer,\n                onTimerDurationChanged: (Duration newTimer) {\n                  setState(() => _timer = newTimer);\n                },\n              ),\n            );\n          },\n        );\n      },\n      child: _buildMenu(\n        <Widget>[\n          const Text('Countdown Timer'),\n          Text(\n            '${_timer.inHours}:'\n                '${(_timer.inMinutes % 60).toString().padLeft(2,'0')}:'\n                '${(_timer.inSeconds % 60).toString().padLeft(2,'0')}',\n            style: const TextStyle(color: CupertinoColors.inactiveGray),\n          ),\n        ],\n      ),\n    );\n  }"
+					}
+                ]
+            },
+			{
+                "name":"Cuper TimerPicker",
+                "texts":[
+                    {
+						"type":"function",
+                        "code":"Widget _buildMenu(List<Widget> children) {\n    return Container(\n      decoration: BoxDecoration(\n        color: CupertinoTheme.of(context).scaffoldBackgroundColor,\n        border: const Border(\n          top: BorderSide(color: Color(0xFFBCBBC1), width: 0.0),\n          bottom: BorderSide(color: Color(0xFFBCBBC1), width: 0.0),\n        ),\n      ),\n      height: 44.0,\n      child: Padding(\n        padding: const EdgeInsets.symmetric(horizontal: 16.0),\n        child: SafeArea(\n          top: false,\n          bottom: false,\n          child: Row(\n            mainAxisAlignment: MainAxisAlignment.spaceBetween,\n            children: children,\n          ),\n        ),\n      ),\n    );\n  }"
+                    },
+                    {
+						"type":"function",
+                        "code":"Widget _buildBottomPicker(Widget picker) {\n    return Container(\n      height: _kPickerSheetHeight,\n      padding: const EdgeInsets.only(top: 6.0),\n      color: CupertinoColors.white,\n      child: DefaultTextStyle(\n        style: const TextStyle(\n          color: CupertinoColors.black,\n          fontSize: 22.0,\n        ),\n        child: GestureDetector(\n          // Blocks taps from propagating to the modal sheet and popping.\n          onTap: () { },\n          child: SafeArea(\n            top: false,\n            child: picker,\n          ),\n        ),\n      ),\n    );\n  }"
+                    },
+                    {
+						"type":"block",
+                        "code":"_buildTimePicker(context)"
+                    },
+					{
+						"type":"field",
+						"code":"DateTime _time = DateTime.now();\n  double _kPickerSheetHeight = 216.0;"
+					},
+					{
+						"type":"function",
+						"code":"Widget _buildTimePicker(BuildContext context) {\n    return GestureDetector(\n      onTap: () {\n        showCupertinoModalPopup<void>(\n          context: context,\n          builder: (BuildContext context) {\n            return _buildBottomPicker(\n              CupertinoDatePicker(\n                mode: CupertinoDatePickerMode.time,\n                initialDateTime: _time,\n                onDateTimeChanged: (DateTime newDateTime) {\n                  setState(() => _time = newDateTime);\n                },\n              ),\n            );\n          },\n        );\n      },\n      child: _buildMenu(\n        <Widget>[\n          const Text('Time'),\n          Text(\n            DateFormat.jm().format(_time),\n            style: const TextStyle(color: CupertinoColors.inactiveGray),\n          ),\n        ],\n      ),\n    );\n  }"
+					}
+                ]
+            },
+			{
+                "name":"Cuper DateAndTimePicker",
+                "texts":[
+                    {
+						"type":"function",
+                        "code":"Widget _buildMenu(List<Widget> children) {\n    return Container(\n      decoration: BoxDecoration(\n        color: CupertinoTheme.of(context).scaffoldBackgroundColor,\n        border: const Border(\n          top: BorderSide(color: Color(0xFFBCBBC1), width: 0.0),\n          bottom: BorderSide(color: Color(0xFFBCBBC1), width: 0.0),\n        ),\n      ),\n      height: 44.0,\n      child: Padding(\n        padding: const EdgeInsets.symmetric(horizontal: 16.0),\n        child: SafeArea(\n          top: false,\n          bottom: false,\n          child: Row(\n            mainAxisAlignment: MainAxisAlignment.spaceBetween,\n            children: children,\n          ),\n        ),\n      ),\n    );\n  }"
+                    },
+                    {
+						"type":"function",
+                        "code":"Widget _buildBottomPicker(Widget picker) {\n    return Container(\n      height: _kPickerSheetHeight,\n      padding: const EdgeInsets.only(top: 6.0),\n      color: CupertinoColors.white,\n      child: DefaultTextStyle(\n        style: const TextStyle(\n          color: CupertinoColors.black,\n          fontSize: 22.0,\n        ),\n        child: GestureDetector(\n          // Blocks taps from propagating to the modal sheet and popping.\n          onTap: () { },\n          child: SafeArea(\n            top: false,\n            child: picker,\n          ),\n        ),\n      ),\n    );\n  }"
+                    },
+                    {
+						"type":"block",
+                        "code":"_buildDateAndTimePicker(context)"
+                    },
+					{
+						"type":"field",
+						"code":"DateTime _dateTime = DateTime.now();\n  double _kPickerSheetHeight = 216.0;"
+					},
+					{
+						"type":"function",
+						"code":"Widget _buildDateAndTimePicker(BuildContext context) {\n    return GestureDetector(\n      onTap: () {\n        showCupertinoModalPopup<void>(\n          context: context,\n          builder: (BuildContext context) {\n            return _buildBottomPicker(\n              CupertinoDatePicker(\n                mode: CupertinoDatePickerMode.dateAndTime,\n                initialDateTime: _dateTime,\n                onDateTimeChanged: (DateTime newDateTime) {\n                  setState(() => _dateTime = newDateTime);\n                },\n              ),\n            );\n          },\n        );\n      },\n      child: _buildMenu(\n        <Widget>[\n          const Text('Date and Time'),\n          Text(\n            DateFormat.yMMMd().add_jm().format(_dateTime),\n            style: const TextStyle(color: CupertinoColors.inactiveGray),\n          ),\n        ],\n      ),\n    );\n  }"
+					}
+                ]
+            }
+        ]
+    },
+    {
+        "title":"Selection",
+        "description":"Insert CheckBox/Radio",
+        "widgets":[
+            {
+                "name":"CheckBox",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"Checkbox(\n  value: checkboxValueB,\n  onChanged: (bool value) {\n  setState(() {\n  checkboxValueB = value;\n  });\n  },\n  )"
+                    },
+					{
+						"type":"field",
+						"code":"bool checkboxValueB = true;"
+					}
+                ]
+            },
+			{
+                "name":"Radio",
+                "texts":[
+                    {
+						"type":"block",
+                        "code":"  Radio<int>(\n  value: 0,\n  groupValue: radioValue,\n  onChanged: (int value) {\n  setState(() {\n  radioValue = value;\n  });\n  },\n  )"
+                    },
+					{
+						"type":"field",
+						"code":"int radioValue = 0;"
 					}
                 ]
             }

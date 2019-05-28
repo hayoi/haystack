@@ -29,6 +29,7 @@ public class SimplePopDialogAction extends AnAction {
     public SimplePopDialogAction(String text, String description, MyAction action) {
         super(text, description, null);
         mAction = action;
+
     }
 
     @Override
@@ -51,6 +52,7 @@ public class SimplePopDialogAction extends AnAction {
             final int index = Messages.showDialog(mAction.getDescription(), mAction.getTitle(), ws,
                     0, Messages.getQuestionIcon());
 
+            assert index >= 0;
             Widget widget = mAction.getWidgets().get(index);
             for (MyCode code : widget.getTexts()) {
                 int cursor = editor.getCaretModel().getOffset();
@@ -58,7 +60,6 @@ public class SimplePopDialogAction extends AnAction {
 
                 if (code.getType().equals("block")) {
                     if (code.getFunctionName() == null) {
-//                        insertString(mCursor, code.getCode());
                         PsiElement blockElement =
                                 DartHelper.createBlockFromText(project,
                                         code.getCode());
