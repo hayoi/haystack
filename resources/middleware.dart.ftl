@@ -41,7 +41,6 @@ List<Middleware<AppState>> create${ModelEntryName}Middleware([
 Middleware<AppState> _createLogin(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    running(action);
     repository.login(action.l).then((item) {
       next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
       completed(action);
@@ -58,7 +57,6 @@ Middleware<AppState> _createGet${ModelEntryName}(
     if (action.${clsUNName} == null) {
       idEmpty(action);
     } else {
-      running(action);
       repository.get${ModelEntryName}(action.${clsUNName}).then((item) {
         next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
         completed(action);
@@ -72,7 +70,6 @@ Middleware<AppState> _createGet${ModelEntryName}(
 Middleware<AppState> _createGet${ModelEntryName}s(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    running(action);
     if (action.isRefresh) {
       store.state.${(ModelEntryName)?lower_case}State.page.currPage = 1;
       store.state.${(ModelEntryName)?lower_case}State.${(ModelEntryName)?lower_case}s.clear();
@@ -124,7 +121,6 @@ Middleware<AppState> _createGet${ModelEntryName}s(
 Middleware<AppState> _createCreate${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    running(action);
     repository.create${ModelEntryName}(action.${(ModelEntryName)?lower_case}).then((item) {
       next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
       completed(action);
@@ -137,7 +133,6 @@ Middleware<AppState> _createCreate${ModelEntryName}(
 Middleware<AppState> _createUpdate${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    running(action);
     repository.update${ModelEntryName}(action.${(ModelEntryName)?lower_case}).then((item) {
       next(Sync${ModelEntryName}Action(${(ModelEntryName)?lower_case}: item));
       completed(action);
@@ -150,7 +145,6 @@ Middleware<AppState> _createUpdate${ModelEntryName}(
 Middleware<AppState> _createDelete${ModelEntryName}(
     ${ModelEntryName}Repository repository<#if genDatabase>, ${ModelEntryName}RepositoryDB repositoryDB</#if>) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
-    running(action);
     repository.delete${ModelEntryName}(action.${(ModelEntryName)?lower_case}.${clsUNName}).then((item) {
       next(Remove${ModelEntryName}Action(${clsUNName}: action.${(ModelEntryName)?lower_case}.${clsUNName}));
       completed(action);

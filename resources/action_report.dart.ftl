@@ -60,15 +60,6 @@ void noMoreItem(action) {
   }
 }
 
-void running(action) {
-  if (action.completer != null) {
-    action.completer.complete(ActionReport(
-        actionName: action.actionName,
-        status: ActionStatus.running,
-        msg: "${r"${action.actionName}"} is running"));
-  }
-}
-
 void idEmpty(action) {
   if (action.completer != null) {
     action.completer.complete(ActionReport(

@@ -79,6 +79,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
     super.initState();
 	<#if GenerateListView>
     if (this.widget.viewModel.${(ModelEntryName)?lower_case}s.length == 0) {
+      _status = ActionStatus.running;
       this.widget.viewModel.get${ModelEntryName}s(true, get${ModelEntryName}sCallback);
     }
 	</#if>
