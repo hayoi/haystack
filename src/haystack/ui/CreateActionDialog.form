@@ -6,6 +6,7 @@
       <xy x="48" y="54" width="593" height="337"/>
     </constraints>
     <properties>
+      <alignmentX value="0.5"/>
       <name value="Create Action"/>
       <preferredSize width="581" height="317"/>
     </properties>

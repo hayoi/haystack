@@ -16,8 +16,11 @@ import com.jetbrains.lang.dart.psi.*;
 import haystack.core.models.MyAction;
 import haystack.core.models.MyCode;
 import haystack.core.models.Widget;
+import haystack.ui.LocalizationDialog;
 import haystack.util.DartHelper;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 public class SimplePopDialogAction extends AnAction {
     private Document document;
@@ -44,6 +47,22 @@ public class SimplePopDialogAction extends AnAction {
 
         VirtualFile vFile = event.getData(PlatformDataKeys.VIRTUAL_FILE);
 
+        if (mAction.getTitle().equals("Localization")){
+            String locale = project.getBasePath()+"/locale/";
+            System.out.println(editor.getSelectionModel().getSelectedText());
+            File file = new File(locale);
+            if (file.exists() && file.isDirectory()){
+                LocalizationDialog dialog = new LocalizationDialog(file.list(),
+                        l -> {
+
+                        });
+                dialog.pack();
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+            }
+
+            return;
+        }
         if (mAction.getWidgets().size() > 1) {
             String[] ws = new String[mAction.getWidgets().size()];
             for (int i = 0; i < mAction.getWidgets().size(); i++) {

@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.hayoi.haystack</id>
     <name>Flutter App Template Generator</name>
-    <version>1.2.11</version>
+    <version>1.2.12</version>
     <vendor email="haystack1206@gmail.com" url="https://github.com/hayoi/haystack">hayoi</vendor>
 
     <description>

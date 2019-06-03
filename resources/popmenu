@@ -1,5 +1,9 @@
 [
     {
+        "title":"Localization",
+        "description":"replace String with Localization method"
+    },
+    {
         "title":"Button",
         "description":"insert a button",
         "widgets":[
