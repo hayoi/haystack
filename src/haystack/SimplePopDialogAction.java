@@ -1,5 +1,6 @@
 package haystack;
 
+import com.intellij.json.psi.JsonElementGenerator;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -7,12 +8,16 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
+import com.intellij.psi.search.FilenameIndex;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.psi.*;
+import haystack.core.models.Localization;
 import haystack.core.models.MyAction;
 import haystack.core.models.MyCode;
 import haystack.core.models.Widget;
@@ -47,30 +52,16 @@ public class SimplePopDialogAction extends AnAction {
 
         VirtualFile vFile = event.getData(PlatformDataKeys.VIRTUAL_FILE);
 
-        if (mAction.getTitle().equals("Localization")){
-            String locale = project.getBasePath()+"/locale/";
-            System.out.println(editor.getSelectionModel().getSelectedText());
-            File file = new File(locale);
-            if (file.exists() && file.isDirectory()){
-                LocalizationDialog dialog = new LocalizationDialog(file.list(),
-                        l -> {
-
-                        });
-                dialog.pack();
-                dialog.setLocationRelativeTo(null);
-                dialog.setVisible(true);
+        if (mAction.getWidgets() != null && mAction.getWidgets().size() > 0) {
+            int index = 0;
+            if (mAction.getWidgets().size() > 1) {
+                String[] ws = new String[mAction.getWidgets().size()];
+                for (int i = 0; i < mAction.getWidgets().size(); i++) {
+                    ws[i] = mAction.getWidgets().get(i).getName();
+                }
+                index = Messages.showDialog(mAction.getDescription(), mAction.getTitle(), ws,
+                        0, Messages.getQuestionIcon());
             }
-
-            return;
-        }
-        if (mAction.getWidgets().size() > 1) {
-            String[] ws = new String[mAction.getWidgets().size()];
-            for (int i = 0; i < mAction.getWidgets().size(); i++) {
-                ws[i] = mAction.getWidgets().get(i).getName();
-            }
-            final int index = Messages.showDialog(mAction.getDescription(), mAction.getTitle(), ws,
-                    0, Messages.getQuestionIcon());
-
             assert index >= 0;
             Widget widget = mAction.getWidgets().get(index);
             for (MyCode code : widget.getTexts()) {
@@ -79,15 +70,14 @@ public class SimplePopDialogAction extends AnAction {
 
                 if (code.getType().equals("block")) {
                     if (code.getFunctionName() == null) {
-                        PsiElement blockElement =
-                                DartHelper.createBlockFromText(project,
-                                        code.getCode());
+                        PsiElement blockElement = DartHelper.createBlockFromText(project,
+                                code.getCode());
                         WriteCommandAction.runWriteCommandAction(project, () -> {
                             cursorElement.getParent().addBefore(blockElement, cursorElement);
                         });
 
                     } else {
-
+                        // TODO insert code to a exist function
                     }
                 } else if (code.getType().equals("field")) {
                     DartClassMembers field =
@@ -128,11 +118,58 @@ public class SimplePopDialogAction extends AnAction {
                         containingClass.getParent().addAfter(func, containingClass);
                     });
                 }
-
             }
-        } else if (mAction.getWidgets().size() == 1) {
-
+        } else {
+            if (mAction.getTitle().equals("Localization")) {
+                String locale = project.getBasePath() + "/locale/";
+                File file = new File(locale);
+                if (file.exists() && file.isDirectory()) {
+                    String[] files = file.list();
+                    LocalizationDialog dialog = new LocalizationDialog(files,
+                            l -> {
+                                dealLocalizationJson(files, l);
+                            });
+                    dialog.pack();
+                    dialog.setLocationRelativeTo(null);
+                    dialog.setVisible(true);
+                }
+            }
         }
+    }
+
+    private void dealLocalizationJson(String[] files, Localization l) {
+        for (int i = 0; i < files.length; i++) {
+            PsiFile[] psiFile = FilenameIndex.getFilesByName(project, files[i],
+                    GlobalSearchScope.projectScope(project));
+            assert psiFile.length > 0;
+            PsiElement element = psiFile[0].findElementAt(1);
+            JsonElementGenerator generator = new JsonElementGenerator(project);
+            PsiElement blockElement = generator.createProperty(l.getKey(),
+                    "\"" + l.getValues().get(i) + "\"");
+            Document jsonDoc = PsiDocumentManager.getInstance(project).getDocument(psiFile[0]);
+            if (jsonDoc.getText().contains("\"" + l.getKey() + "\"")) {
+                Messages.showInfoMessage("the Key " + l.getKey() +
+                                " has already existed in " + files[i] + ". Don't create anymore"
+                        , "Key Exist");
+            } else {
+                WriteCommandAction.runWriteCommandAction(project, () -> {
+                    PsiElement e = element.getParent().addAfter(blockElement, element);
+                    e.getParent().addAfter(generator.createComma(), e);
+                });
+            }
+        }
+        final Document document = editor.getDocument();
+        String block = "Translations.of(context).text('" + l.getKey() + "')";
+
+        final SelectionModel selectionModel = editor.getSelectionModel();
+
+        final int start = selectionModel.getSelectionStart();
+        final int end = selectionModel.getSelectionEnd();
+        //Making the replacement
+        WriteCommandAction.runWriteCommandAction(project, () ->
+                document.replaceString(start, end, block)
+        );
+        selectionModel.removeSelection();
     }
 
     @Override
