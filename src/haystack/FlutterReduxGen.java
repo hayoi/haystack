@@ -261,6 +261,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         rootMap.put("GenSliverGrid", pageModel.genSliverGrid);
         rootMap.put("GenSliverToBoxAdapter", pageModel.genSliverToBoxAdapter);
         rootMap.put("FabInAppBar", pageModel.genSliverFab);
+        rootMap.put("GenSliverTabBar", pageModel.genSliverTabBar);
         rootMap.put("IsCustomWidget", pageModel.isCustomWidget);
 
         if (pageModel.genActionButton) {

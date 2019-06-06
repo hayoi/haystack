@@ -51,7 +51,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   <#if HasActionSearch>
   final _SearchDemoSearchDelegate _delegate = _SearchDemoSearchDelegate();
   </#if>
-  <#if GenerateListView>
+  <#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   final TrackingScrollController _scrollController = TrackingScrollController();
   </#if>
@@ -66,6 +66,9 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   </#if>
   var _status;
   var _processBar;
+  <#if GenSliverTabBar>
+  var _tabs = ["tab1", "tab2", "tab3"];
+  </#if>
 
   <#if PageType == "LOGIN">
   String _userName = "";
@@ -77,7 +80,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   @override
   void initState() {
     super.initState();
-	<#if GenerateListView>
+	<#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
     if (this.widget.viewModel.${(ModelEntryName)?lower_case}s.length == 0) {
       _status = ActionStatus.running;
       this.widget.viewModel.get${ModelEntryName}s(true, get${ModelEntryName}sCallback);
@@ -91,7 +94,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
 	</#if>
   }
 
-  <#if GenerateListView>
+  <#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
   void get${ModelEntryName}sCallback(ActionReport report) {
     setState(() {
       _status = report.status;
@@ -154,7 +157,6 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   }
 
   </#if>
-
   void showError(String error) {
     final snackBar = SnackBar(content: Text(error));
     _scaffoldKey.currentState.showSnackBar(snackBar);
@@ -255,18 +257,18 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
     );
 	</#if>
   }
-  <#if GenerateListView>
+  <#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
   bool _onNotification(ScrollNotification notification) {
     if (notification is ScrollUpdateNotification) {
-
-      if (_scrollController.mostRecentlyUpdatedPosition.maxScrollExtent > _scrollController.offset &&
-          _scrollController.mostRecentlyUpdatedPosition.maxScrollExtent - _scrollController.offset <= 50) {
+      print(notification.scrollDelta);
+      print(notification.metrics.toString());
+      if (notification.metrics.extentAfter < 15.0) {
         // load more
-        if (this._status == ActionStatus.running) {
+        if (this._status != ActionStatus.running) {
           // have next page
           _loadMoreData();
           setState(() {});
-        } else {}
+        }
       }
     }
 
@@ -460,126 +462,184 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   </#if>
   <#if GenerateCustomScrollView>
   Stack buildCustomScrollView() {
-    var imagePath = "assets/images/flower2.png";
-    return Stack(children: <Widget>[
-      <#if FabInAppBar>
-      Positioned(
-        top: 0.0,
-        left: 0.0,
-        right: 0.0,
-        height: _appBarHeight + _fabHalfSize,
-        child: Hero(
-          tag: 'imagePath',
-          child: Image.asset(
-            imagePath,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-      </#if>
-      CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            expandedHeight: _appBarHeight<#if FabInAppBar> - _fabHalfSize</#if>,
-            pinned: true,
-            floating: false,
-            snap: false,
-            backgroundColor: Colors.transparent,
-            <#if (ActionBtnCount > 0)>
-            actions: _buildActionButton(),
-            </#if>
-            flexibleSpace: FlexibleSpaceBar(
-              title: const Text('Title'),
-              background: Stack(
-                fit: StackFit.expand,
+    var body;
+
+    <#if GenSliverTabBar>
+    body = TabBarView(
+      // These are the contents of the tab views, below the tabs.
+      children: _tabs.map((String name) {
+        return ${PageName}TabView();
+      }).toList(),
+    );
+    <#else>
+	var subWidget;
+	<#if GenSliverToBoxAdapter>
+    subWidget = SliverToBoxAdapter(
+        child: Stack(children: <Widget>[
+      Container(
+		  <#if FabInAppBar>
+          padding: const EdgeInsets.only(top: _fabHalfSize),
+		  </#if>
+          child: Container(
+              color: Theme.of(context).canvasColor,
+              child: Column(
                 children: <Widget>[
-                  <#if !FabInAppBar>
-                  Hero(
-                      tag: imagePath,
-                      child: Image.asset(
-                        imagePath,
+                  Card(
+                      child: Image.network(
+                    "https://images.unsplash.com/photo-1556228578-626e9590b81f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjY5MjI3fQ",
+                    fit: BoxFit.cover,
+                    height: _appBarHeight,
+                  )),
+                  Card(
+                      child: Image.network(
+                        "https://images.unsplash.com/photo-1556228578-626e9590b81f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjY5MjI3fQ",
                         fit: BoxFit.cover,
                         height: _appBarHeight,
                       )),
-                  </#if>
-                  // This gradient ensures that the toolbar icons are distinct
-                  // against the background image.
-                  const DecoratedBox(
-                    decoration: const BoxDecoration(
-                      gradient: const LinearGradient(
-                        begin: const Alignment(0.0, -1.0),
-                        end: const Alignment(0.0, -0.4),
-                        colors: const <Color>[
-                          const Color(0x60000000),
-                          const Color(0x00000000)
-                        ],
-                      ),
-                    ),
-                  ),
+                  Card(
+                      child: Image.network(
+                        "https://images.unsplash.com/photo-1556228578-626e9590b81f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjY5MjI3fQ",
+                        fit: BoxFit.cover,
+                        height: _appBarHeight,
+                      )),
+                  Card(
+                      child: Image.network(
+                        "https://images.unsplash.com/photo-1556228578-626e9590b81f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjY5MjI3fQ",
+                        fit: BoxFit.cover,
+                        height: _appBarHeight,
+                      )),
                 ],
-              ),
-            ),
-          ),
-          <#if GenSliverToBoxAdapter>
-          SliverToBoxAdapter(
-              child: Stack(children: <Widget>[
-              Container(
-                padding: const EdgeInsets.only(top: _fabHalfSize),
-                child: Container(
-                    color: Theme.of(context).canvasColor,
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Card(
-                            child: Text(
-                                "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n2"),
-                          ),
-                        )
-                      ],
-                    ))),
-            <#if FabInAppBar>
-            Positioned(
-              right: 16.0,
-              child: FloatingActionButton(
-                child: Icon(Icons.favorite),
-                onPressed: () {},
-              ),
-            )
-            </#if>
-          ])),
-          </#if>
-          <#if GenSliverGrid>
-          SliverGrid(
+              ))),
+      <#if FabInAppBar>
+      Positioned(
+        right: 16.0,
+        child: FloatingActionButton(
+          child: Icon(Icons.favorite),
+          onPressed: () {},
+        ),
+      )
+      </#if>
+    ]));
+    </#if>
+    <#if GenSliverGrid>
+    subWidget = SliverGrid(
             gridDelegate: ${PageName}GridDelegate(),
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 return _ProductItem(
-                  product: index,
-                  onPressed: () {},
-                );
-              },
-              childCount: 20,
+                   product: index,
+                   onPressed: () {},
+                 );
+               },
+               childCount: 20,
+             ),
+           );
+    </#if>
+    <#if GenSliverFixedExtentList>
+    subWidget = SliverFixedExtentList(
+      itemExtent: 50.0,
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          return Container(
+            alignment: Alignment.center,
+            color: Colors.lightGreen[100 * (index % 9)],
+            child: Text('list item $index'),
+          );
+        },
+        childCount: 15,
+      ),
+    );
+    </#if>
+    body = SafeArea(
+      top: false,
+      bottom: false,
+      child: Builder(
+        builder: (BuildContext context) {
+          return NotificationListener(
+            onNotification: _onNotification,
+            child: RefreshIndicator(
+              key: _refreshIndicatorKey,
+              onRefresh: _handleRefresh,
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverOverlapInjector(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context),
+                  ),
+                  subWidget
+                ],
+              ),
             ),
+          );
+        },
+      ),
+    );
+	</#if>
+
+    return <#if GenSliverTabBar>DefaultTabController(
+      length: _tabs.length, // This is the number of tabs.
+      child: </#if>Stack(
+        children: <Widget>[
+          NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              // These are the slivers that show up in the "outer" scroll view.
+              return <Widget>[
+                SliverOverlapAbsorber(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  child: SliverAppBar(
+                    pinned: true,
+                    expandedHeight:  _appBarHeight<#if FabInAppBar> - _fabHalfSize</#if>,
+                    forceElevated: innerBoxIsScrolled,
+                    flexibleSpace: FlexibleSpaceBar(
+                      titlePadding:
+                          EdgeInsets.only(left: 16, bottom: 16<#if GenSliverTabBar> + 48.0</#if>),
+                      title: Text("Titile"),
+                      background: Stack(
+                        fit: StackFit.expand,
+                        children: <Widget>[
+                          Hero(
+                              tag: "image_tag",
+                              child: Image.network(
+                                "https://images.unsplash.com/photo-1556228578-626e9590b81f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjY5MjI3fQ",
+                                fit: BoxFit.cover,
+                                height: _appBarHeight,
+                              )),
+                          // This gradient ensures that the toolbar icons are distinct
+                          // against the background image.
+                          const DecoratedBox(
+                            decoration: const BoxDecoration(
+                              gradient: const LinearGradient(
+                                begin: const Alignment(0.0, -1.0),
+                                end: const Alignment(0.0, -0.4),
+                                colors: const <Color>[
+                                  const Color(0x60000000),
+                                  const Color(0x00000000)
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    <#if GenSliverTabBar>
+                    bottom: TabBar(
+                      tabs:
+                          _tabs.map((String name) => Tab(text: name)).toList(),
+                    ),
+                    </#if>
+                  ),
+                ),
+              ];
+            },
+            body: body,
           ),
-          </#if>
-          <#if GenSliverFixedExtentList>
-          SliverFixedExtentList(
-            itemExtent: 50.0,
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return Container(
-                  alignment: Alignment.center,
-                  color: Colors.lightGreen[100 * (index % 9)],
-                  child: Text('list item $index'),
-                );
-              },
-              childCount: 15,
-            ),
-          ),
-          </#if>
         ],
-      )
-    ]);
+      <#if GenSliverTabBar>
+      ),
+      </#if>
+    );
   }
 
   </#if>
@@ -733,7 +793,7 @@ const List<Choice> choices = const <Choice>[
   </#list>
 ];
 </#if>
-<#if GenerateListView>
+<#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
 
 class _${ModelEntryName}ListItem extends ListTile {
   _${ModelEntryName}ListItem({${ModelEntryName} ${(ModelEntryName)?lower_case}, GestureTapCallback onTap})
@@ -801,9 +861,9 @@ class _ProductItem extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Hero(
                     tag: "123 $product",
-                    child: Image.asset(
-                      "assets/products/shirt.png",
-                      fit: BoxFit.contain,
+                    child: Image.network(
+                      "https://images.unsplash.com/photo-1556228578-626e9590b81f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjY5MjI3fQ",
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),

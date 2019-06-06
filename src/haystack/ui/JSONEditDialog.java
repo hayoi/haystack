@@ -65,6 +65,7 @@ public class JSONEditDialog extends JDialog {
     private JCheckBox createCheckBox;
     private JCheckBox updateCheckBox;
     private JCheckBox deleteCheckBox;
+    private JCheckBox sliverTabBar;
     private JSONColorizer jsonColorizer;
     private JSONEditCallbacks callbacks;
     private ErrorMessageParser errorMessageParser;
@@ -102,6 +103,10 @@ public class JSONEditDialog extends JDialog {
         });
         sliverActionButton.addItemListener(e -> {
             appBarInfo.setVisible(sliverActionButton.isSelected());
+        });
+
+        sliverToBoxAdapter.addItemListener(e -> {
+//            sliverFab.setVisible(sliverToBoxAdapter.isSelected());
         });
 
         loginRadioButton.addItemListener(e -> {
@@ -245,6 +250,7 @@ public class JSONEditDialog extends JDialog {
             pageModel.genSliverGrid = sliverGrid.isSelected();
             pageModel.genSliverToBoxAdapter = sliverToBoxAdapter.isSelected();
             pageModel.genSliverFab = sliverFab.isSelected();
+            pageModel.genSliverTabBar = sliverTabBar.isSelected();
 
             configActionButton(pageModel);
 //        } else if (profileRadioButton.isSelected()) {
