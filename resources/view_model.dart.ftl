@@ -8,7 +8,7 @@ import 'package:${ProjectName}/redux/${(ModelEntryName)?lower_case}/${(ModelEntr
 
 class ${PageName}ViewModel {
   final ${ModelEntryName} ${(ModelEntryName)?lower_case};
-  <#if viewModelQuery || GenerateListView>
+  <#if viewModelQuery || GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
   final List<${ModelEntryName}> ${(ModelEntryName)?lower_case}s;
   final Function(bool, ActionCallback) get${ModelEntryName}s;
   </#if>
@@ -30,7 +30,7 @@ class ${PageName}ViewModel {
 
   ${PageName}ViewModel({
     this.${(ModelEntryName)?lower_case},
-    <#if viewModelQuery || GenerateListView>
+    <#if viewModelQuery || GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
     this.${(ModelEntryName)?lower_case}s,
     this.get${ModelEntryName}s,
     </#if>
@@ -54,7 +54,7 @@ class ${PageName}ViewModel {
   static ${PageName}ViewModel fromStore(Store<AppState> store) {
     return ${PageName}ViewModel(
       ${(ModelEntryName)?lower_case}: store.state.${(ModelEntryName)?lower_case}State.${(ModelEntryName)?lower_case},
-      <#if viewModelQuery || GenerateListView>
+      <#if viewModelQuery || GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
       ${(ModelEntryName)?lower_case}s: store.state.${(ModelEntryName)?lower_case}State.${(ModelEntryName)?lower_case}s.values.toList() ?? [],
       get${ModelEntryName}s: (isRefresh, callback) {
         final Completer<ActionReport> completer = Completer<ActionReport>();
