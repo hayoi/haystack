@@ -185,7 +185,6 @@ public class CreateAction extends AnAction implements CreateActionDialog.ActionF
             }
             sb.append(") {\n");
             sb.append("  return (Store<AppState> store, dynamic action, NextDispatcher next) {\n");
-            sb.append("    running(action);\n");
             sb.append("    repository.");
             sb.append(lowercaseName);
             sb.append("(");
