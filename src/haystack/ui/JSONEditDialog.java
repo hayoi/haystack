@@ -65,7 +65,8 @@ public class JSONEditDialog extends JDialog {
     private JCheckBox createCheckBox;
     private JCheckBox updateCheckBox;
     private JCheckBox deleteCheckBox;
-    private JCheckBox sliverTabBar;
+    private JRadioButton sliverTabBar;
+    private JRadioButton sliverTabView;
     private JSONColorizer jsonColorizer;
     private JSONEditCallbacks callbacks;
     private ErrorMessageParser errorMessageParser;
@@ -95,6 +96,8 @@ public class JSONEditDialog extends JDialog {
         sliver.add(sliverFixedList);
         sliver.add(sliverGrid);
         sliver.add(sliverToBoxAdapter);
+        sliver.add(sliverTabBar);
+        sliver.add(sliverTabView);
         uiOnlyCheckBox.addItemListener(e -> {
             jsonTextPanel.setEnabled(!uiOnlyCheckBox.isSelected());
         });
@@ -105,8 +108,9 @@ public class JSONEditDialog extends JDialog {
             appBarInfo.setVisible(sliverActionButton.isSelected());
         });
 
-        sliverToBoxAdapter.addItemListener(e -> {
-//            sliverFab.setVisible(sliverToBoxAdapter.isSelected());
+        sliverTabView.addChangeListener(e -> {
+            sliverActionButton.setVisible(!sliverTabView.isSelected());
+            sliverDrawer.setVisible(!sliverTabView.isSelected());
         });
 
         loginRadioButton.addItemListener(e -> {
@@ -251,6 +255,7 @@ public class JSONEditDialog extends JDialog {
             pageModel.genSliverToBoxAdapter = sliverToBoxAdapter.isSelected();
             pageModel.genSliverFab = sliverFab.isSelected();
             pageModel.genSliverTabBar = sliverTabBar.isSelected();
+            pageModel.genSliverTabView = sliverTabView.isSelected();
 
             configActionButton(pageModel);
 //        } else if (profileRadioButton.isSelected()) {

@@ -6,9 +6,9 @@ import 'package:${ProjectName}/redux/app/app_state.dart';
 import 'package:${ProjectName}/features/action_callback.dart';
 import 'package:${ProjectName}/redux/${(ModelEntryName)?lower_case}/${(ModelEntryName)?lower_case}_actions.dart';
 
-class ${PageName}ViewModel {
+class ${PageName}<#if GenSliverTabView>Tab</#if>ViewModel {
   final ${ModelEntryName} ${(ModelEntryName)?lower_case};
-  <#if viewModelQuery || GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
+  <#if viewModelQuery || GenerateListView || GenSliverGrid || GenSliverFixedExtentList || GenSliverTabView>
   final List<${ModelEntryName}> ${(ModelEntryName)?lower_case}s;
   final Function(bool, ActionCallback) get${ModelEntryName}s;
   </#if>
@@ -28,9 +28,9 @@ class ${PageName}ViewModel {
   final Function(Login, ActionCallback) login;
   </#if>
 
-  ${PageName}ViewModel({
+  ${PageName}<#if GenSliverTabView>Tab</#if>ViewModel({
     this.${(ModelEntryName)?lower_case},
-    <#if viewModelQuery || GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
+    <#if viewModelQuery || GenerateListView || GenSliverGrid || GenSliverFixedExtentList || GenSliverTabView>
     this.${(ModelEntryName)?lower_case}s,
     this.get${ModelEntryName}s,
     </#if>
@@ -51,10 +51,10 @@ class ${PageName}ViewModel {
     </#if>
   });
 
-  static ${PageName}ViewModel fromStore(Store<AppState> store) {
-    return ${PageName}ViewModel(
+  static ${PageName}<#if GenSliverTabView>Tab</#if>ViewModel fromStore(Store<AppState> store) {
+    return ${PageName}<#if GenSliverTabView>Tab</#if>ViewModel(
       ${(ModelEntryName)?lower_case}: store.state.${(ModelEntryName)?lower_case}State.${(ModelEntryName)?lower_case},
-      <#if viewModelQuery || GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
+      <#if viewModelQuery || GenerateListView || GenSliverGrid || GenSliverFixedExtentList || GenSliverTabView>
       ${(ModelEntryName)?lower_case}s: store.state.${(ModelEntryName)?lower_case}State.${(ModelEntryName)?lower_case}s.values.toList() ?? [],
       get${ModelEntryName}s: (isRefresh, callback) {
         final Completer<ActionReport> completer = Completer<ActionReport>();

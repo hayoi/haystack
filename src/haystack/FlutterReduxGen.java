@@ -43,7 +43,8 @@ import java.util.Map;
 
 import static haystack.core.models.PageType.CUSTOMSCROLLVIEW;
 
-public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEditCallbacks, ModelTableDialog.ModelTableCallbacks {
+public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEditCallbacks,
+        ModelTableDialog.ModelTableCallbacks {
     private PsiDirectory directory;
     private Point lastDialogLocation;
     private LanguageResolver languageResolver;
@@ -98,20 +99,30 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
         String resources = System.getProperty("user.home") + "/.haystack_template_cache/";
         FileUtil.createDir(resources);
-        String[] fileNames = {"/popmenu", "/actions.dart.ftl", "/app_reducer.dart.ftl", "/app_state.dart.ftl",
+        String[] fileNames = {"/popmenu", "/actions.dart.ftl", "/app_reducer.dart.ftl",
+                "/app_state.dart.ftl",
                 "/database_client.dart.ftl", "/date_picker_widget.dart.ftl", "/i18n_en.json.ftl",
-                "/i18n_zh.json.ftl", "/action_report.dart.ftl", "/main.dart.ftl", "/middleware.dart.ftl",
-                "/model_entry_data.dart.ftl", "/network_common.dart.ftl", "/page_data.dart.ftl", "/pubspec.yaml.ftl",
-                "/reducer.dart.ftl", "/remote_wrap.dart.ftl", "/repository.dart.ftl", "/repository_db.dart.ftl",
-                "/settings_option.dart.ftl", "/settings_option_page.dart.ftl", "/spannable_grid.dart.ftl", "/state.dart.ftl",
-                "/store.dart.ftl", "/swipe_list_item.dart.ftl", "/test_view.dart.ftl", "/text_scale.dart.ftl",
-                "/theme.dart.ftl", "/toast_utils.dart.ftl", "/translations.dart.ftl", "/view.dart.ftl",
-                "/view_model.dart.ftl", "/progress_dialog.dart.ftl", "/choice_data.dart.ftl", "/action_callback.dart.ftl"
+                "/i18n_zh.json.ftl", "/action_report.dart.ftl", "/main.dart.ftl", "/middleware" +
+                ".dart.ftl",
+                "/model_entry_data.dart.ftl", "/network_common.dart.ftl", "/page_data.dart.ftl",
+                "/pubspec.yaml.ftl",
+                "/reducer.dart.ftl", "/remote_wrap.dart.ftl", "/repository.dart.ftl",
+                "/repository_db.dart.ftl",
+                "/settings_option.dart.ftl", "/settings_option_page.dart.ftl", "/spannable_grid" +
+                ".dart.ftl", "/state.dart.ftl",
+                "/store.dart.ftl", "/swipe_list_item.dart.ftl", "/test_view.dart.ftl",
+                "/text_scale.dart.ftl",
+                "/theme.dart.ftl", "/toast_utils.dart.ftl", "/translations.dart.ftl", "/view.dart" +
+                ".ftl",
+                "/view_model.dart.ftl", "/progress_dialog.dart.ftl", "/choice_data.dart.ftl",
+                "/action_callback.dart.ftl"
         };
-        String version = PluginManager.getPlugin(PluginId.getId("com.github.hayoi.haystack")).getVersion();
+        String version =
+                PluginManager.getPlugin(PluginId.getId("com.github.hayoi.haystack")).getVersion();
 
         if (new File(resources + "version").exists()) {
-            String cacheVersion = FileUtil.usingBufferedReader(resources + "version").replace("\n", "");
+            String cacheVersion = FileUtil.usingBufferedReader(resources + "version").replace("\n"
+                    , "");
             if (!version.equals(cacheVersion)) {
                 FileUtil.mkFile(new File(resources + "version"), version);
                 for (String name : fileNames) {
@@ -174,7 +185,8 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         if (pageModel.isUIOnly) {
             checkProjectStructure(pageModel);
         } else {
-            ModelTableDialog tableDialog = new ModelTableDialog(pageModel, languageResolver, textResources, this);
+            ModelTableDialog tableDialog = new ModelTableDialog(pageModel, languageResolver,
+                    textResources, this);
             if (lastDialogLocation != null) {
                 tableDialog.setLocation(lastDialogLocation);
             }
@@ -218,7 +230,8 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     private void genStructure(PageModel pageModel) {
         Project project = directory.getProject();
         PsiFileFactory factory = PsiFileFactory.getInstance(project);
-        PsiDirectoryFactory directoryFactory = PsiDirectoryFactory.getInstance(directory.getProject());
+        PsiDirectoryFactory directoryFactory =
+                PsiDirectoryFactory.getInstance(directory.getProject());
         String packageName = directoryFactory.getQualifiedName(directory, true);
 
         FileSaver fileSaver = new IDEFileSaver(factory, directory, DartFileType.INSTANCE);
@@ -231,7 +244,8 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
             return ok == 0;
         });
 
-        final String moduleName = FileIndexFacade.getInstance(project).getModuleForFile(directory.getVirtualFile()).getName();
+        final String moduleName =
+                FileIndexFacade.getInstance(project).getModuleForFile(directory.getVirtualFile()).getName();
 
         Map<String, Object> rootMap = new HashMap<String, Object>();
         rootMap.put("ProjectName", moduleName);
@@ -262,6 +276,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         rootMap.put("GenSliverToBoxAdapter", pageModel.genSliverToBoxAdapter);
         rootMap.put("FabInAppBar", pageModel.genSliverFab);
         rootMap.put("GenSliverTabBar", pageModel.genSliverTabBar);
+        rootMap.put("GenSliverTabView", pageModel.genSliverTabView);
         rootMap.put("IsCustomWidget", pageModel.isCustomWidget);
 
         if (pageModel.genActionButton) {
@@ -289,7 +304,7 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
             generateRepository(rootMap);
             generateRedux(rootMap);
         }
-        generateFeature(rootMap, pageModel.isCustomWidget);
+        generateFeature(rootMap, pageModel.isCustomWidget, pageModel.genSliverTabView);
     }
 
     private void generateRedux(Map<String, Object> rootMap) {
@@ -308,12 +323,15 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         String path = sourcePath + "/redux/store.dart";
         String content = FileUtil.usingBufferedReader(path);
         StringBuilder sb = new StringBuilder();
-        String param = "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() + "/redux/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_middleware.dart';\n";
+        String param =
+                "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() +
+                        "/redux/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_middleware.dart';\n";
         if (!content.contains(param)) {
             sb.append(param);
         }
 
-        param = "\n      ..addAll(create" + rootMap.get("ModelEntryName").toString() + "Middleware())";
+        param = "\n      ..addAll(create" + rootMap.get("ModelEntryName").toString() +
+                "Middleware())";
         if (!content.contains(param)) {
             int poi1 = content.indexOf("middleware: []") + "middleware: []".length();
             sb.append(content.substring(0, poi1));
@@ -329,7 +347,9 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         String path = sourcePath + "/redux/app/app_reducer.dart";
         String content = FileUtil.usingBufferedReader(path);
         StringBuilder sb = new StringBuilder();
-        String param = "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() + "/redux/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_reducer.dart';\n";
+        String param =
+                "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() +
+                        "/redux/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_reducer.dart';\n";
         if (!content.contains(param)) {
             sb.append(param);
         }
@@ -348,12 +368,15 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     private void writeAppState(Map<String, Object> rootMap) {
         String path = sourcePath + "/redux/app/app_state.dart";
         String content = FileUtil.usingBufferedReader(path);
-        String param = "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() + "/redux/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_state.dart';\n";
+        String param =
+                "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() +
+                        "/redux/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_state.dart';\n";
         StringBuilder sb = new StringBuilder();
         if (!content.contains(param)) {
             sb.append(param);
         }
-        param = "\n  final " + rootMap.get("ModelEntryName").toString() + "State " + rootMap.get("ModelEntryName").toString().toLowerCase() + "State;";
+        param = "\n  final " + rootMap.get("ModelEntryName").toString() + "State " + rootMap.get(
+                "ModelEntryName").toString().toLowerCase() + "State;";
         int poi1 = content.indexOf("class AppState {") + "class AppState {".length();
         if (!content.contains(param)) {
             sb.append(content.substring(0, poi1));
@@ -368,8 +391,10 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         }
         int poi3 = content.indexOf("return AppState(") + "return AppState(".length();
         param = "\n        " + rootMap.get("ModelEntryName").toString().toLowerCase() + "State: " + rootMap.get("ModelEntryName").toString() + "State(\n" +
-                "            " + rootMap.get("ModelEntryName").toString().toLowerCase() + ": null,\n" +
-                "            " + rootMap.get("ModelEntryName").toString().toLowerCase() + "s: Map(),\n" +
+                "            " + rootMap.get("ModelEntryName").toString().toLowerCase() + ": " +
+                "null,\n" +
+                "            " + rootMap.get("ModelEntryName").toString().toLowerCase() + "s: Map" +
+                "(),\n" +
                 "            page: Page(),),";
         if (!content.contains(param)) {
             sb.append(content.substring(poi2, poi3));
@@ -382,47 +407,76 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
 
 
     private void initTemplate() {
-        final String moduleName = FileIndexFacade.getInstance(project).getModuleForFile(directory.getVirtualFile()).getName();
+        final String moduleName =
+                FileIndexFacade.getInstance(project).getModuleForFile(directory.getVirtualFile()).getName();
 
         Map<String, Object> rootMap = new HashMap<String, Object>();
         rootMap.put("ProjectName", moduleName);
-        FileUtil.generateFile(new File(project.getBasePath() + "/pubspec.yaml"), "pubspec.yaml.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(project.getBasePath() + "/pubspec.yaml"), "pubspec.yaml" +
+                ".ftl", rootMap, cfg);
         FileUtil.generateFile(new File(sourcePath + "/main.dart"), "main.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/data/network_common.dart"), "network_common.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/utils/progress_dialog.dart"), "progress_dialog.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/utils/toast_utils.dart"), "toast_utils.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/data/model/remote_wrap.dart"), "remote_wrap.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/data/model/choice_data.dart"), "choice_data.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/data/model/page_data.dart"), "page_data.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/trans/translations.dart"), "translations.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/data/network_common.dart"), "network_common" +
+                ".dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/utils/progress_dialog.dart"),
+                "progress_dialog.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/utils/toast_utils.dart"), "toast_utils.dart" +
+                ".ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/data/model/remote_wrap.dart"), "remote_wrap" +
+                ".dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/data/model/choice_data.dart"), "choice_data" +
+                ".dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/data/model/page_data.dart"), "page_data" +
+                ".dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/trans/translations.dart"), "translations" +
+                ".dart.ftl", rootMap, cfg);
 
-        FileUtil.generateFile(new File(sourcePath + "/redux/store.dart"), "store.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/redux/action_report.dart"), "action_report.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/redux/app/app_reducer.dart"), "app_reducer.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/redux/app/app_state.dart"), "app_state.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/redux/store.dart"), "store.dart.ftl",
+                rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/redux/action_report.dart"), "action_report" +
+                ".dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/redux/app/app_reducer.dart"), "app_reducer" +
+                ".dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/redux/app/app_state.dart"), "app_state.dart" +
+                ".ftl", rootMap, cfg);
 
-        FileUtil.generateFile(new File(project.getBasePath() + "/locale/i18n_en.json"), "i18n_en.json.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(project.getBasePath() + "/locale/i18n_zh.json"), "i18n_zh.json.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/data/db/database_client.dart"), "database_client.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(project.getBasePath() + "/locale/i18n_en.json"), "i18n_en" +
+                ".json.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(project.getBasePath() + "/locale/i18n_zh.json"), "i18n_zh" +
+                ".json.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/data/db/database_client.dart"),
+                "database_client.dart.ftl", rootMap, cfg);
 
-        FileUtil.generateFile(new File(sourcePath + "/features/action_callback.dart"), "action_callback.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/features/settings/settings_option.dart"), "settings_option.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/features/settings/settings_option_page.dart"), "settings_option_page.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/features/settings/theme.dart"), "theme.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/features/settings/text_scale.dart"), "text_scale.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/action_callback.dart"),
+                "action_callback.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/settings/settings_option.dart"),
+                "settings_option.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/settings/settings_option_page" +
+                ".dart"), "settings_option_page.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/settings/theme.dart"), "theme.dart" +
+                ".ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/settings/text_scale.dart"),
+                "text_scale.dart.ftl", rootMap, cfg);
 
-        FileUtil.generateFile(new File(sourcePath + "/features/widget/date_picker_widget.dart"), "date_picker_widget.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/features/widget/spannable_grid.dart"), "spannable_grid.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(sourcePath + "/features/widget/swipe_list_item.dart"), "swipe_list_item.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/widget/date_picker_widget.dart"),
+                "date_picker_widget.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/widget/spannable_grid.dart"),
+                "spannable_grid.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(sourcePath + "/features/widget/swipe_list_item.dart"),
+                "swipe_list_item.dart.ftl", rootMap, cfg);
 
-        Messages.showMessageDialog(project, "Project init completed！", "Initialize", Messages.getInformationIcon());
+        Messages.showMessageDialog(project, "Project init completed！", "Initialize",
+                Messages.getInformationIcon());
     }
 
-    private void generateFeature(Map<String, Object> rootMap, boolean isCustomWidget) {
-        String path = sourcePath + "/features/" + (isCustomWidget ? "customize/" : "") + rootMap.get("PageName").toString().toLowerCase() + "/"
+    private void generateFeature(Map<String, Object> rootMap, boolean isCustomWidget,
+                                 boolean tabView) {
+        String path =
+                sourcePath + "/features/" + (isCustomWidget ? "customize/" : "") + rootMap.get(
+                        "PageName").toString().toLowerCase() + "/"
                 + rootMap.get("PageName").toString().toLowerCase();
-        FileUtil.generateFile(new File(path + "_view_model.dart"), "view_model.dart.ftl", rootMap, cfg);
-        FileUtil.generateFile(new File(path + "_view.dart"), "view.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(path + (tabView ? "_tab" : "") + "_view_model.dart"),
+                "view_model.dart.ftl", rootMap, cfg);
+        FileUtil.generateFile(new File(path + (tabView ? "_tab" : "") + "_view.dart"), "view.dart.ftl", rootMap, cfg);
     }
 
     private void generateRepository(Map<String, Object> rootMap) {
@@ -444,7 +498,8 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
         subMap.put("genDatabase", classModel.isGenDBModule());
         subMap.put("Fields", classModel.getFields());
 
-        File f = new File(sourcePath + "/data/model/" + classModel.getName().toLowerCase() + "_data.dart");
+        File f = new File(sourcePath + "/data/model/" + classModel.getName().toLowerCase() +
+                "_data.dart");
         FileUtil.generateFile(f, "model_entry_data.dart.ftl", subMap, cfg);
         if (classModel.isGenDBModule()) {
             writeDatabaseClient(subMap);
@@ -454,7 +509,10 @@ public class FlutterReduxGen extends AnAction implements JSONEditDialog.JSONEdit
     private void writeDatabaseClient(Map<String, Object> rootMap) {
         String path = sourcePath + "/data/db/database_client.dart";
         String content = FileUtil.usingBufferedReader(path);
-        String param = "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() + "/data/model/" + rootMap.get("ModelEntryName").toString().toLowerCase() + "_data.dart';\n";
+        String param =
+                "import 'package:" + rootMap.get("ProjectName").toString().toLowerCase() + "/data" +
+                        "/model/" + rootMap.get("ModelEntryName").toString().toLowerCase() +
+                        "_data.dart';\n";
         StringBuilder sb = new StringBuilder();
         if (!content.contains(param)) {
             sb.append(param);

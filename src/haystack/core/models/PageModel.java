@@ -29,5 +29,6 @@ public class PageModel {
     public boolean genSliverToBoxAdapter;
     public boolean genSliverFab;
     public boolean genSliverTabBar;
+    public boolean genSliverTabView;
     public List<ClassModel> classModels;
 }

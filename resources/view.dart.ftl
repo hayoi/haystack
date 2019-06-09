@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:${ProjectName}/trans/translations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:${ProjectName}/redux/app/app_state.dart';
-import 'package:${ProjectName}/features/<#if IsCustomWidget>customize/</#if>${(PageName)?lower_case}/${(PageName)?lower_case}_view_model.dart';
+import 'package:${ProjectName}/features/<#if IsCustomWidget>customize/</#if>${(PageName)?lower_case}/${(PageName)?lower_case}<#if GenSliverTabView>_tab</#if>_view_model.dart';
 import 'package:${ProjectName}/redux/action_report.dart';
 import 'package:${ProjectName}/utils/progress_dialog.dart';
 <#if viewModelDelete>
@@ -19,39 +19,39 @@ import 'package:${ProjectName}/features/widget/swipe_list_item.dart';
 import 'package:${ProjectName}/features/widget/spannable_grid.dart';
 </#if>
 
-class ${PageName}View extends StatelessWidget {
-  ${PageName}View({Key key}) : super(key: key);
+class ${PageName}<#if GenSliverTabView>Tab</#if>View extends StatelessWidget {
+  ${PageName}<#if GenSliverTabView>Tab</#if>View({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, ${PageName}ViewModel>(
+    return StoreConnector<AppState, ${PageName}<#if GenSliverTabView>Tab</#if>ViewModel>(
       distinct: true,
-      converter: (store) => ${PageName}ViewModel.fromStore(store),
-      builder: (_, viewModel) => ${PageName}ViewContent(
+      converter: (store) => ${PageName}<#if GenSliverTabView>Tab</#if>ViewModel.fromStore(store),
+      builder: (_, viewModel) => ${PageName}<#if GenSliverTabView>Tab</#if>ViewContent(
             viewModel: viewModel,
           ),
     );
   }
 }
 
-class ${PageName}ViewContent extends StatefulWidget {
-  final ${PageName}ViewModel viewModel;
+class ${PageName}<#if GenSliverTabView>Tab</#if>ViewContent extends StatefulWidget {
+  final ${PageName}<#if GenSliverTabView>Tab</#if>ViewModel viewModel;
 
-  ${PageName}ViewContent({Key key, this.viewModel}) : super(key: key);
+  ${PageName}<#if GenSliverTabView>Tab</#if>ViewContent({Key key, this.viewModel}) : super(key: key);
 
   @override
-  _${PageName}ViewContentState createState() => _${PageName}ViewContentState();
+  _${PageName}<#if GenSliverTabView>Tab</#if>ViewContentState createState() => _${PageName}<#if GenSliverTabView>Tab</#if>ViewContentState();
 }
 
-<#if FabInAppBar || GenerateCustomScrollView>
+<#if GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
 const double _fabHalfSize = 28.0;
 
 </#if>
-class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
+class _${PageName}<#if GenSliverTabView>Tab</#if>ViewContentState extends State<${PageName}<#if GenSliverTabView>Tab</#if>ViewContent> {
   <#if HasActionSearch>
   final _SearchDemoSearchDelegate _delegate = _SearchDemoSearchDelegate();
   </#if>
-  <#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
+  <#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList || GenSliverTabView>
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   final TrackingScrollController _scrollController = TrackingScrollController();
   </#if>
@@ -61,7 +61,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   int page = 0;
   List pages = ["Home","Notice","Mine"];
   </#if>
-  <#if GenerateCustomScrollView>
+  <#if GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList || GenSliverTabBar>
   final double _appBarHeight = 256.0;
   </#if>
   var _status;
@@ -80,7 +80,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   @override
   void initState() {
     super.initState();
-	<#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
+	<#if GenerateListView || GenSliverGrid || GenSliverFixedExtentList>
     if (this.widget.viewModel.${(ModelEntryName)?lower_case}s.length == 0) {
       _status = ActionStatus.running;
       this.widget.viewModel.get${ModelEntryName}s(true, get${ModelEntryName}sCallback);
@@ -94,7 +94,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
 	</#if>
   }
 
-  <#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
+  <#if GenerateListView || GenSliverGrid || GenSliverFixedExtentList>
   void get${ModelEntryName}sCallback(ActionReport report) {
     setState(() {
       _status = report.status;
@@ -168,7 +168,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
 
     <#if PageType == "LOGIN">
     widget = loginForm();
-    <#elseif PageType == "CUSTOMSCROLLVIEW">
+    <#elseif GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList || GenSliverTabBar>
     widget = buildCustomScrollView();
     <#elseif PageType == "PROFILE">
     <#else>
@@ -223,6 +223,46 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
         body: widget,
       ),
     );
+	<#elseif GenSliverTabView>
+    widget = SafeArea(
+      top: false,
+      bottom: false,
+      child: Builder(
+        builder: (BuildContext context) {
+          return NotificationListener(
+            onNotification: _onNotification,
+            child: RefreshIndicator(
+              key: _refreshIndicatorKey,
+              onRefresh: _handleRefresh,
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverOverlapInjector(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context),
+                  ),
+                  //TODO add your widget here
+				  SliverFixedExtentList(
+					  itemExtent: 50.0,
+					  delegate: SliverChildBuilderDelegate(
+						(BuildContext context, int index) {
+						  return Container(
+							alignment: Alignment.center,
+							color: Colors.lightGreen[100 * (index % 9)],
+							child: _createItem(context, index),
+						  );
+						},
+						childCount: 15,
+					  ),
+					)
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+
+	return widget;
 	<#else>
     return Scaffold(
       key: _scaffoldKey,
@@ -257,7 +297,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
     );
 	</#if>
   }
-  <#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
+  <#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList || GenSliverTabView>
   bool _onNotification(ScrollNotification notification) {
     if (notification is ScrollUpdateNotification) {
       print(notification.scrollDelta);
@@ -276,13 +316,17 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   }
 
   Future<Null> _loadMoreData() {
+	<#if GenerateListView || GenSliverGrid || GenSliverFixedExtentList>
     widget.viewModel.get${ModelEntryName}s(false, get${ModelEntryName}sCallback);
+	</#if>
     return null;
   }
 
   Future<Null> _handleRefresh() async {
     _refreshIndicatorKey.currentState.show();
+	<#if GenerateListView || GenSliverGrid || GenSliverFixedExtentList>
     widget.viewModel.get${ModelEntryName}s(true, get${ModelEntryName}sCallback);
+	</#if>
     return null;
   }
 
@@ -460,15 +504,15 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   }
 
   </#if>
-  <#if GenerateCustomScrollView>
-  Stack buildCustomScrollView() {
+  <#if GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList || GenSliverTabBar>
+  Widget buildCustomScrollView() {
     var body;
 
     <#if GenSliverTabBar>
     body = TabBarView(
       // These are the contents of the tab views, below the tabs.
       children: _tabs.map((String name) {
-        return ${PageName}TabView();
+        return ${PageName}TabView();// TODO replace your tab view here
       }).toList(),
     );
     <#else>
@@ -526,10 +570,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
             gridDelegate: ${PageName}GridDelegate(),
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                return _ProductItem(
-                   product: index,
-                   onPressed: () {},
-                 );
+                return _createItem(context, index);
                },
                childCount: 20,
              ),
@@ -543,7 +584,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
           return Container(
             alignment: Alignment.center,
             color: Colors.lightGreen[100 * (index % 9)],
-            child: Text('list item $index'),
+            child: _createItem(context, index),
           );
         },
         childCount: 15,
@@ -592,6 +633,9 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
                     pinned: true,
                     expandedHeight:  _appBarHeight<#if FabInAppBar> - _fabHalfSize</#if>,
                     forceElevated: innerBoxIsScrolled,
+                    <#if (ActionList?size > 0)>
+                    actions: _buildActionButton(),
+                    </#if>
                     flexibleSpace: FlexibleSpaceBar(
                       titlePadding:
                           EdgeInsets.only(left: 16, bottom: 16<#if GenSliverTabBar> + 48.0</#if>),
@@ -647,7 +691,7 @@ class _${PageName}ViewContentState extends State<${PageName}ViewContent> {
   Drawer _buildDrawer() {
     var fontFamily = "Roboto";
     var accountEmail = Text(
-        "hay@gmail.com",
+        "haystack1206@gmail.com",
         style: TextStyle(
             color: Colors.white,
             fontSize: 14.0,
@@ -793,7 +837,7 @@ const List<Choice> choices = const <Choice>[
   </#list>
 ];
 </#if>
-<#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList>
+<#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList || GenSliverTabView>
 
 class _${ModelEntryName}ListItem extends ListTile {
   _${ModelEntryName}ListItem({${ModelEntryName} ${(ModelEntryName)?lower_case}, GestureTapCallback onTap})
@@ -826,83 +870,7 @@ class ${PageName}GridDelegate extends SpanableSliverGridDelegate {
 
     return 220.0;
   }
-}
 
-class _ProductItem extends StatelessWidget {
-  const _ProductItem({Key key, @required this.product, this.onPressed})
-      : assert(product != null),
-        super(key: key);
-
-  final int product;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return MergeSemantics(
-      child: Card(
-        elevation: 2.0,
-        child: Stack(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      decoration:
-                          BoxDecoration(color: Theme.of(context).canvasColor),
-                      child: Text("￥12.0")),
-                ),
-                Container(
-                  foregroundDecoration: BoxDecoration(
-                      border: Border.all(color: Colors.lightGreen)),
-                  height: 144.0,
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Hero(
-                    tag: "123 $product",
-                    child: Image.network(
-                      "https://images.unsplash.com/photo-1556228578-626e9590b81f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjY5MjI3fQ",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: SizedBox(
-                    height: 24.0,
-                    child: Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 24.0,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12.0),
-                            child: Image.asset(
-                              "assets/images/flower2.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8.0),
-                        Expanded(
-                          child: Text("name $product"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Material(
-              type: MaterialType.transparency,
-              child: InkWell(onTap: onPressed),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 </#if>
 <#if HasActionSearch>
 
