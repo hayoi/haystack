@@ -33,7 +33,8 @@ public class CreateAction extends AnAction implements CreateActionDialog.ActionF
         sourcePath = project.getBasePath() + "/lib";
         selectGroup = DataKeys.VIRTUAL_FILE.getData(dataContext);
         if (selectGroup == null || !selectGroup.getParent().getPath().endsWith("redux")) {
-            Messages.showMessageDialog("You must select a subfolder of redux folder, the action would be created in it.", "Error", Messages.getErrorIcon());
+            Messages.showMessageDialog("You must select a subfolder of redux folder, the action " +
+                    "would be created in it.", "Error", Messages.getErrorIcon());
             return;
         }
         entry = selectGroup.getPath().substring(selectGroup.getPath().lastIndexOf("/") + 1);
@@ -56,6 +57,8 @@ public class CreateAction extends AnAction implements CreateActionDialog.ActionF
 
 
     private void writeRepositoryDB(ActionForm actionForm) {
+        if (!actionForm.isMethodInRepository() || actionForm.getActionName() == null)
+            return;
         String path = sourcePath + "/data/db/" + entry + "_repository_db.dart";
 
         if (!new File(path).exists()) {
@@ -81,7 +84,7 @@ public class CreateAction extends AnAction implements CreateActionDialog.ActionF
             sb.append("> ");
             sb.append(lowercaseName);
             sb.append("(");
-            if(actionForm.getParameters() != null) {
+            if (actionForm.getParameters() != null) {
                 for (int i = 0; i < actionForm.getParameters().size(); i++) {
                     FieldModel field = actionForm.getParameters().get(i);
                     sb.append(field.getType());
@@ -102,6 +105,8 @@ public class CreateAction extends AnAction implements CreateActionDialog.ActionF
     }
 
     private void writeRepository(ActionForm actionForm) {
+        if (!actionForm.isMethodInRepository() || actionForm.getActionName() == null)
+            return;
         String path = sourcePath + "/data/remote/" + entry + "_repository.dart";
 
         String entryCamel = StringUtils.upercaseFirst(entry);
@@ -145,6 +150,8 @@ public class CreateAction extends AnAction implements CreateActionDialog.ActionF
     }
 
     private void writeMiddleware(ActionForm actionForm) {
+        if (actionForm.getActionName() == null)
+            return;
         String path = sourcePath + "/redux/" + entry + "/" + entry + "_middleware.dart";
         String entryCamel = StringUtils.upercaseFirst(entry);
         String lowercaseName = StringUtils.lowercaseFirst(actionForm.getActionName());
@@ -152,7 +159,9 @@ public class CreateAction extends AnAction implements CreateActionDialog.ActionF
         String content = FileUtil.usingBufferedReader(path);
         StringBuilder sb = new StringBuilder();
 
-        String param = "  final " + lowercaseName + " = _create" + actionForm.getActionName() + "(_repository" + (content.contains("_repositoryDB") ? ", _repositoryDB" : "") + ");";
+        String param = "  final " + lowercaseName + " = _create" + actionForm.getActionName() +
+                "(_repository" + (content.contains("_repositoryDB") ? ", _repositoryDB" : "") +
+                ");";
         if (!content.contains(param)) {
             String indexString = "]) {";
             int poi1 = content.indexOf(indexString) + indexString.length();
@@ -185,41 +194,50 @@ public class CreateAction extends AnAction implements CreateActionDialog.ActionF
             }
             sb.append(") {\n");
             sb.append("  return (Store<AppState> store, dynamic action, NextDispatcher next) {\n");
-            sb.append("    repository.");
-            sb.append(lowercaseName);
-            sb.append("(");
-            if (actionForm.getParameters() != null) {
-                for (int i = 0; i < actionForm.getParameters().size(); i++) {
-                    FieldModel field = actionForm.getParameters().get(i);
-                    sb.append("action.");
-                    sb.append(field.getName());
-                    if (i != actionForm.getParameters().size() - 1) {
-                        sb.append(", ");
+            if (actionForm.isMethodInRepository()) {
+                sb.append("    repository.");
+                sb.append(lowercaseName);
+                sb.append("(");
+                if (actionForm.getParameters() != null) {
+                    for (int i = 0; i < actionForm.getParameters().size(); i++) {
+                        FieldModel field = actionForm.getParameters().get(i);
+                        sb.append("action.");
+                        sb.append(field.getName());
+                        if (i != actionForm.getParameters().size() - 1) {
+                            sb.append(", ");
+                        }
                     }
                 }
+                sb.append(")");
+                sb.append(".then((");
+                if (actionForm.getStateVariable() != null) {
+                    sb.append(actionForm.getStateVariable().getName());
+                } else {
+                    sb.append("_");
+                }
+                sb.append(") {\n");
+                if (actionForm.isReducer()) {
+                    sb.append("      next(");
+//                sb.append("RD");
+                    sb.append(actionForm.getReducerActionName());
+                    sb.append("Action(");
+                    if (actionForm.getReducerParameters() != null)
+                        for (int i = 0; i < actionForm.getReducerParameters().size(); i++) {
+                            FieldModel fieldModel = actionForm.getReducerParameters().get(i);
+                            if (i > 0 && i < actionForm.getReducerParameters().size())
+                                sb.append("; ");
+                            sb.append(fieldModel.getName());
+                            sb.append(": ");
+                            sb.append(fieldModel.getName());
+                        }
+
+                    sb.append("));\n");
+                }
+                sb.append("      completed(action);\n");
+                sb.append("    }).catchError((error) {\n");
+                sb.append("      catchError(action, error);\n");
+                sb.append("    });\n");
             }
-            sb.append(")");
-            sb.append(".then((");
-            if (actionForm.getStateVariable() != null) {
-                sb.append(actionForm.getStateVariable().getName());
-            } else {
-                sb.append("_");
-            }
-            sb.append(") {\n");
-            if (actionForm.getStateVariable() != null) {
-                sb.append("      next(");
-                sb.append("RD");
-                sb.append(actionForm.getActionName());
-                sb.append("Action(");
-                sb.append(actionForm.getStateVariable().getName());
-                sb.append(": ");
-                sb.append(actionForm.getStateVariable().getName());
-                sb.append("));\n");
-            }
-            sb.append("      completed(action);\n");
-            sb.append("    }).catchError((error) {\n");
-            sb.append("      catchError(action, error);\n");
-            sb.append("    });\n");
             sb.append("  };\n");
             sb.append("}");
 
@@ -232,12 +250,12 @@ public class CreateAction extends AnAction implements CreateActionDialog.ActionF
             return;
         String path = sourcePath + "/redux/" + entry + "/" + entry + "_state.dart";
         String entryCamel = StringUtils.upercaseFirst(entry);
-        String lowercaseName = StringUtils.lowercaseFirst(actionForm.getActionName());
 
         String content = FileUtil.usingBufferedReader(path);
         StringBuilder sb = new StringBuilder();
 
-        String param = "  final " + actionForm.getStateVariable().getType() + " " + actionForm.getStateVariable().getName() + ";";
+        String param =
+                "  final " + actionForm.getStateVariable().getType() + " " + actionForm.getStateVariable().getName() + ";";
         if (!content.contains(param)) {
             String indexString = "class " + entryCamel + "State {";
             int poi1 = content.indexOf(indexString) + indexString.length();
@@ -278,16 +296,18 @@ public class CreateAction extends AnAction implements CreateActionDialog.ActionF
     }
 
     private void writeReducer(ActionForm actionForm) {
-        if (actionForm.getStateVariable() == null)
+        if (!actionForm.isReducer())
             return;
         String path = sourcePath + "/redux/" + entry + "/" + entry + "_reducer.dart";
 
         String entryCamel = StringUtils.upercaseFirst(entry);
-        String lowercaseName = StringUtils.lowercaseFirst(actionForm.getActionName());
+        String lowercaseName = StringUtils.lowercaseFirst(actionForm.getReducerActionName());
 
         String content = FileUtil.usingBufferedReader(path);
         StringBuilder sb = new StringBuilder();
-        String param = "  TypedReducer<" + entryCamel + "State, " + actionForm.getActionName() + "Action>(_" + lowercaseName + "),";
+        String param =
+                "  TypedReducer<" + entryCamel + "State, " + actionForm.getReducerActionName() +
+                        "Action>(_" + lowercaseName + "),";
         if (!content.contains(param)) {
             String indexString = "combineReducers<" + entryCamel + "State>([";
             int poi1 = content.indexOf(indexString) + indexString.length();
@@ -304,7 +324,7 @@ public class CreateAction extends AnAction implements CreateActionDialog.ActionF
             sb.append("(");
             sb.append(entryCamel);
             sb.append("State state, ");
-            sb.append(actionForm.getActionName());
+            sb.append(actionForm.getReducerActionName());
             sb.append("Action action) {\n");
             sb.append("  // TODO  handle your state here\n");
             sb.append("  return state;\n");
@@ -317,58 +337,68 @@ public class CreateAction extends AnAction implements CreateActionDialog.ActionF
     private void writeAction(ActionForm actionForm) {
         String path = sourcePath + "/redux/" + entry + "/" + entry + "_actions.dart";
         StringBuilder sb = new StringBuilder();
-        sb.append("\n");
-        sb.append("\n");
-        sb.append("class ");
-        sb.append(actionForm.getActionName());
-        sb.append("Action extends Action {\n");
-        if (actionForm.getParameters() != null)
-        for (FieldModel fieldModel : actionForm.getParameters()) {
-            sb.append("  final ");
-            sb.append(fieldModel.getType());
-            sb.append(" ");
-            sb.append(fieldModel.getName());
-            sb.append(";\n");
-        }
-        sb.append("\n");
-        sb.append("  ");
-        sb.append(actionForm.getActionName());
-        sb.append("Action({");
-        if (actionForm.getParameters() != null && actionForm.getParameters().size() > 0) {
-            for (FieldModel fieldModel : actionForm.getParameters()) {
-                sb.append("this.");
-                sb.append(fieldModel.getName());
-                sb.append(", ");
-            }
-        }
-        sb.append("completer})\n");
-
-        sb.append("        : super(completer, \"");
-        sb.append(actionForm.getActionName());
-        sb.append("Action\");\n");
-        sb.append("}");
-
-        if (actionForm.getStateVariable() != null) {
+        if (actionForm.getActionName() != null) {
             sb.append("\n");
             sb.append("\n");
-            sb.append("class RD");
+            sb.append("class ");
             sb.append(actionForm.getActionName());
             sb.append("Action extends Action {\n");
-            sb.append("  final ");
-            sb.append(actionForm.getStateVariable().getType());
-            sb.append(" ");
-            sb.append(actionForm.getStateVariable().getName());
-            sb.append(";\n");
+            if (actionForm.getParameters() != null)
+                for (FieldModel fieldModel : actionForm.getParameters()) {
+                    sb.append("  final ");
+                    sb.append(fieldModel.getType());
+                    sb.append(" ");
+                    sb.append(fieldModel.getName());
+                    sb.append(";\n");
+                }
             sb.append("\n");
-            sb.append("  RD");
+            sb.append("  ");
             sb.append(actionForm.getActionName());
             sb.append("Action({");
-            sb.append("this.");
-            sb.append(actionForm.getStateVariable().getName());
-            sb.append(", ");
+            if (actionForm.getParameters() != null && actionForm.getParameters().size() > 0) {
+                for (FieldModel fieldModel : actionForm.getParameters()) {
+                    sb.append("this.");
+                    sb.append(fieldModel.getName());
+                    sb.append(", ");
+                }
+            }
             sb.append("completer})\n");
-            sb.append("        : super(completer, \"RD");
+
+            sb.append("        : super(completer, \"");
             sb.append(actionForm.getActionName());
+            sb.append("Action\");\n");
+            sb.append("}");
+        }
+
+        if (actionForm.isReducer()) {
+            sb.append("\n");
+            sb.append("\n");
+            sb.append("class ");
+            sb.append(actionForm.getReducerActionName());
+            sb.append("Action extends Action {\n");
+            if (actionForm.getReducerParameters() != null)
+                for (FieldModel fieldModel : actionForm.getReducerParameters()) {
+                    sb.append("  final ");
+                    sb.append(fieldModel.getType());
+                    sb.append(" ");
+                    sb.append(fieldModel.getName());
+                    sb.append(";\n");
+                }
+            sb.append("\n");
+            sb.append("  ");
+            sb.append(actionForm.getReducerActionName());
+            sb.append("Action({");
+            if (actionForm.getReducerParameters() != null && actionForm.getReducerParameters().size() > 0) {
+                for (FieldModel fieldModel : actionForm.getReducerParameters()) {
+                    sb.append("this.");
+                    sb.append(fieldModel.getName());
+                    sb.append(", ");
+                }
+            }
+            sb.append("completer})\n");
+
+            sb.append("        : super(completer, \"");
+            sb.append(actionForm.getReducerActionName());
             sb.append("Action\");\n");
             sb.append("}");
         }
