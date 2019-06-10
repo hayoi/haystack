@@ -4,7 +4,7 @@ Haystack is an AS/Intellij IDEA plugin to rapid construct a Flutter app architec
   - Generate restful api base on your json entities
   - Generate database module.
   - Generate some widgets with BottomNavigatorBar, Draw, AppBar TopTabBar, ListView(bind model entry from restful api or Database), Login, if you want.
-  - Generate CustomScrollView widgets with FixedExtentLit, Grid, BoxAdapter as you wish.
+  - Generate CustomScrollView widgets with FixedExtentLit, Grid, BoxAdapter as you wish.  
 
 ## Usage
 1. Search “Flutter App Template Generator” in Plugin Market and install the plugin.
@@ -74,6 +74,13 @@ class _PhotoListItem extends ListTile {
   ```
 You can run the project  
 ![app](https://raw.githubusercontent.com/hayoi/haystack/master/image/app.png)
+![sliver](https://raw.githubusercontent.com/hayoi/haystack/master/image/sliver.gif)
+## Localization
+![Localization](https://raw.githubusercontent.com/hayoi/haystack/master/image/localization.gif)
+## Insert a widget
+![Insert a widget](https://raw.githubusercontent.com/hayoi/haystack/master/image/insert_UI.gif)
+## New an redux action
+![New an redux action](https://github.com/hayoi/haystack/blob/master/image/action.gif)
 
 1. [Create first app](https://github.com/hayoi/haystack/wiki/Create-First-App)
 2. [Photo Viewer](https://github.com/hayoi/photo)
