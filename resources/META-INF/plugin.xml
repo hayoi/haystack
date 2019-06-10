@@ -16,7 +16,16 @@
     <li>generate some pages with BottomNavigatorBar, Draw, AppBar TopTabBar, ListView(bind model entry from restful api or Database), Login, if you want.</li>
     <li>generate CustomScrollView pages with FixedExtentLit, Grid, BoxAdapter as you wish</li>
     </ul>
-    <head>Usage:</head>
+    <p>
+    <a href="https://github.com/hayoi/haystack/tree/master/image">
+    <img width="64" src="https://raw.githubusercontent.com/hayoi/haystack/master/image/structure.png"></a>
+    <a href="https://github.com/hayoi/haystack/blob/master/image/sliver.gif">
+    <img width="64" src="https://raw.githubusercontent.com/hayoi/haystack/master/image/sliver.gif"></a>
+    <a href="https://raw.githubusercontent.com/hayoi/haystack/master/image/localization.gif">
+    <img width="64" src="https://raw.githubusercontent.com/hayoi/haystack/master/image/localization.gif"></a>
+    </p>
+    <br>
+    <head><a href="https://github.com/hayoi/haystack">Usage:</a></head>
     <ul>
     <li>Install the plugin, Create a Flutter project with AS/IDEA.</li>
     <li>Right click the lib folder, select New --> Generate App Template.</li>
@@ -32,6 +41,11 @@
 
     <change-notes>
         <![CDATA[
+    <head>1.3.0:</head>
+    <ul>
+    <li>New feature: Localize Strings</li>
+    <li>New feature: Create new Redux Action</li>
+    </ul>
     <head>1.2.10:</head>
     <ul>
       <li>New feature tool: Flutter UI. quickly insert some Widget templates in your source file</li>
