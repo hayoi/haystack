@@ -57,6 +57,18 @@ class ${ModelEntryName}Repository {
       return new ${ModelEntryName}.fromJson(results);
     });
   }
+  
+  Future<List<${ModelEntryName}>> search${ModelEntryName}(String query, int page, int perPage) {
+    return new NetworkCommon().dio.get("search/${(ModelEntryName)?lower_case}", queryParameters: {
+      "query": query,
+      "page": page,
+      "per_page": perPage
+    }).then((d) {
+      var results = new NetworkCommon().decodeResp(d);
+
+      return  results["results"].map<${ModelEntryName}>((item) => new ${ModelEntryName}.fromJson(item)).toList();
+    });
+  }
 
   <#if ModelEntryName == "User">
   Future<${ModelEntryName}> login(Login login) {

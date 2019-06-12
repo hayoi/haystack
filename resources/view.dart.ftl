@@ -48,9 +48,6 @@ const double _fabHalfSize = 28.0;
 
 </#if>
 class _${PageName}<#if GenSliverTabView>Tab</#if>ViewContentState extends State<${PageName}<#if GenSliverTabView>Tab</#if>ViewContent> {
-  <#if HasActionSearch>
-  final _SearchDemoSearchDelegate _delegate = _SearchDemoSearchDelegate();
-  </#if>
   <#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList || GenSliverTabView>
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   final TrackingScrollController _scrollController = TrackingScrollController();
@@ -300,8 +297,6 @@ class _${PageName}<#if GenSliverTabView>Tab</#if>ViewContentState extends State<
   <#if GenerateListView || GenSliverToBoxAdapter || GenSliverGrid || GenSliverFixedExtentList || GenSliverTabView>
   bool _onNotification(ScrollNotification notification) {
     if (notification is ScrollUpdateNotification) {
-      print(notification.scrollDelta);
-      print(notification.metrics.toString());
       if (notification.metrics.extentAfter < 15.0) {
         // load more
         if (this._status != ActionStatus.running) {
@@ -316,6 +311,7 @@ class _${PageName}<#if GenSliverTabView>Tab</#if>ViewContentState extends State<
   }
 
   Future<Null> _loadMoreData() {
+    _status = ActionStatus.running;
 	<#if GenerateListView || GenSliverGrid || GenSliverFixedExtentList>
     widget.viewModel.get${ModelEntryName}s(false, get${ModelEntryName}sCallback);
 	</#if>
@@ -324,6 +320,7 @@ class _${PageName}<#if GenSliverTabView>Tab</#if>ViewContentState extends State<
 
   Future<Null> _handleRefresh() async {
     _refreshIndicatorKey.currentState.show();
+    _status = ActionStatus.running;
 	<#if GenerateListView || GenSliverGrid || GenSliverFixedExtentList>
     widget.viewModel.get${ModelEntryName}s(true, get${ModelEntryName}sCallback);
 	</#if>
@@ -757,9 +754,9 @@ class _${PageName}<#if GenSliverTabView>Tab</#if>ViewContentState extends State<
       IconButton(
         icon: Icon(choices[0].icon),
         onPressed: () async {
-          final int selected = await showSearch<int>(
+          final ${ModelEntryName} selected = await showSearch<${ModelEntryName}>(
             context: context,
-            delegate: _delegate,
+            delegate: _${ModelEntryName}SearchDelegate(this.widget.viewModel.search${ModelEntryName}),
           );
           if (selected != null) {
             setState(() {
@@ -874,10 +871,15 @@ class ${PageName}GridDelegate extends SpanableSliverGridDelegate {
 </#if>
 <#if HasActionSearch>
 
-class _SearchDemoSearchDelegate extends SearchDelegate<int> {
-  final List<int> _data =
-      List<int>.generate(100001, (int i) => i).reversed.toList();
-  final List<int> _history = <int>[42607, 85604, 66374, 44, 174];
+class _${ModelEntryName}SearchDelegate extends SearchDelegate<${ModelEntryName}> {
+  List<String> _history = [];
+  final Function(String) search${ModelEntryName};
+
+  _${ModelEntryName}SearchDelegate(this.search${ModelEntryName}) {
+    SharedPreferences.getInstance().then((prefs) {
+      _history = prefs.getStringList("${ModelEntryName}sSearchHistory");
+    });
+  }
 
   @override
   Widget buildLeading(BuildContext context) {
@@ -895,13 +897,13 @@ class _SearchDemoSearchDelegate extends SearchDelegate<int> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final Iterable<int> suggestions = query.isEmpty
+    final Iterable<String> suggestions = query.isEmpty
         ? _history
-        : _data.where((int i) => '$i'.startsWith(query));
+        : _history?.where((String sug) => sug.startsWith(query));
 
     return _SuggestionList(
       query: query,
-      suggestions: suggestions.map((int i) => '$i').toList(),
+      suggestions: suggestions?.map((String sug) => '$sug')?.toList() ?? [],
       onSelected: (String suggestion) {
         query = suggestion;
         showResults(context);
@@ -911,34 +913,45 @@ class _SearchDemoSearchDelegate extends SearchDelegate<int> {
 
   @override
   Widget buildResults(BuildContext context) {
-    final int searched = int.tryParse(query);
-    if (searched == null || !_data.contains(searched)) {
-      return Center(
-        child: Text(
-          '"$query"\n is not a valid integer between 0 and 100,000.\nTry again.',
-          textAlign: TextAlign.center,
-        ),
+    if (query.length < 3) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: Text(
+              "Search term must be longer than two letters.",
+            ),
+          )
+        ],
       );
+    } else {
+      if (_history == null) {
+        _history = [];
+        _history.add(query);
+        SharedPreferences.getInstance().then((prefs) {
+          prefs.setStringList("${ModelEntryName}sSearchHistory", _history);
+        });
+      } else if (!_history.contains(query)) {
+        _history.add(query);
+        SharedPreferences.getInstance().then((prefs) {
+          prefs.setStringList("${ModelEntryName}sSearchHistory", _history);
+        });
+      }
+
+      search${ModelEntryName}(query);
     }
 
-    return ListView(
-      children: <Widget>[
-        _ResultCard(
-          title: 'This integer',
-          integer: searched,
-          searchDelegate: this,
-        ),
-        _ResultCard(
-          title: 'Next integer',
-          integer: searched + 1,
-          searchDelegate: this,
-        ),
-        _ResultCard(
-          title: 'Previous integer',
-          integer: searched - 1,
-          searchDelegate: this,
-        ),
-      ],
+    return StoreConnector<AppState, ${PageName}<#if GenSliverTabView>Tab</#if>ViewModel>(
+      distinct: true,
+      converter: (store) => ${PageName}<#if GenSliverTabView>Tab</#if>ViewModel.fromStore(store),
+      builder: (_, viewModel) => ListView(
+            children: viewModel.search${ModelEntryName}s.map((${(ModelEntryName)?lower_case}) {
+              return _ResultCard(
+                item: ${(ModelEntryName)?lower_case},
+                searchDelegate: this,
+              );
+            }).toList(),
+          ),
     );
   }
 
@@ -966,27 +979,25 @@ class _SearchDemoSearchDelegate extends SearchDelegate<int> {
 }
 
 class _ResultCard extends StatelessWidget {
-  const _ResultCard({this.integer, this.title, this.searchDelegate});
+  const _ResultCard({this.item, this.searchDelegate});
 
-  final int integer;
-  final String title;
-  final SearchDelegate<int> searchDelegate;
+  final ${ModelEntryName} item;
+  final SearchDelegate<${ModelEntryName}> searchDelegate;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        searchDelegate.close(context, integer);
+        searchDelegate.close(context, item);
       },
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
-              Text(title),
               Text(
-                '$integer',
+                '${r"${item.id}"}',
                 style: theme.textTheme.headline.copyWith(fontSize: 72.0),
               ),
             ],

@@ -9,6 +9,7 @@ final ${(ModelEntryName)?lower_case}Reducer = combineReducers<${ModelEntryName}S
   TypedReducer<UserState, SyncProfileAction>(_syncProfile),
   </#if>
   TypedReducer<${ModelEntryName}State, Remove${ModelEntryName}Action>(_remove${ModelEntryName}),
+  TypedReducer<${ModelEntryName}State, SyncSearch${ModelEntryName}Action>(_syncSearch${ModelEntryName}),
 ]);
 
 ${ModelEntryName}State _sync${ModelEntryName}s(${ModelEntryName}State state, Sync${ModelEntryName}sAction action) {
@@ -36,4 +37,8 @@ ${ModelEntryName}State _syncProfile(${ModelEntryName}State state, SyncProfileAct
 
 ${ModelEntryName}State _remove${ModelEntryName}(${ModelEntryName}State state, Remove${ModelEntryName}Action action) {
   return state.copyWith(${(ModelEntryName)?lower_case}s: state.${(ModelEntryName)?lower_case}s..remove(action.${clsUNName}.toString()));
+}
+
+${ModelEntryName}State _syncSearch${ModelEntryName}(${ModelEntryName}State state, SyncSearch${ModelEntryName}Action action) {
+  return state.copyWith(search${ModelEntryName}s: action.search${ModelEntryName}s);
 }

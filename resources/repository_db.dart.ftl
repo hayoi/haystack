@@ -66,4 +66,7 @@ class ${ModelEntryName}RepositoryDB {
     return ${(ModelEntryName)?lower_case};
   }
 
+  Future<List<${ModelEntryName}>> search${ModelEntryName}(String query, int page, int perPage) {
+    // TODO
+  }
 }

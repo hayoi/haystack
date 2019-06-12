@@ -27,6 +27,10 @@ class ${PageName}<#if GenSliverTabView>Tab</#if>ViewModel {
   <#if PageType == "LOGIN">
   final Function(Login, ActionCallback) login;
   </#if>
+  <#if HasActionSearch>
+  final List<${ModelEntryName}> search${ModelEntryName}s;
+  final Function(String) search${ModelEntryName};
+  </#if>
 
   ${PageName}<#if GenSliverTabView>Tab</#if>ViewModel({
     this.${(ModelEntryName)?lower_case},
@@ -48,6 +52,10 @@ class ${PageName}<#if GenSliverTabView>Tab</#if>ViewModel {
     </#if>
     <#if PageType == "LOGIN">
     this.login,
+    </#if>
+    <#if HasActionSearch>
+    this.search${ModelEntryName}s,
+    this.search${ModelEntryName},
     </#if>
   });
 
@@ -107,6 +115,14 @@ class ${PageName}<#if GenSliverTabView>Tab</#if>ViewModel {
         completer.future.then((status) {
           callback(status);
         }).catchError((error) => callback(error));
+      },
+      </#if>
+      <#if HasActionSearch>
+      search${ModelEntryName}s: store.state.${(ModelEntryName)?lower_case}State.search${ModelEntryName}s ?? [],
+      search${ModelEntryName}: (query) {
+        final Completer<ActionReport> completer = Completer<ActionReport>();
+        store.dispatch(Search${ModelEntryName}Action(query: query, completer: completer));
+        completer.future.then((status) {});
       },
       </#if>
     );

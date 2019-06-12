@@ -75,3 +75,17 @@ class Remove${ModelEntryName}Action extends Action {
   Remove${ModelEntryName}Action({@required this.${clsUNName}, completer})
       : super(null, "Remove${ModelEntryName}Action");
 }
+
+class Search${ModelEntryName}Action extends Action {
+  final String query;
+
+  Search${ModelEntryName}Action({this.query, completer})
+        : super(completer, "Search${ModelEntryName}Action");
+}
+
+class SyncSearch${ModelEntryName}Action extends Action {
+  final List<${ModelEntryName}> search${ModelEntryName}s;
+
+  SyncSearch${ModelEntryName}Action({this.search${ModelEntryName}s, completer})
+        : super(completer, "SyncSearch${ModelEntryName}Action");
+}

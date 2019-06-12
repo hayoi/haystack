@@ -24,6 +24,7 @@ List<Middleware<AppState>> create${ModelEntryName}Middleware([
   final create${ModelEntryName} = _createCreate${ModelEntryName}(_repository<#if genDatabase>, _repositoryDB</#if>);
   final update${ModelEntryName} = _createUpdate${ModelEntryName}(_repository<#if genDatabase>, _repositoryDB</#if>);
   final delete${ModelEntryName} = _createDelete${ModelEntryName}(_repository<#if genDatabase>, _repositoryDB</#if>);
+  final search${ModelEntryName} = _createSearch${ModelEntryName}(_repository);
 
   return [
     <#if ModelEntryName=="User">
@@ -34,6 +35,7 @@ List<Middleware<AppState>> create${ModelEntryName}Middleware([
     TypedMiddleware<AppState, Create${ModelEntryName}Action>(create${ModelEntryName}),
     TypedMiddleware<AppState, Update${ModelEntryName}Action>(update${ModelEntryName}),
     TypedMiddleware<AppState, Delete${ModelEntryName}Action>(delete${ModelEntryName}),
+    TypedMiddleware<AppState, Search${ModelEntryName}Action>(search${ModelEntryName}),
   ];
 }
 
@@ -147,6 +149,18 @@ Middleware<AppState> _createDelete${ModelEntryName}(
   return (Store<AppState> store, dynamic action, NextDispatcher next) {
     repository.delete${ModelEntryName}(action.${(ModelEntryName)?lower_case}.${clsUNName}).then((item) {
       next(Remove${ModelEntryName}Action(${clsUNName}: action.${(ModelEntryName)?lower_case}.${clsUNName}));
+      completed(action);
+    }).catchError((error) {
+      catchError(action, error);
+    });
+  };
+}
+
+Middleware<AppState> _createSearch${ModelEntryName}(${ModelEntryName}Repository repository) {
+  return (Store<AppState> store, dynamic action, NextDispatcher next) {
+    next(SyncSearch${ModelEntryName}Action(search${ModelEntryName}s: []));
+    repository.search${ModelEntryName}(action.query, 1, 30).then((search${ModelEntryName}s) {
+      next(SyncSearch${ModelEntryName}Action(search${ModelEntryName}s: search${ModelEntryName}s));
       completed(action);
     }).catchError((error) {
       catchError(action, error);

@@ -7,6 +7,7 @@ class ${ModelEntryName}State {
   <#if ModelEntryName == "User">
   final User profile;
   </#if>
+  final List<${ModelEntryName}> search${ModelEntryName}s;
   final Map<String, ${ModelEntryName}> ${(ModelEntryName)?lower_case}s;
   final ${ModelEntryName} ${(ModelEntryName)?lower_case};
   final Page page;
@@ -15,6 +16,7 @@ class ${ModelEntryName}State {
     <#if ModelEntryName == "User">
     @required this.profile,
     </#if>
+    @required this.search${ModelEntryName}s,
     @required this.${(ModelEntryName)?lower_case}s,
     @required this.${(ModelEntryName)?lower_case},
     @required this.page,
@@ -24,6 +26,7 @@ class ${ModelEntryName}State {
     <#if ModelEntryName == "User">
     User profile,
     </#if>
+    List<${ModelEntryName}> search${ModelEntryName}s,
     Map<String, ${ModelEntryName}> ${(ModelEntryName)?lower_case}s,
     ${ModelEntryName} ${(ModelEntryName)?lower_case},
     Page page,
@@ -32,6 +35,7 @@ class ${ModelEntryName}State {
       <#if ModelEntryName == "User">
       profile: profile ?? this.profile,
       </#if>
+      search${ModelEntryName}s: search${ModelEntryName}s ?? this.search${ModelEntryName}s,
       ${(ModelEntryName)?lower_case}s: ${(ModelEntryName)?lower_case}s ?? this.${(ModelEntryName)?lower_case}s ?? Map(),
       ${(ModelEntryName)?lower_case}: ${(ModelEntryName)?lower_case} ?? this.${(ModelEntryName)?lower_case},
       page: page ?? this.page,
