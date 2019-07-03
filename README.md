@@ -79,7 +79,7 @@ You can run the project
 ![Localization](https://raw.githubusercontent.com/hayoi/haystack/master/image/localization.gif)
 ## Insert a widget
 ![Insert a widget](https://raw.githubusercontent.com/hayoi/haystack/master/image/insert_UI.gif)
-## New an redux action
+## New a redux action
 ![New an redux action](https://github.com/hayoi/haystack/blob/master/image/action.gif)
 
 1. [Create first app](https://github.com/hayoi/haystack/wiki/Create-First-App)
