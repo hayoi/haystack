@@ -388,6 +388,7 @@
                       <component id="ea876" class="javax.swing.JTextPane" binding="jsonTextPanel">
                         <constraints/>
                         <properties>
+                          <dragEnabled value="false"/>
                           <font size="14"/>
                           <text value=""/>
                         </properties>
