@@ -9,5 +9,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="freemarker" level="project" />
+    <orderEntry type="library" name="json-20170516" level="project" />
+    <orderEntry type="library" name="jackson-all-1.9.0" level="project" />
+    <orderEntry type="library" name="Dart" level="project" />
   </component>
 </module>
